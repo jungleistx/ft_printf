@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:08 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/10 16:14:28 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/03/10 20:58:30 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	count_digits(int num)
 {
 	int	res;
 
-	res = 0:
+	res = 0;
 	// if (num < 0)		NEEDED? does it count - as a digit to padding
 		// res++;
 	while (num > 0)
@@ -88,10 +88,11 @@ int	ft_printf(const char *str, ...)
 			write(1, &str[i - n], n);
 		if (str[i] == '%')
 		{
-			if (str[++i] == 'd')
-				ft_putnbr(va_arg(args, int));
-			else if (str[i] == )
-			i++;
+			specifiers(&str[i])
+			// if (str[++i] == 'd')
+			// 	ft_putnbr(va_arg(args, int));
+			// // else if (str[i] == )
+			// i++;
 		}
 	}
 	return (0);
@@ -101,8 +102,10 @@ int main(void)
 {
 	int x = 42;
 
+	printf("\n-----\n");
 	ft_printf("random %d\nanother%d %d\n", x, x + x, x * 5);
 	ft_printf("\n%d * %d = %d\n", 14, 4, 14*4);
+	printf("\n-----\n");
 
 }
 

@@ -2,6 +2,7 @@
 
 c	char
 s	string
+	if precision is spesified, no more than number is written.
 p	pointer address
 
 with flags: 							hh, 			h, 				l, 			ll
