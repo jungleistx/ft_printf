@@ -1,0 +1,51 @@
+*** *** *** *** *** 		printf		 *** *** *** *** *** ***
+
+c	char
+s	string
+p	pointer address
+
+with flags: 							hh, 			h, 				l, 			ll
+d	signed decimal integer				signed char		short			long		long long
+i 	-||-								&&				&				&			&
+
+o	unsigned octal						unsig char		unsig short		unsig long	unsig long long
+u	unsigned decimal integer			&&				&				&			&
+x	unsigned decimal integer			&&				&				&			&
+X	unsigned hexa integer (upper)		&&				&				&			&
+
+f	float																double		long double
+	numbers after . is equal to precision spec. if missing, default is 6
+	if precision is 0, no decimal point char appear. if decimal point appears, atleast
+	one digit must be before that
+
+
+%[flags][width][.precision][length]specifier
+
+%%	putchar %
+
+		must have flags
+#	alternate, no effect for 'cdinps'
+	For o, force first char to 0
+	for x and X, nonzero result has the string 0x or 0X.
+	for f, result will always contain a decimal point, even if no digits follow
+
+0	padding for all types. if precision given, 0 is ignored.
+
+-	negative field. converted value is padded to right with blanks. overrides a 0 if both
+
+' '	blank left produced by signed conversion (d, f, i)
+
++	must be placed before a number produced by signed conversion overwrites ' ' if both used
+
+*	precision (or *followed by 1 <= digits and 'dollar' instead of digit string. this case int gives
+	the amount of digits). minimum amount of numbers to be given. if less, add padding
+-minimum field width (.?)
+
+-needed libft-functions
+putstr
+putnbr
+putchar
+strlen
+
+temp buf[10] needed?
+to check the values, pres, field, flags.
