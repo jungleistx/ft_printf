@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:08 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/11 18:08:29 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/03/11 18:23:06 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,22 @@ void	ft_putnbr(int n)
 
 
 
+int	specifiers(char *s, va_list args)
+{
+	int	i;
 
+	i = 0;
+	if ( == d || == i)
+	{
+		itoa?
+		ft_putnbr(va_arg(args, int ___ ))
+
+	}
+
+	else if ( == o || == u || == x || == X)
+
+
+}
 
 
 
@@ -223,42 +238,42 @@ void check_type(void *ptr, char type)	//UNFINISHED
 	printf("%llu\n", num);
 }
 
-int	h_flag_signed(void *ptr)
-{
-	short	num;
-	int		res;
+// int	h_flag_signed(void *ptr)
+// {
+// 	short	num;
+// 	int		res;
 
-	res = 0;
-	num = (short)*(int*)ptr;
-	res = count_numbers(num, 's');	// takes type as argument
+// 	res = 0;
+// 	num = (short)*(int*)ptr;
+// 	res = count_numbers(num, 's');	// takes type as argument
 
-	return (res);
+// 	return (res);
 
-}
+// }
 
-int	h_flag_unsigned(void *ptr, char type)
-{
-	unsigned short	num;
-	int				res;
+// int	h_flag_unsigned(void *ptr, char type)
+// {
+// 	unsigned short	num;
+// 	int				res;
 
-	res = 0;
-	num = 0;
-	if (type == 'd' || type == 'i')
-	{
-		if (*(int*)ptr < 0)
-			num = *(int*)ptr * -1;
-		}
-		else
-			num = (short)
+// 	res = 0;
+// 	num = 0;
+// 	if (type == 'd' || type == 'i')
+// 	{
+// 		if (*(int*)ptr < 0)
+// 			num = *(int*)ptr * -1;
+// 		}
+// 		else
+// 			num = (short)
 
-	}
-	else if (type == 'o' || type == 'u' || type == 'x' || type == 'X')
-	{
-		num = (unsigned short)*(unsigned int*)ptr;
-	}
-	return (res);
+// 	}
+// 	else if (type == 'o' || type == 'u' || type == 'x' || type == 'X')
+// 	{
+// 		num = (unsigned short)*(unsigned int*)ptr;
+// 	}
+// 	return (res);
 
-}
+// }
 
 
 
@@ -266,6 +281,8 @@ int main(void)
 {
 	sizes();
 	maxes();
+	int i = 3300;
+	printf("%hd\n", i);
 
 	// int x = 42;
 	// ft_printf("|random '%d'\n'%d' another '%d'|\n", x, x + x, x * 5);
