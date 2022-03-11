@@ -19,8 +19,14 @@ f	float																double		long double
 	if precision is 0, no decimal point char appear. if decimal point appears, atleast
 	one digit must be before that
 
-
-%[flags][width][.precision][length]specifier
+% [flags][width][.precision][length]specifier
+	printf manual
+following appear in sequence:
+	optional field:
+		decimal digit string, followed by 'dollarsign'. if no dollar, next arg is read
+	zero or more following flags:
+		#:
+			no effect for c, d, i, n, p, s, u.
 
 %%	putchar %
 
@@ -42,6 +48,9 @@ f	float																double		long double
 	the amount of digits). minimum amount of numbers to be given. if less, add padding
 -minimum field width (.?)
 
+TODO
+- numbercounter that takes void*, can be used with all numbers. converts to longlong
+
 -needed libft-functions
 putstr
 putnbr
@@ -50,3 +59,31 @@ strlen
 
 temp buf[10] needed?
 to check the values, pres, field, flags.
+
+BONUS
+-%n 	amount written at that moment, saved in (total?)
+-color output
+
+TESTCASES
+- long long min
+
+---
+
+0 1 2 3 4 5 6 7 8  9  10
+r a n d o m _ % d \n \n          // len(6), int 9, total = 6 + (spc 1) + 1 + \n + \n = 9
+
+
+
+00000000000000000000000000000010 ar 1 = (2)
+00000000000000000000000000000001 ar 0 = (1)
+
+0000000000000000
+0000000000000000
+00000000000000000000001111101001
+00000000000000000000000000000001
+
+4299262263297 ///
+
+4294967298
+rev
+8589934593
