@@ -5,33 +5,46 @@ s	string
 	if precision is spesified, no more than number is written.
 p	pointer address
 
-with flags: 							hh, 			h, 				l, 			ll
-d	signed decimal integer				signed char		short			long		long long
-i 	-||-								&&				&				&			&
+with flags: 				none		hh 				h 				l 			ll				L
+d	signed deci int			int			signed char		short			long		long long
+i 	-||-					&			&&				&				&			&
+c	char					&
 
-o	unsigned octal						unsig char		unsig short		unsig long	unsig long long
-u	unsigned decimal integer			&&				&				&			&
-x	unsigned decimal integer			&&				&				&			&
-X	unsigned hexa integer (upper)		&&				&				&			&
+o	unsig octal				unsig int	unsig char		unsig short		unsig long	unsig long long
+u	unsig deci int			&			&&				&				&			&
+x	unsig deci int			&			&&				&				&			&
+X	unsig hex int (upper)	&			&&				&				&			&
 
-f	float																double		long double
+s 	string					char*
+p 	pointer address			void*
+
+f	float					double		-				-				double		-			long double
 	numbers after . is equal to precision spec. if missing, default is 6
 	if precision is 0, no decimal point char appear. if decimal point appears, atleast
 	one digit must be before that
 
-% [flags][width][.precision][length]specifier
-	printf manual
+	% [flags][width][.precision][length]specifier
+NOTES
+s
+	if .num added, thats maximum to print
+f
+
+
+
+
+BONUS
+n 	num printed so far		int* 	sig char*			short*			long *		longlong*
+
+	from printf manual
 following appear in sequence:
 	optional field:
 		decimal digit string, followed by 'dollarsign'. if no dollar, next arg is read
 	zero or more following flags:
-		#:
-			no effect for c, d, i, n, p, s, u.
 
-%%	putchar %
+FLAGS
+%	putchar '%'
 
-		must have flags
-#	alternate, no effect for 'cdinps'
+#	alternate, no effect for 'cdinpsu'
 	For o, force first char to 0
 	for x and X, nonzero result has the string 0x or 0X.
 	for f, result will always contain a decimal point, even if no digits follow
@@ -64,8 +77,12 @@ BONUS
 -%n 	amount written at that moment, saved in (total?)
 -color output
 
-TESTCASES
-- long long min
+TESTCASES (d = 9)
+long long min
++_d   Adds + to positive, space ignored
+04d, 4d --> 0009, _ _ _9
+*4d, : _ _ _ 9 // width added as input
+(”*d”, 3, num) : _ _ 9 // width added as argument
 
 ---
 
@@ -73,17 +90,74 @@ TESTCASES
 r a n d o m _ % d \n \n          // len(6), int 9, total = 6 + (spc 1) + 1 + \n + \n = 9
 
 
+Write ret #printed
+Itoa
+Ftoa
+Float basic len = 6
+If 0 no len
+If . Atleast 1 num before .
+Float with bankers rounding
+Output error ret negative
+Static const arr of func pointers
+Aka dispatch table (to .h)
+Flags in uint16
+Dont allocate, modify and print
+O3 flag
+Double holds 16 digits
+Global static const
+Hex 0x0, bits 0b0
+Ignore zero padded .03 float
+Invalid flag undefined
+If .5, round to even nbr -> 1.5 = 2, 2,5 = 2
+: .5595 - .559 and .560 -.5595
+If first bigger. Round up
+Floats autocasts to double
+First collect significant info in str and then formats/zeroes/spaces as you go
+Va_arg takes int and casted to unsig char, rather than va_arg unsig char
+Test:  printf("%Lf\n", -0.0L);
 
-00000000000000000000000000000010 ar 1 = (2)
-00000000000000000000000000000001 ar 0 = (1)
+%[flags][width][.precision][length]specifier
 
-0000000000000000
-0000000000000000
-00000000000000000000001111101001
-00000000000000000000000000000001
+Flags
+* -
+Left justify with given field width, default is right
+* +
+Forces a + for positive, default is only minus
+* Spc
+If no sign, blank written before value (padding)
+* #
+Used with o, x and X for formatting 0, 0x or 0X before value.
+Used with f to force . after number. Default is no decimal point
+* 0
+Left pad number with 0 when width specified
 
-4299262263297 ///
+Width
+* Number
+Min number to print. If number is smaller (count digits) than this, padding added.
+* *
+Argument list contains width value before printed value
 
-4294967298
-rev
-8589934593
+Precision
+* .number
+For dioux, num is min numbers to write. If digits < num, leading 0 padding added.
+0 means no char written for the value 0 (?)
+For f, num means after decimal point. Default is 6
+For s, num is max number to write.
+If only period, 0 is assumed
+* .*
+Precision not specified in str, but as an va_arg
+
+Length
+
+-bonus
+ Colored output
+Too long output? 16bit and tries 11.{1..15}
+
+?
+%e scientific format number
+Mantissa (total bits?)
+
+Arena script
+Check unicode for d, esc
+D = U+0064 decimal 100 oct 144
+Esc = decimal 27 hex x1b u+001b?? Oct 33
