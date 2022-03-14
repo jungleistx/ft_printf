@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvuorenl <rvuorenl@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:08 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/11 18:23:06 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/03/12 18:15:19 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,14 +124,6 @@ void	ft_putnbr(int n)
 	ft_putchar(copy % 10 + '0');
 }
 
-
-
-
-
-
-
-
-
 int	specifiers(char *s, va_list args)
 {
 	int	i;
@@ -148,9 +140,6 @@ int	specifiers(char *s, va_list args)
 
 
 }
-
-
-
 
 int	count_digits(int num)
 {
@@ -275,14 +264,12 @@ void check_type(void *ptr, char type)	//UNFINISHED
 
 // }
 
-
-
 int main(void)
 {
-	sizes();
-	maxes();
+	// sizes();
+	// maxes();
 	int i = 3300;
-	printf("%hd\n", i);
+	printf("%d\n", i);
 
 	// int x = 42;
 	// ft_printf("|random '%d'\n'%d' another '%d'|\n", x, x + x, x * 5);
@@ -311,7 +298,6 @@ int main(void)
 	 */
 
 }
-
 
 /*
 You are allowed to use the following functions:

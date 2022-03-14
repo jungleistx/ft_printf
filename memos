@@ -24,13 +24,82 @@ f	float					double		-				-				double		-			long double
 	one digit must be before that
 
 	% [flags][width][.precision][length]specifier
+
+FLAGS
+%	putchar '%'
+
+-	negative field. converted value is padded to right with blanks. overrides a 0 if both
+	default padding is right. field input given.
++	must be placed before a number produced by signed conversion overwrites ' ' if both used
+	forces + before num, default is only minus
+' '	blank left produced by signed conversion (d, f, i) (padding)
+
+#	alternate, no effect for 'cdinpsu'
+	For o, force first char to 0
+	for x and X, nonzero result has the string 0x or 0X.
+	for f, result will always contain a decimal point, even if no digits follow
+		default is no decimal point
+
+0	padding for all types. if precision given, 0 is ignored.
+	width specified.
+
+WIDTH
+Number
+	Min number to print. If number is smaller (count digits) than this, padding added.
+*
+	if dollarsign given, ----????-----
+	Argument list contains width value before printed value
+	minimun amount printed. if less, no effect. if more, add padding right <> left
+
+/*
+*	precision (or *followed by 1 <= digits and 'dollar' instead of digit string. this case int gives
+	the amount of digits). minimum amount of numbers to be given. if less, add padding
+-minimum field width (.?)
+
+*/ ???
+
+PRECISION
+.number
+	For dioux, num is min numbers to write. If digits < num, leading 0 padding added.
+	0 means no char written for the value 0 (?)
+	For f, num means after decimal point. Default is 6
+	For s, num is max number to write.
+	If only period, 0 is assumed
+.*
+	Precision not specified in str, but as an va_arg
+
 NOTES
 s
 	if .num added, thats maximum to print
 f
-
-
-
+	autocasts to double
+	Ignore zero padded .03 float (?)
+f round
+	If .5, round to even nbr -> 1.5 = 2, 2,5 = 2
+	: .5595 - .559 and .560 -.5595
+	If first bigger. Round up
+	Double holds 16 digits
+	basic len = 6
+	if 0, no len
+	if . atleast 1 num before .
+	bankers rounding
+random
+	write returns #written
+	Va_arg takes int and casted to unsig char, rather than va_arg unsig char
+	First collect significant info in str and then formats/zeroes/spaces as you go
+	Invalid flag undefined
+	Hex 0x0, bits 0b0
+	Global static const
+	O3 flag compilation
+	output error returns negative
+	static const arr of func pointers
+	aka dispatch table (printf.h=)
+	flags in uint16_t
+	minimum allocation, modify and print
+needed ?
+	ftoa
+	itoa
+	buf[10] for flags, precision, field, width (?)
 
 BONUS
 n 	num printed so far		int* 	sig char*			short*			long *		longlong*
@@ -41,117 +110,44 @@ following appear in sequence:
 		decimal digit string, followed by 'dollarsign'. if no dollar, next arg is read
 	zero or more following flags:
 
-FLAGS
-%	putchar '%'
-
-#	alternate, no effect for 'cdinpsu'
-	For o, force first char to 0
-	for x and X, nonzero result has the string 0x or 0X.
-	for f, result will always contain a decimal point, even if no digits follow
-
-0	padding for all types. if precision given, 0 is ignored.
-
--	negative field. converted value is padded to right with blanks. overrides a 0 if both
-
-' '	blank left produced by signed conversion (d, f, i)
-
-+	must be placed before a number produced by signed conversion overwrites ' ' if both used
-
-*	precision (or *followed by 1 <= digits and 'dollar' instead of digit string. this case int gives
-	the amount of digits). minimum amount of numbers to be given. if less, add padding
--minimum field width (.?)
-
 TODO
 - numbercounter that takes void*, can be used with all numbers. converts to longlong
 
--needed libft-functions
+LIBFT_FUNCTIONS
 putstr
 putnbr
 putchar
 strlen
-
-temp buf[10] needed?
-to check the values, pres, field, flags.
 
 BONUS
 -%n 	amount written at that moment, saved in (total?)
 -color output
 
 TESTCASES (d = 9)
+Too long output? 16bit, exampe with 4 bit: 42.4242 (6bit)
 long long min
 +_d   Adds + to positive, space ignored
 04d, 4d --> 0009, _ _ _9
 *4d, : _ _ _ 9 // width added as input
 (”*d”, 3, num) : _ _ 9 // width added as argument
+printf("%Lf\n", -0.0L);
+
+.ZSHRC
+PROMPT='%F{45}%D, %T%f %F{190}%~%f%F{40} %#%f '
+alias gca="gcc -S -masm=intel"
+alias objdump="objdump -d -x86-asm-syntax=intel"
+alias gg="gcc -g"
+alias gdb="gdb -q"
+HOMEBREW_NO_ANALYTICS=1
+alias bc="bc -l -q"
+alias l="ls -lhS"
+alias la="ls -laphS"
+alias lr="ls -lR"
 
 ---
 
 0 1 2 3 4 5 6 7 8  9  10
 r a n d o m _ % d \n \n          // len(6), int 9, total = 6 + (spc 1) + 1 + \n + \n = 9
-
-
-Write ret #printed
-Itoa
-Ftoa
-Float basic len = 6
-If 0 no len
-If . Atleast 1 num before .
-Float with bankers rounding
-Output error ret negative
-Static const arr of func pointers
-Aka dispatch table (to .h)
-Flags in uint16
-Dont allocate, modify and print
-O3 flag
-Double holds 16 digits
-Global static const
-Hex 0x0, bits 0b0
-Ignore zero padded .03 float
-Invalid flag undefined
-If .5, round to even nbr -> 1.5 = 2, 2,5 = 2
-: .5595 - .559 and .560 -.5595
-If first bigger. Round up
-Floats autocasts to double
-First collect significant info in str and then formats/zeroes/spaces as you go
-Va_arg takes int and casted to unsig char, rather than va_arg unsig char
-Test:  printf("%Lf\n", -0.0L);
-
-%[flags][width][.precision][length]specifier
-
-Flags
-* -
-Left justify with given field width, default is right
-* +
-Forces a + for positive, default is only minus
-* Spc
-If no sign, blank written before value (padding)
-* #
-Used with o, x and X for formatting 0, 0x or 0X before value.
-Used with f to force . after number. Default is no decimal point
-* 0
-Left pad number with 0 when width specified
-
-Width
-* Number
-Min number to print. If number is smaller (count digits) than this, padding added.
-* *
-Argument list contains width value before printed value
-
-Precision
-* .number
-For dioux, num is min numbers to write. If digits < num, leading 0 padding added.
-0 means no char written for the value 0 (?)
-For f, num means after decimal point. Default is 6
-For s, num is max number to write.
-If only period, 0 is assumed
-* .*
-Precision not specified in str, but as an va_arg
-
-Length
-
--bonus
- Colored output
-Too long output? 16bit and tries 11.{1..15}
 
 ?
 %e scientific format number
