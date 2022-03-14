@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:08 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/12 18:15:19 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/03/14 12:51:15 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,108 +124,108 @@ void	ft_putnbr(int n)
 	ft_putchar(copy % 10 + '0');
 }
 
-int	specifiers(char *s, va_list args)
-{
-	int	i;
+// int	specifiers(char *s, va_list args)
+// {
+// 	int	i;
 
-	i = 0;
-	if ( == d || == i)
-	{
-		itoa?
-		ft_putnbr(va_arg(args, int ___ ))
+// 	i = 0;
+// 	if ( == d || == i)
+// 	{
+// 		itoa?
+// 		ft_putnbr(va_arg(args, int ___ ))
 
-	}
+// 	}
 
-	else if ( == o || == u || == x || == X)
+// 	else if ( == o || == u || == x || == X)
 
 
-}
+// }
 
-int	count_digits(int num)
-{
-	int	res;
+// int	count_digits(int num)
+// {
+// 	int	res;
 
-	res = 0;
-	// if (num < 0)		NEEDED? does it count - as a digit to padding
-		// res++;
-	while (num > 0)
-	{
-		num /= 10;
-		res++;
-	}
-	return (res);
-}
+// 	res = 0;
+// 	// if (num < 0)		NEEDED? does it count - as a digit to padding
+// 		// res++;
+// 	while (num > 0)
+// 	{
+// 		num /= 10;
+// 		res++;
+// 	}
+// 	return (res);
+// }
 
 // int	specifiers(char *s, )
 
-int	ft_printf(const char *str, ...)
-{
-	int		n;
-	int		i;
-	va_list	args;
+// int	ft_printf(const char *str, ...)
+// {
+// 	int		n;
+// 	int		i;
+// 	va_list	args;
 
-	va_start(args, str);
-	i = 0;
-	while (str[i])
-	{
-		n = 0;
-		if (str[i] != '%' || str[i] != '\0')
-		{
-			i++;
-			n++;
-		}
-		if (n > 0)
-			write(1, &str[i - n], n);
-		if (str[i] == '%')
-		{
-			if (str[++i] == 'd')	// always i++
-			{
-				ft_putnbr(va_arg(args, int));
-                i++;
-			}
-			// specifiers(&str[i])
-			// if (str[++i] == 'd')
-			// 	ft_putnbr(va_arg(args, int));
-			// // else if (str[i] == )
-			// i++;
-		}
-	}
-	va_end(args);
-	return (0);
-}
+// 	va_start(args, str);
+// 	i = 0;
+// 	while (str[i])
+// 	{
+// 		n = 0;
+// 		if (str[i] != '%' || str[i] != '\0')
+// 		{
+// 			i++;
+// 			n++;
+// 		}
+// 		if (n > 0)
+// 			write(1, &str[i - n], n);
+// 		if (str[i] == '%')
+// 		{
+// 			if (str[++i] == 'd')	// always i++
+// 			{
+// 				ft_putnbr(va_arg(args, int));
+//                 i++;
+// 			}
+// 			// specifiers(&str[i])
+// 			// if (str[++i] == 'd')
+// 			// 	ft_putnbr(va_arg(args, int));
+// 			// // else if (str[i] == )
+// 			// i++;
+// 		}
+// 	}
+// 	va_end(args);
+// 	return (0);
+// }
 
-void check_type(void *ptr, char type)	//UNFINISHED
-{
-	unsigned long long num;
+// void check_type(void *ptr, char type)	//UNFINISHED
+// {
+// 	unsigned long long num;
 
-	if (type == 'd')
-	{
-		if (*(int*)ptr < 0)
-			num = (unsigned long long) (-1 * (*(int*)ptr));
-		else
-			num = (unsigned long long)*(int*)ptr;
+// 	if (type == 'd')
+// 	{
+// 		if (*(int*)ptr < 0)
+// 			num = (unsigned long long) (-1 * (*(int*)ptr));
+// 		else
+// 			num = (unsigned long long)*(int*)ptr;
 
-	}
-	else if (type == 'l')
-	{
-		// if (-9223372036854775808)
-		if (*(long long*)ptr < 0)
-			num = (unsigned long long) (-1 * (*(long long*)ptr));
-		else
-			num = (unsigned long long)*(long long*)ptr;
-	}
-	else if (type == 's')
-	{
-		if (*(short*)ptr < 0)
-			num = (unsigned long long) (-1 * (*(short*)ptr));
-		else
-			num = (unsigned long long)*(short*)ptr;
-	}
-	else
-		num = 0;
+// 	}
+// 	else if (type == 'l')
+// 	{
+// 		// if (-9223372036854775808)
+// 		if (*(long long*)ptr < 0)
+// 			num = (unsigned long long) (-1 * (*(long long*)ptr));
+// 		else
+// 			num = (unsigned long long)*(long long*)ptr;
+// 	}
+// 	else if (type == 's')
+// 	{
+// 		if (*(short*)ptr < 0)
+// 			num = (unsigned long long) (-1 * (*(short*)ptr));
+// 		else
+// 			num = (unsigned long long)*(short*)ptr;
+// 	}
+// 	else
+// 		num = 0;
 
-	printf("%llu\n", num);
-}
+// 	printf("%llu\n", num);
+// }
 
 // int	h_flag_signed(void *ptr)
 // {
@@ -268,8 +268,16 @@ int main(void)
 {
 	// sizes();
 	// maxes();
-	int i = 3300;
-	printf("%d\n", i);
+
+	// chars
+	printf("|%c|\n", 'c');		// |c|
+	printf("|%-c|\n", 'c');		// |c|
+	printf("|%*c|\n", 4, 'c');		// |   c|
+	printf("|%4c|\n", 'c');		// |   c|
+	// printf("|% c|\n", 'c');	// undefined
+	// printf("|%#c|\n", 'c');	// undefined
+	// printf("|%+c|\n", 'c');	// undefined
+	// printf("|%0c|\n", 'c');	// undefined
 
 	// int x = 42;
 	// ft_printf("|random '%d'\n'%d' another '%d'|\n", x, x + x, x * 5);
