@@ -23,6 +23,13 @@ f	float					double		-				-				double		-			long double
 	if precision is 0, no decimal point char appear. if decimal point appears, atleast
 	one digit must be before that
 
+ORDER
+	padding
+	prefix
+	0
+	%d
+	padd
+
 	% [flags][width][.precision][length]specifier
 
 FLAGS
@@ -123,7 +130,7 @@ BONUS
 -%n 	amount written at that moment, saved in (total?)
 -color output
 
-TESTCASES (d = 9)
+TESTCASES 			(d = 9)
 Too long output? 16bit, exampe with 4 bit: 42.4242 (6bit)
 long long min
 +_d   Adds + to positive, space ignored
@@ -131,6 +138,7 @@ long long min
 *4d, : _ _ _ 9 // width added as input
 (”*d”, 3, num) : _ _ 9 // width added as argument
 printf("%Lf\n", -0.0L);
+h and 0 in different order, or l and 0 etc
 
 .ZSHRC
 PROMPT='%F{45}%D, %T%f %F{190}%~%f%F{40} %#%f '

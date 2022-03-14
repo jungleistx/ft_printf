@@ -3,89 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvuorenl <rvuorenl@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:08 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/14 12:51:15 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/03/14 17:54:33 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdarg.h>
-#include <stdio.h>	// DELETE
-#include <unistd.h>
-#include <stdlib.h>
-// #include "ft_printf.h" // all includes
+#include "ft_printf.h" // all includes
 
-# include <limits.h> 	// DELETE
-# include <float.h>		// DELETE
-
-void	sizes(void)			// DELETE
+int	ft_atoi(const char *str)
 {
-	printf("\n<type>\t\t\t<sizeof>\t<size in bits>\n");
-	printf("\nchar \t\t\t%lu\t\t%lu\n", sizeof(char), sizeof(char)*8);
-	printf("unsigned char \t\t%lu\t\t%lu\n", sizeof(unsigned char), sizeof(unsigned char)*8);
-	printf("\nuint16_t \t\t%lu\t\t%lu\n", sizeof(uint16_t), sizeof(uint16_t)*8);
-	printf("short \t\t\t%lu\t\t%lu\n", sizeof(short), sizeof(short)*8);
-	printf("unsigned short \t\t%lu\t\t%lu\n", sizeof(unsigned short), sizeof(unsigned short)*8);
-	printf("\nint \t\t\t%lu\t\t%lu\n", sizeof(int), sizeof(int)*8);
-	printf("unsigned int \t\t%lu\t\t%lu\n", sizeof(unsigned int), sizeof(unsigned int)*8);
-	printf("float \t\t\t%lu\t\t%lu\n", sizeof(float), sizeof(float)*8);
-	printf("\ndouble \t\t\t%lu\t\t%lu\n", sizeof(double), sizeof(double)*8);
-	printf("long \t\t\t%lu\t\t%lu\n", sizeof(long), sizeof(long)*8);
-	printf("long long \t\t%lu\t\t%lu\n", sizeof(long long), sizeof(long long)*8);
-	printf("unsigned long \t\t%lu\t\t%lu\n", sizeof(unsigned long), sizeof(unsigned long)*8);
-	printf("unsigned long long \t%lu\t\t%lu\n", sizeof(unsigned long long), sizeof(unsigned long long)*8);
-	printf("uint64_t \t\t%lu\t\t%lu\n", sizeof(uint64_t), sizeof(uint64_t)*8);
-	printf("\nvoid*\t\t\t%lu\t\t%lu\n", sizeof(void*), sizeof(void*)*8);
-	printf("char*\t\t\t%lu\t\t%lu\n", sizeof(char*), sizeof(char*)*8);
-	printf("int*\t\t\t%lu\t\t%lu\n", sizeof(int*), sizeof(int*)*8);
-	printf("float*\t\t\t%lu\t\t%lu\n", sizeof(float*), sizeof(float*)*8);
-	printf("long*\t\t\t%lu\t\t%lu\n", sizeof(long*), sizeof(long*)*8);
-	printf("long long*\t\t%lu\t\t%lu\n\n", sizeof(long long*), sizeof(long long*)*8);
-}
+	unsigned long	num;
+	int				i;
+	int				negative;
 
-void	maxes(void)
-{
-	printf("\n\t--- limits ---\n<type>\t\t\t<min_value>\t\t<max_value>\n\n");
-	printf("unsigned short\t\t0\t\t\t%u\n",USHRT_MAX);
-	printf("unsigned int\t\t0\t\t\t%u\n", UINT_MAX);
-	printf("unsigned long\t\t0\t\t\t%lu\n", ULONG_MAX);
-	printf("unsigned long long\t0\t\t\t%llu\n", ULLONG_MAX);
-	printf("\nshort\t\t\t%d\t\t\t%d\n", SHRT_MIN, SHRT_MAX);
-	printf("int\t\t\t%d\t\t%d\n", INT_MIN, INT_MAX);
-	printf("long\t\t\t%ld\t%ld\n", LONG_MIN, LONG_MAX);
-	printf("long long\t\t%lld\t%lld\n\n", LLONG_MIN, LLONG_MAX);
-}
-
-void nonpointer(void)		// DELETE
-{
-	char char_ptr[5] = {'a', 'b', 'c', 'd', 'e'};
-	int int_ar[5] = {1, 2, 3, 4, 5};
-
-	printf("\nadd of char_ptr = %p\n", char_ptr);
-	printf("add of int_ar   = %p\n\n", int_ar);
-
-	long non_pointer;
-	non_pointer = (long) char_ptr; // 8 byte datatype can hold the value of an address
-	int i = 0;
-	while (i < 5)
-	{
-		printf("nonpointer points to 0x%08lx, value is %c\n", non_pointer, *((char*)non_pointer));
-		printf("nonpointer = %ld\n\n", non_pointer);
-		non_pointer += sizeof(char);
-		i++;
-	}
-	printf("---\n\n");
 	i = 0;
-	non_pointer = (long) int_ar;
-
-	while (i < 5)
+	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'
+		|| str[i] == '\f' || str[i] == '\v' || str[i] == '\r')
+		i++;
+	num = 0;
+	negative = 1;
+	if (str[i] == '-' || str[i] == '+')
 	{
-		printf("nonpointer points to %p, value is %d\n", (int*)non_pointer, *((int*)non_pointer));
-		printf("nonpointer = %ld\n\n", non_pointer);
-		non_pointer += sizeof(int);
+		if (str[i] == '-')
+			negative = -1;
 		i++;
 	}
+	while (str[i] >= 48 && str[i] <= 57)
+	{
+		num = num * 10 + (str[i++] - '0');
+		if (negative == 1 && num > 9223372036854775807)
+			return (-1);
+		if (negative == -1 && num >= 9223372036854775808u)
+			return (0);
+	}
+	return (num * (negative));
 }
 
 size_t	ft_strlen(const char *s)
@@ -124,75 +77,161 @@ void	ft_putnbr(int n)
 	ft_putchar(copy % 10 + '0');
 }
 
-// int	specifiers(char *s, va_list args)
+int	count_digits(long num)
+{
+	int	res;
+
+	res = 0;
+	if (num < 0)
+		res++;
+	while (num != 0)
+	{
+		num /= 10;
+		res++;
+	}
+	return (res);
+}
+
+void	reset_info(t_info *info)
+{
+	info->flags = 0;
+	info->res = 0;
+	info->tmpres = 0;
+	info->i = 0;
+}
+
+
+void	check_length(const char *s, t_info *info)
+{
+	if (s[info->i] == 'l' && s[info->i + 1] == 'l')
+		info->flags |= (1 << 4);
+	while (s[info->i] == 'l' || s[info->i] == 'h')
+		info->i++;
+}
+
+void	check_flags(const char *str, t_info *info)	//	-	-	-	-	-	-	-	-	-	-	-
+{
+	int i = 0;
+	while (str[i])
+	{
+		printf("\t%d\n", i);
+		if (str[i] == ' ')
+			info->flags |= 1;
+		else if (str[i] == '+')
+			info->flags |= (1 << 1);
+		else if (str[i] == '-')
+			info->flags |= (1 << 2);
+		else if (str[i] == '0')
+			info->flags |= (1 << 3);
+		else
+		{
+			info->padding = ft_atoi(&str[i]);
+			info->i += i; 						// i - 1 ?
+	printf("num = %d\n", info->i);	// i = 9 ft_printf("hello '%0d'", 42); (str[9] = d)
+			check_length(str, info);
+	printf("num = %d\n", info->i); // i = 9 ft_printf("hello '%0d'", 42); (str[9] = d)
+	printbin_2(&info->flags);
+			return ;
+		}
+		i++;
+	}
+}
+
+
+// d hd hhd ld, i hi hhi li, o hho ho lo llo, u hu hhu lu llu, x hx hhx lx llx  = unsig long long
+// lld lli = reverse if minus, unsig long long
+// c = - && -num
+// s = num && (-num??)
+
+
+// int	check_specifiers(const char *s, t_info *info, va_list args)
 // {
-// 	int	i;
-
-// 	i = 0;
-// 	if ( == d || == i)
-// 	{
-// 		itoa?
-// 		ft_putnbr(va_arg(args, int ___ ))
-
-// 	}
-
-// 	else if ( == o || == u || == x || == X)
-
-
-// }
-
-// int	count_digits(int num)
-// {
-// 	int	res;
-
-// 	res = 0;
-// 	// if (num < 0)		NEEDED? does it count - as a digit to padding
-// 		// res++;
-// 	while (num > 0)
-// 	{
-// 		num /= 10;
-// 		res++;
-// 	}
-// 	return (res);
-// }
-
-// int	specifiers(char *s, )
-
-// int	ft_printf(const char *str, ...)
-// {
-// 	int		n;
 // 	int		i;
-// 	va_list	args;
 
-// 	va_start(args, str);
 // 	i = 0;
-// 	while (str[i])
+// 	if (s[i] == '%')
 // 	{
-// 		n = 0;
-// 		if (str[i] != '%' || str[i] != '\0')
-// 		{
-// 			i++;
-// 			n++;
-// 		}
-// 		if (n > 0)
-// 			write(1, &str[i - n], n);
-// 		if (str[i] == '%')
-// 		{
-// 			if (str[++i] == 'd')	// always i++
-// 			{
-// 				ft_putnbr(va_arg(args, int));
-//                 i++;
-// 			}
-// 			// specifiers(&str[i])
-// 			// if (str[++i] == 'd')
-// 			// 	ft_putnbr(va_arg(args, int));
-// 			// // else if (str[i] == )
-// 			// i++;
-// 		}
+
 // 	}
-// 	va_end(args);
-// 	return (0);
+// 	if (s[i] == 's')
+// 	{
+
+// 	}
+// 	if (s[i] == 'p')
+// 	{
+
+// 	}
+// 	if (s[i] == 'f')
+// 	{
+
+// 	}
+
+// 	if (s[i] == 'l' || s[i] == 'c' || s[i] == 'd' || s[i] == 'i' || s[i] == 'l')
+// 	{
+
+// 	}
+// 	if (s[i] == 'u' || s[i] == 'x' || s[i] == 'X' || s[i] == 'o')
+// 	{
+
+// 	}
+
+// 	//
+// 	if (str[i] == '%')
+// 	{
+// 		write(1, '%', 1);
+// 		info->res++;
+// 	}
+// 	else if (str[i] == 'c')
+// 	{
+// 		write(1, &str[i], 1);
+// 		info->res++;
+// 	}
+// 	else if (str[i] == 'l')
+// 	{
+// 		if (str[i + 1] == 'l')
+// 			// res++ ?
+
+
+// 	}
+// 	else if (str[i] == 'd' || str[i] == 'i')
+// 	{
+
+// 	}
+
 // }
+
+int	ft_printf(const char *str, ...)
+{
+	int		n;
+	va_list	args;
+	t_info	info;
+
+	reset_info(&info);
+	va_start(args, str);
+	info.i = 0;
+	while (str[info.i])
+	{
+		n = 0;
+		while (str[info.i] != '%' && str[info.i] != '\0')
+		{
+			info.i++;
+			n++;
+		}
+		info.res += n;
+		// if (n > 0)		// commented for testing, UNCOMMENT
+			// write(1, &str[info.i - n], n);
+		if (str[info.i++] == '%')
+		{
+			check_flags(&str[info.i], &info);
+			// info.res += check_specifier(&str[info.i], &info, args);
+			break ;
+
+			// info.flags = 0;
+		}
+	}
+	va_end(args);
+	return (0);
+}
 
 // void check_type(void *ptr, char type)	//UNFINISHED
 // {
@@ -264,20 +303,34 @@ void	ft_putnbr(int n)
 
 // }
 
+
+
 int main(void)
 {
 	// sizes();
 	// maxes();
 
-	// chars
-	printf("|%c|\n", 'c');		// |c|
-	printf("|%-c|\n", 'c');		// |c|
-	printf("|%*c|\n", 4, 'c');		// |   c|
-	printf("|%4c|\n", 'c');		// |   c|
-	// printf("|% c|\n", 'c');	// undefined
-	// printf("|%#c|\n", 'c');	// undefined
-	// printf("|%+c|\n", 'c');	// undefined
-	// printf("|%0c|\n", 'c');	// undefined
+	// printf("\n|");
+	// ft_printf("hello '%d'", 42);
+	// printf("|\n");
+
+	printf("\n|");
+	ft_printf("hello '%0d'", 42);
+	printf("|\n");
+
+	// printf("\n|");
+	// ft_printf("hello '%0d'", 42);
+	// printf("|\n");
+
+	// printf("\n|");
+	// ft_printf("hello '%0 -  -  0 -d'", 42);
+	// printf("|\n");
+
+	// printf("\n|");
+	// ft_printf("hello '%+-d'", 42);
+	// printf("|\n");
+
+
 
 	// int x = 42;
 	// ft_printf("|random '%d'\n'%d' another '%d'|\n", x, x + x, x * 5);
