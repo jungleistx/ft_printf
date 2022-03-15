@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvuorenl <rvuorenl@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:18:13 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/14 17:48:00 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/03/15 12:07:11 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,13 @@ typedef struct  s_info
 {
     uint16_t    flags;  //
     int         res;    // res from printf
-    int         tmpres;
+    int         tmpres;	// needed?
+	int			cur_arg;
+	char		*str;
     int         i;
-    int         padding;
+    int         padding;	// pad - count
+	int			f_full;	// count for floats # of whole numbers, use cur_arg?
+	int			f_dec;	// count for floats # of decimal numbers
     int         tmpnum;    // needed for long long % 10 res ?, before reverse
 }t_info;
 

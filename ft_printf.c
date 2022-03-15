@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvuorenl <rvuorenl@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:08 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/14 17:54:33 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/03/15 12:12:26 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,11 +126,11 @@ void	check_flags(const char *str, t_info *info)	//	-	-	-	-	-	-	-	-	-	-	-
 		else
 		{
 			info->padding = ft_atoi(&str[i]);
-			info->i += i; 						// i - 1 ?
-	printf("num = %d\n", info->i);	// i = 9 ft_printf("hello '%0d'", 42); (str[9] = d)
+			info->i += i;
+	// printf("num = %d\n", info->i);	// i = 9 ft_printf("hello '%0d'", 42); (str[9] = d)
 			check_length(str, info);
-	printf("num = %d\n", info->i); // i = 9 ft_printf("hello '%0d'", 42); (str[9] = d)
-	printbin_2(&info->flags);
+	// printf("num = %d\n", info->i); // i = 9 ft_printf("hello '%0d'", 42); (str[9] = d)
+	// printbin_2(&info->flags);
 			return ;
 		}
 		i++;
@@ -144,61 +144,74 @@ void	check_flags(const char *str, t_info *info)	//	-	-	-	-	-	-	-	-	-	-	-
 // s = num && (-num??)
 
 
-// int	check_specifiers(const char *s, t_info *info, va_list args)
-// {
-// 	int		i;
+int	check_specifiers(const char *s, t_info *info, va_list args)
+{
+	int		i;
 
-// 	i = 0;
-// 	if (s[i] == '%')
-// 	{
+	i = 0;
+	if (str[i] == '%')
+	{
+		write(1, '%', 1);
+		info->res++;
+	}
+	{
+		info->cur_arg = va_arg(args, int);
+		write(1, &info->cur_arg, 1);
+		info->res++;
+	}
+	else if (s[i] == 's')
+	{
+		// flags ??
+		// works straight away??						// CONT HERE
+		info->str = va_arg(args, char*);
+		info->res += ft_strlen(info->str);
+		ft_putstr(info->str);
+		// vs
+		info->str = ft_strsub(va_arg(args, char*));
+		info->res += ft_strlen(info->str);
+		ft_putstr(info->str);
+		ft_strdel(info->str);
+		//
+		i++;
+	}
+	else if (s[i] == 'c')
+	else if (s[i] == 'p')
+	{
 
-// 	}
-// 	if (s[i] == 's')
-// 	{
+	}
+	else if (s[i] == 'f')
+	{
 
-// 	}
-// 	if (s[i] == 'p')
-// 	{
+	}
 
-// 	}
-// 	if (s[i] == 'f')
-// 	{
+	else if (s[i] == 'l' || s[i] == 'c' || s[i] == 'd' || s[i] == 'i' || s[i] == 'l')
+	{
 
-// 	}
+	}
+	else if (s[i] == 'u' || s[i] == 'x' || s[i] == 'X' || s[i] == 'o')
+	{
 
-// 	if (s[i] == 'l' || s[i] == 'c' || s[i] == 'd' || s[i] == 'i' || s[i] == 'l')
-// 	{
-
-// 	}
-// 	if (s[i] == 'u' || s[i] == 'x' || s[i] == 'X' || s[i] == 'o')
-// 	{
-
-// 	}
-
-// 	//
-// 	if (str[i] == '%')
-// 	{
-// 		write(1, '%', 1);
-// 		info->res++;
-// 	}
-// 	else if (str[i] == 'c')
-// 	{
-// 		write(1, &str[i], 1);
-// 		info->res++;
-// 	}
-// 	else if (str[i] == 'l')
-// 	{
-// 		if (str[i + 1] == 'l')
-// 			// res++ ?
+	}
 
 
-// 	}
-// 	else if (str[i] == 'd' || str[i] == 'i')
-// 	{
+	else if (str[i] == 'c')
+	{
+		write(1, &str[i], 1);
+		info->res++;
+	}
+	else if (str[i] == 'l')
+	{
+		if (str[i + 1] == 'l')
+			// res++ ?
 
-// 	}
 
-// }
+	}
+	else if (str[i] == 'd' || str[i] == 'i')
+	{
+
+	}
+
+}
 
 int	ft_printf(const char *str, ...)
 {
@@ -309,14 +322,15 @@ int main(void)
 {
 	// sizes();
 	// maxes();
+	tests();
 
 	// printf("\n|");
 	// ft_printf("hello '%d'", 42);
 	// printf("|\n");
 
-	printf("\n|");
-	ft_printf("hello '%0d'", 42);
-	printf("|\n");
+	// printf("\n|");
+	// ft_printf("hello '%0d'", 42);
+	// printf("|\n");
 
 	// printf("\n|");
 	// ft_printf("hello '%0d'", 42);
