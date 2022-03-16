@@ -1,19 +1,14 @@
 *** *** *** *** *** 		printf		 *** *** *** *** *** ***
 
-c	char
-s	string
-	if precision is spesified, no more than number is written.
-p	pointer address
-
-with flags: 				none		hh 				h 				l 			ll				L
-d	signed deci int			int			signed char		short			long		long long
-i 	-||-					&			&&				&				&			&
+with flags: 				none		hh 				h 			l 			ll				L
+d	signed deci int			int			signed char		short		long		long long
+i 	-||-					&			&&				&			&			&
 c	char					&
 
-o	unsig octal				unsig int	unsig char		unsig short		unsig long	unsig long long
-u	unsig deci int			&			&&				&				&			&
-x	unsig deci int			&			&&				&				&			&
-X	unsig hex int (upper)	&			&&				&				&			&
+o	unsig octal				unsig int	unsig char		unsg shrt	unsig long	unsig long long
+u	unsig deci int			&			&&				&			&			&
+x	unsig deci int			&			&&				&			&			&
+X	unsig hex int (upper)	&			&&				&			&			&
 
 s 	string					char*
 p 	pointer address			void*

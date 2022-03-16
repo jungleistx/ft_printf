@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvuorenl <rvuorenl@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:08 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/15 12:12:26 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/03/16 12:50:10 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,13 +116,15 @@ void	check_flags(const char *str, t_info *info)	//	-	-	-	-	-	-	-	-	-	-	-
 	{
 		printf("\t%d\n", i);
 		if (str[i] == ' ')
-			info->flags |= 1;
+			info->flags |= SPACE;
 		else if (str[i] == '+')
-			info->flags |= (1 << 1);
+			info->flags |= PLUS;
 		else if (str[i] == '-')
-			info->flags |= (1 << 2);
+			info->flags |= MINUS;
 		else if (str[i] == '0')
-			info->flags |= (1 << 3);
+			info->flags |= ZERO;
+		else if (str[i] == '#') 	// ?
+			info->flags |= HASH;
 		else
 		{
 			info->padding = ft_atoi(&str[i]);
@@ -136,7 +138,6 @@ void	check_flags(const char *str, t_info *info)	//	-	-	-	-	-	-	-	-	-	-	-
 		i++;
 	}
 }
-
 
 // d hd hhd ld, i hi hhi li, o hho ho lo llo, u hu hhu lu llu, x hx hhx lx llx  = unsig long long
 // lld lli = reverse if minus, unsig long long

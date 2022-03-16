@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvuorenl <rvuorenl@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:18:13 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/15 12:07:11 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/03/16 12:48:58 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,37 @@
 
 int	ft_printf(const char *str, ...);
 
-typedef struct  s_info
+typedef struct  		s_info
 {
-    uint16_t    flags;  //
-    int         res;    // res from printf
-    int         tmpres;	// needed?
-	int			cur_arg;
-	char		*str;
-    int         i;
-    int         padding;	// pad - count
-	int			f_full;	// count for floats # of whole numbers, use cur_arg?
-	int			f_dec;	// count for floats # of decimal numbers
-    int         tmpnum;    // needed for long long % 10 res ?, before reverse
+    uint16_t    		flags;  //
+    int         		res;    // res from printf
+    int         		tmpres;	// needed?
+	unsigned long long	cur_arg;
+	char				*str;
+    int         		i;
+    int         		padding;	// pad - count
+	int					f_dec;	// count for floats # of decimal numbers
+    int         		tmpnum;    // needed for long long % 10 res ?, before reverse
 }t_info;
+
+typedef enum e_spec
+{
+	H,
+	HH,
+	L,
+	LL
+}
+
+# define SPEC "dicouxXnspf"	// zu same as l (sizeof)
+
+typedef enum e_flags
+{
+	PLUS = 1,
+	MINUS = 2,
+	HASH = 4,
+	ZERO = 8,
+	SPACE = 16
+}
 
 /*
 0   ' '
