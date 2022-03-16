@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:08 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/16 12:50:10 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/03/16 20:30:29 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,14 @@ int	ft_atoi(const char *str)
 			return (0);
 	}
 	return (num * (negative));
+}
+
+int	ft_isdigit(int c)
+{
+	if (c >= 48 && c <= 57)
+		return (1);
+	else
+		return (0);
 }
 
 size_t	ft_strlen(const char *s)
@@ -77,7 +85,7 @@ void	ft_putnbr(int n)
 	ft_putchar(copy % 10 + '0');
 }
 
-int	count_digits(long num)
+int	count_digits(unsigned long long num)
 {
 	int	res;
 
@@ -109,12 +117,37 @@ void	check_length(const char *s, t_info *info)
 		info->i++;
 }
 
+void	check_width(const char* str, t_info *info)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (ft_isdigit(*str[i]))
+		{
+			info->min_len = ft_atoi(&str[i]);
+			i += count_digits((unsigned long long)info->min_len);
+		}
+		if (str[i] == '.')
+		{
+			info->flags |= DOT;
+
+		}
+	}
+}
+
+
+		else if (ft_isdigit(str[i]))
+		{
+		}
+
 void	check_flags(const char *str, t_info *info)	//	-	-	-	-	-	-	-	-	-	-	-
 {
 	int i = 0;
 	while (str[i])
 	{
-		printf("\t%d\n", i);
+		// printf("\t%d\n", i);
 		if (str[i] == ' ')
 			info->flags |= SPACE;
 		else if (str[i] == '+')
@@ -123,7 +156,7 @@ void	check_flags(const char *str, t_info *info)	//	-	-	-	-	-	-	-	-	-	-	-
 			info->flags |= MINUS;
 		else if (str[i] == '0')
 			info->flags |= ZERO;
-		else if (str[i] == '#') 	// ?
+		else if (str[i] == '#')
 			info->flags |= HASH;
 		else
 		{
@@ -145,74 +178,74 @@ void	check_flags(const char *str, t_info *info)	//	-	-	-	-	-	-	-	-	-	-	-
 // s = num && (-num??)
 
 
-int	check_specifiers(const char *s, t_info *info, va_list args)
-{
-	int		i;
+// int	check_specifiers(const char *s, t_info *info, va_list args)
+// {
+// 	int		i;
 
-	i = 0;
-	if (str[i] == '%')
-	{
-		write(1, '%', 1);
-		info->res++;
-	}
-	{
-		info->cur_arg = va_arg(args, int);
-		write(1, &info->cur_arg, 1);
-		info->res++;
-	}
-	else if (s[i] == 's')
-	{
-		// flags ??
-		// works straight away??						// CONT HERE
-		info->str = va_arg(args, char*);
-		info->res += ft_strlen(info->str);
-		ft_putstr(info->str);
-		// vs
-		info->str = ft_strsub(va_arg(args, char*));
-		info->res += ft_strlen(info->str);
-		ft_putstr(info->str);
-		ft_strdel(info->str);
-		//
-		i++;
-	}
-	else if (s[i] == 'c')
-	else if (s[i] == 'p')
-	{
+// 	i = 0;
+// 	if (str[i] == '%')
+// 	{
+// 		write(1, '%', 1);
+// 		info->res++;
+// 	}
+// 	{
+// 		info->cur_arg = va_arg(args, int);
+// 		write(1, &info->cur_arg, 1);
+// 		info->res++;
+// 	}
+// 	else if (s[i] == 's')
+// 	{
+// 		// flags ??
+// 		// works straight away??						// CONT HERE
+// 		info->str = va_arg(args, char*);
+// 		info->res += ft_strlen(info->str);
+// 		ft_putstr(info->str);
+// 		// vs
+// 		info->str = ft_strsub(va_arg(args, char*));
+// 		info->res += ft_strlen(info->str);
+// 		ft_putstr(info->str);
+// 		ft_strdel(info->str);
+// 		//
+// 		i++;
+// 	}
+// 	else if (s[i] == 'c')
+// 	else if (s[i] == 'p')
+// 	{
 
-	}
-	else if (s[i] == 'f')
-	{
+// 	}
+// 	else if (s[i] == 'f')
+// 	{
 
-	}
+// 	}
 
-	else if (s[i] == 'l' || s[i] == 'c' || s[i] == 'd' || s[i] == 'i' || s[i] == 'l')
-	{
+// 	else if (s[i] == 'l' || s[i] == 'c' || s[i] == 'd' || s[i] == 'i' || s[i] == 'l')
+// 	{
 
-	}
-	else if (s[i] == 'u' || s[i] == 'x' || s[i] == 'X' || s[i] == 'o')
-	{
+// 	}
+// 	else if (s[i] == 'u' || s[i] == 'x' || s[i] == 'X' || s[i] == 'o')
+// 	{
 
-	}
-
-
-	else if (str[i] == 'c')
-	{
-		write(1, &str[i], 1);
-		info->res++;
-	}
-	else if (str[i] == 'l')
-	{
-		if (str[i + 1] == 'l')
-			// res++ ?
+// 	}
 
 
-	}
-	else if (str[i] == 'd' || str[i] == 'i')
-	{
+// 	else if (str[i] == 'c')
+// 	{
+// 		write(1, &str[i], 1);
+// 		info->res++;
+// 	}
+// 	else if (str[i] == 'l')
+// 	{
+// 		if (str[i + 1] == 'l')
+// 			// res++ ?
 
-	}
 
-}
+// 	}
+// 	else if (str[i] == 'd' || str[i] == 'i')
+// 	{
+
+// 	}
+
+// }
 
 int	ft_printf(const char *str, ...)
 {

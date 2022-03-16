@@ -27,6 +27,15 @@ ORDER
 
 	% [flags][width][.precision][length]specifier
 
+
+SPECIAL CASES
+	. and 0		(nothing after .)
+	. 			(float < 0 gives atleast 1 number before .)
+
+COMBOS NOT WORKING
+	- 0
+
+
 FLAGS
 %	putchar '%'
 

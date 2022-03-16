@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:18:13 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/16 12:48:58 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/03/16 20:23:22 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,27 @@
 # include <limits.h>
 # include <float.h>
 
+
+
+# define SPEC "dicouxXnspf"	// zu same as l (sizeof)
+
 int	ft_printf(const char *str, ...);
 
 typedef struct  		s_info
 {
-    uint16_t    		flags;  //
+    uint16_t    		flags;  // holds flags
     int         		res;    // res from printf
-    int         		tmpres;	// needed?
-	unsigned long long	cur_arg;
+	unsigned long long	cur_arg;	// send to functions
 	char				*str;
-    int         		i;
-    int         		padding;	// pad - count
+	int					min_len;	// minimum of printed, already stored ??
+    int         		padding;	// atoi number from str
+	int					arg_len;
 	int					f_dec;	// count for floats # of decimal numbers
-    int         		tmpnum;    // needed for long long % 10 res ?, before reverse
+	int					f_dec_len;	// floats after . len
+	int					f_last;	//	store last % 10 before * -1
+
+    int         		i;		// needed ?
+    int         		tmpres;	// needed?
 }t_info;
 
 typedef enum e_spec
@@ -43,9 +51,7 @@ typedef enum e_spec
 	HH,
 	L,
 	LL
-}
-
-# define SPEC "dicouxXnspf"	// zu same as l (sizeof)
+}t_spec;
 
 typedef enum e_flags
 {
@@ -53,8 +59,10 @@ typedef enum e_flags
 	MINUS = 2,
 	HASH = 4,
 	ZERO = 8,
-	SPACE = 16
-}
+	SPACE = 16,
+	DOT = 32
+	// LL = 64,	have to be read after the atoi
+}t_flags;
 
 /*
 0   ' '
@@ -123,6 +131,9 @@ void	tests(void)	// DELETE
 	printf("|%+*d|\n", 4, -42);
 	printf("|%*d|\n", 4, -42);
 	printf("|%4d|\n", -42);
+
+	printf("\n%04d\n", 42);
+	printf("\n%08.4f\n", 42.10);
 	// printf("|%+ d|\n", 42);
 	// printf("|%+ 4d|\n", 42);
 	// NOT
