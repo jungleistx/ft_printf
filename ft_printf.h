@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvuorenl <rvuorenl@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:18:13 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/16 20:23:22 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/03/17 20:26:24 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # include <float.h>
 
 
-
-# define SPEC "dicouxXnspf"	// zu same as l (sizeof)
+// only used specs
+# define SPECS "dicouxXnspf"	// zu same as l (sizeof)
 
 int	ft_printf(const char *str, ...);
 
@@ -32,14 +32,16 @@ typedef struct  		s_info
 {
     uint16_t    		flags;  // holds flags
     int         		res;    // res from printf
-	unsigned long long	cur_arg;	// send to functions
 	char				*str;
-	int					min_len;	// minimum of printed, already stored ??
-    int         		padding;	// atoi number from str
+
+	int					min_len;
+	unsigned long long	cur_arg;	// send to functions
+	int					width;	// minimum of printed, already stored ??
+	int					prec;
 	int					arg_len;
 	int					f_dec;	// count for floats # of decimal numbers
 	int					f_dec_len;	// floats after . len
-	int					f_last;	//	store last % 10 before * -1
+	// int					f_last;	//	store last % 10 before * -1
 
     int         		i;		// needed ?
     int         		tmpres;	// needed?
@@ -60,8 +62,9 @@ typedef enum e_flags
 	HASH = 4,
 	ZERO = 8,
 	SPACE = 16,
-	DOT = 32
-	// LL = 64,	have to be read after the atoi
+	DOT = 32,
+	// ASTR = 64,	// straight up take arg to ->prec or ->width
+	NEG_NUM = 128
 }t_flags;
 
 /*
@@ -106,39 +109,109 @@ void	tests(void)	// DELETE
 	// printf("\t%%-7s\t\t|%-7s|\n", "hello");	// if num > len, padding right
 	// printf("STRINGS UNDEFINED\n\t%%#s\n\t%% s\n");
 
+	int i = 9, j = -9;
+	printf("\n%s", "% [flags][width][.precision][length]specifier\n");
+	printf("\n--- d ---\n");
+	printf("%-7s\t|%d|\t|%d|\n", "%d", i, j);
+	printf("%-7s\t|%.0d|\t|%.0d|\n", "%.0d", i, j);
+	printf("%-7s\t|%4.0d|\t|%4.0d|\n", "%4.0d", i, j);
+	printf("%-7s\t|%-4.0d|\t|%-4.0d|\n", "%-4.0d", i, j);
+	printf("%-7s\t|%+04.0d|\t|%+04.0d|\n", "%+04.0d", i, j);
 
-	// printf("\nINT\n");
-	// printf("\t%%d\t\t|%d|\n\t%% d\t\t|% d|\n", 42, 42);
-	// printf("\t%%+d\t\t|%+d|\n\t%%-d\t\t|%-d|\n", 42, 42);
-	// printf("\t%%04d\t\t|%04d|\n\t%%-4d\t\t|%-4d|\n", 42, 42);
-	// printf("\t%%-04d\t\t|%-04d|\n\t%%", 42)
+	printf("\n%-7s\t\t|%+d|\t\t|%+d|\n", "%+d", i, j);
+	printf("%-7s\t\t|%+4d|\t\t|%+4d|\n", "%+4d", i, j);
+	printf("%-7s\t\t|%+0d|\t\t|%+0d|\n", "%+0d", i, j);
+	printf("%-7s\t\t|%+01d|\t\t|%+01d|\n", "%+01d", i, j);
+	printf("%-7s\t\t|%+02d|\t\t|%+02d|\n", "%+02d", i, j);
+	printf("%-7s\t\t|%+04d|\t\t|%+04d|\n", "%+04d", i, j);
+	printf("%-7s\t\t|%+2d|\t\t|%+2d|\n", "%+2d", i, j);
+	printf("%-7s\t\t|%+1d|\t\t|%+1d|\n", "%+1d", i, j);
+	printf("%-7s\t\t|%+1.1d|\t\t|%+1.1d|\n", "%+1.1d", i, j);
+	printf("%-7s\t\t|%+4.1d|\t\t|%+4.1d|\n", "%+4.1d", i, j);
+	printf("%-7s\t\t|%+4.5d|\t|%+4.5d|\n", "%+4.5d", i, j);
+
+	printf("\n%-7s\t\t|% d|\t\t|% d|\n", "% d", i, j);
+	printf("%-7s\t\t|% .1d|\t\t|% .1d|\n", "% .1d", i, j);
+	printf("%-7s\t\t|% .4d|\t\t|% .4d|\n", "% .4d", i, j);
+	printf("%-7s\t\t|% 1d|\t\t|% 1d|\n", "% 1d", i, j);
+	printf("%-7s\t\t|% 1.1d|\t\t|% 1.1d|\n", "% 1.1d", i, j);
+	printf("%-7s\t\t|% 1.5d|\t|% 1.5d|\n", "% 1.5d", i, j);
+	printf("%-7s\t\t|% 2d|\t\t|% 2d|\n", "% 2d", i, j);
+	printf("%-7s\t\t|% 4d|\t\t|% 4d|\n", "% 4d", i, j);
+	printf("%-7s\t\t|% 4.1d|\t\t|% 4.1d|\n", "% 4.1d", i, j);
+	printf("%-7s\t\t|% 4.5d|\t|% 4.5d|\n", "% 4.5d", i, j);
+	printf("%-7s\t\t|% 6.4d|\t|% 6.4d|\n", "% 6.4d", i, j);
+	printf("%-7s\t\t|% 0d|\t\t|% 0d|\n", "% 0d", i, j);
+	printf("%-7s\t\t|% 0.1d|\t\t|% 0.1d|\n", "% 0.1d", i, j);
+	printf("%-7s\t\t|% 0.5d|\t|% 0.5d|\n", "% 0.5d", i, j);
+	printf("%-7s\t\t|% 01d|\t\t|% 01d|\n", "% 01d", i, j);
+	printf("%-7s\t\t|% 01.5d|\t|% 01.5d|\n", "% 01.5d", i, j);
+	printf("%-7s\t\t|% 02d|\t\t|% 02d|\n", "% 02d", i, j);
+	printf("%-7s\t\t|% 04d|\t\t|% 04d|\n", "% 04d", i, j);
+	printf("%-7s\t\t|% 04.1d|\t\t|% 04.1d|\n", "% 04.1d", i, j);
+	printf("%-7s\t\t|% 04.5d|\t|% 04.5d|\n", "% 04.5d", i, j);
+	printf("%-7s\t\t|% 05.3d|\t|% 05.3d|\n", "% 05.3d", i, j);
+
+	printf("\n%-7s\t\t|%+1.5d|\t|%+1.5d|\n", "%+1.5d", i, j);
+	printf("%-7s\t\t|%- d|\t\t|%- d|\n", "%- d", i, j);
+	printf("%-7s\t\t|%- .1d|\t\t|%- .1d|\n", "%- .1d", i, j);
+	printf("%-7s\t\t|%- .4d|\t\t|%- .4d|\n", "%- .4d", i, j);
+	printf("%-7s\t\t|%- 1d|\t\t|%- 1d|\n", "%- 1d", i, j);
+	printf("%-7s\t\t|%- 1.1d|\t\t|%- 1.1d|\n", "%- 1.1d", i, j);
+	printf("%-7s\t\t|%- 1.5d|\t|%- 1.5d|\n", "%- 1.5d", i, j);
+	printf("%-7s\t\t|%- 2d|\t\t|%- 2d|\n", "%- 2d", i, j);
+	printf("%-7s\t\t|%- 4d|\t\t|%- 4d|\n", "%- 4d", i, j);
+	printf("%-7s\t\t|%- 4.1d|\t\t|%- 4.1d|\n", "%- 4.1d", i, j);
+	printf("%-7s\t\t|%- 4.5d|\t|%- 4.5d|\n", "%- 4.5d", i, j);
+	printf("%-7s\t\t|%+-d|\t\t|%+-d|\n", "%+-d", i, j);
+	printf("%-7s\t\t|%+-1d|\t\t|%+-1d|\n", "%+-1d", i, j);
+	printf("%-7s\t\t|%+-2d|\t\t|%+-2d|\n", "%+-2d", i, j);
+	printf("%-7s\t\t|%+-4d|\t\t|%+-4d|\n", "%+-4d", i, j);
+
+	printf("\n%-7s\t\t|%-d|\t\t|%-d|\n", "%-d", i, j);
+	printf("%-7s\t\t|%-.1d|\t\t|%-.1d|\n", "%-.1d", i, j);
+	printf("%-7s\t\t|%-.5d|\t\t|%-.5d|\n", "%-.5d", i, j);
+	printf("%-7s\t\t|%-1d|\t\t|%-1d|\n", "%-1d", i, j);
+	printf("%-7s\t\t|%-1.2d|\t\t|%-1.2d|\n", "%-1.2d", i, j);
+	printf("%-7s\t\t|%-1.6d|\t|%-1.6d|\n", "%-1.6d", i, j);
+	printf("%-7s\t\t|%-2d|\t\t|%-2d|\n", "%-2d", i, j);
+	printf("%-7s\t\t|%-4d|\t\t|%-4d|\n", "%-4d", i, j);
+	printf("%-7s\t\t|%-4.2d|\t\t|%-4.2d|\n", "%-4.2d", i, j);
+	printf("%-7s\t\t|%-4.6d|\t|%-4.6d|\n", "%-4.6d", i, j);
+
+	printf("\n%-7s\t\t|%0d|\t\t|%0d|\n", "%0d", i, j);
+	printf("%-7s\t\t|%0.1d|\t\t|%0.1d|\n", "%0.1d", i, j);
+	printf("%-7s\t\t|%0.4d|\t\t|%0.4d|\n", "%0.4d", i, j);
+	printf("%-7s\t\t|%01d|\t\t|%01d|\n", "%01d", i, j);
+	printf("%-7s\t\t|%01.4d|\t\t|%01.4d|\n", "%01.4d", i, j);
+	printf("%-7s\t\t|%02d|\t\t|%02d|\n", "%02d", i, j);
+	printf("%-7s\t\t|%04d|\t\t|%04d|\n", "%04d", i, j);
+	printf("%-7s\t\t|%04.6d|\t|%04.6d|\n", "%04.6d", i, j);
+
+	printf("\n%-7s\t\t|%1d|\t\t|%1d|\n", "%1d", i, j);
+	printf("%-7s\t\t|%2d|\t\t|%2d|\n", "%2d", i, j);
+	printf("%-7s\t\t|%4d|\t\t|%4d|\n", "%4d", i, j);
+	printf("%-7s\t\t|%1.1d|\t\t|%1.1d|\n", "%1.1d", i, j);
+	printf("%-7s\t\t|%1.5d|\t\t|%1.5d|\n", "%1.5d", i, j);
+	printf("%-7s\t\t|%4.1d|\t\t|%4.1d|\n", "%4.1d", i, j);
+	printf("%-7s\t\t|%4.5d|\t\t|%4.5d|\n", "%4.5d", i, j);
+	printf("%-7s\t\t|%5.4d|\t\t|%5.4d|\n", "%5.4d", i, j);
+
+	printf("\n%-7s\t\t|%.1d|\t\t|%.1d|\n", "%.1d", i, j);
+	printf("%-7s\t\t|%.2d|\t\t|%.2d|\n", "%.2d", i, j);
+	printf("%-7s\t\t|%.5d|\t\t|%.5d|\n", "%.5d", i, j);
+	printf("\n");
 
 
-	printf("|%d|\n", 42);
-	printf("|%+d|\n", 42);
-	printf("|%+0d|\n", 42);
-	printf("|%+04d|\n", 42);
-	printf("|%+-d|\n", 42);
-	printf("|%+-4d|\n", 42);
-	printf("|%+*d|\n", 4, 42);
 
-	printf("\n|%d|\n", -42);
-	printf("|%+d|\n", -42);
-	printf("|%+0d|\n", -42);
-	printf("|%+04d|\n", -42);
-	printf("|%+-d|\n", -42);
-	printf("|%+-4d|\n", -42);
-	printf("|%+*d|\n", 4, -42);
-	printf("|%*d|\n", 4, -42);
-	printf("|%4d|\n", -42);
+	// printf("|%+*d|\n", 4, 42);
 
-	printf("\n%04d\n", 42);
-	printf("\n%08.4f\n", 42.10);
+	// printf("\n%08.4f\n", 42.10);
+
+	// NOT
 	// printf("|%+ d|\n", 42);
 	// printf("|%+ 4d|\n", 42);
-	// NOT
-	// + ' '
-	// 0 -
+
 }
 
 void	sizes(void)			// DELETE

@@ -1,5 +1,14 @@
 *** *** *** *** *** 		printf		 *** *** *** *** *** ***
 
+
+ TRACEROUTE
+	ft_printf
+		reset
+		%
+			check flags	' ' + - 0 #
+
+% +-0-+* .* d
+
 with flags: 				none		hh 				h 			l 			ll				L
 d	signed deci int			int			signed char		short		long		long long
 i 	-||-					&			&&				&			&			&
@@ -13,10 +22,11 @@ X	unsig hex int (upper)	&			&&				&			&			&
 s 	string					char*
 p 	pointer address			void*
 
-f	float					double		-				-				double		-			long double
+f	float					double		-				-			long double?	-			long double
 	numbers after . is equal to precision spec. if missing, default is 6
 	if precision is 0, no decimal point char appear. if decimal point appears, atleast
 	one digit must be before that
+n	num written so far		int*		signed char*							long long*
 
 ORDER
 	padding
@@ -25,40 +35,49 @@ ORDER
 	%d
 	padd
 
-	% [flags][width][.precision][length]specifier
+	==
+	space
+	num(before.)
+	0 (amount of becomes from )
 
+	4 / *	.	4 / *
+
+	% [flags][width][.precision][length]specifier
+	% [flags]		[width]	[.precision][length]specifier
 
 SPECIAL CASES
-	. and 0		(nothing after .)
+	. and 0		(nothing after .) doesnt matter because num_len > length (try with 0?)
 	. 			(float < 0 gives atleast 1 number before .)
 
 COMBOS NOT WORKING
 	- 0
-
+	+ ' '
 
 FLAGS
-%	putchar '%'
+%		putchar '%'
 
--	negative field. converted value is padded to right with blanks. overrides a 0 if both
-	default padding is right. field input given.
-+	must be placed before a number produced by signed conversion overwrites ' ' if both used
-	forces + before num, default is only minus
-' '	blank left produced by signed conversion (d, f, i) (padding)
+-		negative field. converted value is pad added to right with blanks.
+		default padding is left. field input given.
 
-#	alternate, no effect for 'cdinpsu'
-	For o, force first char to 0
-	for x and X, nonzero result has the string 0x or 0X.
-	for f, result will always contain a decimal point, even if no digits follow
-		default is no decimal point
++		must be placed before a number produced by signed conversion overwrites ' ' if both used
+		forces + before num, default is only minus
+		doesnt affect width, +5 = write(6)
 
-0	padding for all types. if precision given, 0 is ignored.
-	width specified.
+' '		blank left produced by signed conversion (d, f, i) (padding)
+
+#		alternate, no effect for 'cdinpsu'
+		For o, force first char to 0
+		for x and X, nonzero result has the string 0x or 0X.
+		for f, result will always contain a decimal point, even if no digits follow
+			default is no decimal point
+
+0		padding for all types. if precision given, 0 is ignored.
+		width specified.
 
 WIDTH
 Number
 	Min number to print. If number is smaller (count digits) than this, padding added.
 *
-	if dollarsign given, ----????-----
 	Argument list contains width value before printed value
 	minimun amount printed. if less, no effect. if more, add padding right <> left
 
@@ -80,10 +99,12 @@ PRECISION
 	Precision not specified in str, but as an va_arg
 
 NOTES
+c
+	-num && num (width)
 s
 	if .num added, thats maximum to print
 f
-	autocasts to double
+	autocasts to double (long double?, holds every value straight)
 	Ignore zero padded .03 float (?)
 f round
 	If .5, round to even nbr -> 1.5 = 2, 2,5 = 2
@@ -103,10 +124,11 @@ random
 	Global static const
 	O3 flag compilation
 	output error returns negative
-	static const arr of func pointers
+	static const arr of func pointers aka dispatch table
 	aka dispatch table (printf.h=)
 	flags in uint16_t
 	minimum allocation, modify and print
+
 needed ?
 	ftoa
 	itoa
@@ -132,17 +154,21 @@ strlen
 
 BONUS
 -%n 	amount written at that moment, saved in (total?)
--color output
+-color	output, same as printf and .sh
+-%zu 	same as %l, takes sizeof
 
 TESTCASES 			(d = 9)
-Too long output? 16bit, exampe with 4 bit: 42.4242 (6bit)
+Too long output? 16bit, example with 4 bit: 42.4242 (6bit)
 long long min
-+_d   Adds + to positive, space ignored
+- 0, + ' '		error flags
 04d, 4d --> 0009, _ _ _9
 *4d, : _ _ _ 9 // width added as input
 (”*d”, 3, num) : _ _ 9 // width added as argument
 printf("%Lf\n", -0.0L);
 h and 0 in different order, or l and 0 etc
+bankers rounding only if .0 flag TEST
+int 0 with all different flag combos
+duplicate flags		%+++-++-+4.4d
 
 .ZSHRC
 PROMPT='%F{45}%D, %T%f %F{190}%~%f%F{40} %#%f '

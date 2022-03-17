@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rvuorenl <rvuorenl@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:08 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/16 20:30:29 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/03/17 20:31:34 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,12 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
+void	ft_putchar_multi(char c, int i)
+{
+	while (i-- > 0)
+		write(1, &c, 1);
+}
+
 void	ft_putchar(char c)
 {
 	write(1, &c, 1);
@@ -85,6 +91,16 @@ void	ft_putnbr(int n)
 	ft_putchar(copy % 10 + '0');
 }
 
+
+
+
+// 	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
+// 	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
+// 	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
+// 	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
+
+
+// digits in num	DONE
 int	count_digits(unsigned long long num)
 {
 	int	res;
@@ -100,54 +116,85 @@ int	count_digits(unsigned long long num)
 	return (res);
 }
 
+// check for compilation error combinations	, flags done, spec todo
+int	check_error_input(t_info *info, char specifier)
+{
+	int	i;
+
+	if ((info->flags & PLUS) && (info->flags & SPACE))
+		return (0);
+	if ((info->flags & MINUS) && (info->flags & ZERO))
+		return (0);
+	i = 0;
+	while (SPECS[i])
+	{
+		if (SPECS[i++] == specifier)
+			return (1);
+	}
+	return (0);
+}
+
 void	reset_info(t_info *info)
 {
 	info->flags = 0;
 	info->res = 0;
 	info->tmpres = 0;
 	info->i = 0;
+	info->f_dec_len = 0;
+	info->f_dec = 0;
+	// info->
 }
 
+// d hd hhd ld, i hi hhi li, o hho ho lo llo, u hu hhu lu llu, x hx hhx lx llx  = unsig long long
+// lld lli = reverse if minus, unsig long long
+// c = - && -num
+// s = num && (-num??)
 
-void	check_length(const char *s, t_info *info)
-{
-	if (s[info->i] == 'l' && s[info->i + 1] == 'l')
-		info->flags |= (1 << 4);
-	while (s[info->i] == 'l' || s[info->i] == 'h')
-		info->i++;
-}
-
-void	check_width(const char* str, t_info *info)
+void	check_width(const char* str, t_info *info, va_list args)
 {
 	int	i;
+	int	tmp;
 
 	i = 0;
-	while (str[i])
+	if (ft_isdigit(str[i]))
 	{
-		if (ft_isdigit(*str[i]))
+		info->width = ft_atoi(&str[i]);
+		i += count_digits((unsigned long long)info->width);
+	}
+	if (str[i++] == '*')
+		info->width = va_arg(args, int);
+	if (str[i] == '.')
+	{
+		info->flags |= DOT;
+		if (str[++i] == '*')
+			info->prec = va_arg(args, int);
+		else
 		{
-			info->min_len = ft_atoi(&str[i]);
-			i += count_digits((unsigned long long)info->min_len);
-		}
-		if (str[i] == '.')
-		{
-			info->flags |= DOT;
-
+			info->prec = ft_atoi(&str[i]);
+			i += count_digits((unsigned long long)info->prec);
 		}
 	}
 }
 
+void	check_specifier(const char *str, t_info *info, va_list args)
+{
+	int	i;
 
-		else if (ft_isdigit(str[i]))
-		{
-		}
+	i = 0;
+	while (SPECS[i])	// "diouxXncspf" etc
+	{
+		if (SPECS[i++] == str[0])
+			return (1);
+	}
+	return (0);						// CONT HERE, CHECK THAT SPECIFIER IS VALID, RETURN ACCORDING
+}
 
-void	check_flags(const char *str, t_info *info)	//	-	-	-	-	-	-	-	-	-	-	-
+//should return -1 if error ?
+void	check_flags(const char *str, t_info *info, va_list args)
 {
 	int i = 0;
 	while (str[i])
 	{
-		// printf("\t%d\n", i);
 		if (str[i] == ' ')
 			info->flags |= SPACE;
 		else if (str[i] == '+')
@@ -158,94 +205,29 @@ void	check_flags(const char *str, t_info *info)	//	-	-	-	-	-	-	-	-	-	-	-
 			info->flags |= ZERO;
 		else if (str[i] == '#')
 			info->flags |= HASH;
-		else
+		else	// this point we have flags (only)
 		{
-			info->padding = ft_atoi(&str[i]);
-			info->i += i;
-	// printf("num = %d\n", info->i);	// i = 9 ft_printf("hello '%0d'", 42); (str[9] = d)
-			check_length(str, info);
-	// printf("num = %d\n", info->i); // i = 9 ft_printf("hello '%0d'", 42); (str[9] = d)
-	// printbin_2(&info->flags);
+			check_width(str, info, args);
+			check_specifier()
 			return ;
 		}
 		i++;
 	}
 }
-
-// d hd hhd ld, i hi hhi li, o hho ho lo llo, u hu hhu lu llu, x hx hhx lx llx  = unsig long long
-// lld lli = reverse if minus, unsig long long
-// c = - && -num
-// s = num && (-num??)
+// 				-
+// 		% [flags]	[width]		[.precision]	[length]	specifier
 
 
-// int	check_specifiers(const char *s, t_info *info, va_list args)
+// void	check_length(const char *s, t_info *info)
 // {
-// 	int		i;
-
-// 	i = 0;
-// 	if (str[i] == '%')
-// 	{
-// 		write(1, '%', 1);
-// 		info->res++;
-// 	}
-// 	{
-// 		info->cur_arg = va_arg(args, int);
-// 		write(1, &info->cur_arg, 1);
-// 		info->res++;
-// 	}
-// 	else if (s[i] == 's')
-// 	{
-// 		// flags ??
-// 		// works straight away??						// CONT HERE
-// 		info->str = va_arg(args, char*);
-// 		info->res += ft_strlen(info->str);
-// 		ft_putstr(info->str);
-// 		// vs
-// 		info->str = ft_strsub(va_arg(args, char*));
-// 		info->res += ft_strlen(info->str);
-// 		ft_putstr(info->str);
-// 		ft_strdel(info->str);
-// 		//
-// 		i++;
-// 	}
-// 	else if (s[i] == 'c')
-// 	else if (s[i] == 'p')
-// 	{
-
-// 	}
-// 	else if (s[i] == 'f')
-// 	{
-
-// 	}
-
-// 	else if (s[i] == 'l' || s[i] == 'c' || s[i] == 'd' || s[i] == 'i' || s[i] == 'l')
-// 	{
-
-// 	}
-// 	else if (s[i] == 'u' || s[i] == 'x' || s[i] == 'X' || s[i] == 'o')
-// 	{
-
-// 	}
-
-
-// 	else if (str[i] == 'c')
-// 	{
-// 		write(1, &str[i], 1);
-// 		info->res++;
-// 	}
-// 	else if (str[i] == 'l')
-// 	{
-// 		if (str[i + 1] == 'l')
-// 			// res++ ?
-
-
-// 	}
-// 	else if (str[i] == 'd' || str[i] == 'i')
-// 	{
-
-// 	}
-
+// 	if (s[info->i] == 'l' && s[info->i + 1] == 'l')
+// 		info->flags |= (1 << 4);
+// 	while (s[info->i] == 'l' || s[info->i] == 'h')
+// 		info->i++;
 // }
+
+
+
 
 int	ft_printf(const char *str, ...)
 {
@@ -269,7 +251,11 @@ int	ft_printf(const char *str, ...)
 			// write(1, &str[info.i - n], n);
 		if (str[info.i++] == '%')
 		{
-			check_flags(&str[info.i], &info);
+			// get_info_specifier(&str[i], args, &info);
+			check_flags(&str[info.i], &info, args);
+			// check_specifier()
+			if (!check_error_input(&info, str[info.i]))
+				return (-1);
 			// info.res += check_specifier(&str[info.i], &info, args);
 			break ;
 
@@ -277,8 +263,76 @@ int	ft_printf(const char *str, ...)
 		}
 	}
 	va_end(args);
-	return (0);
+	return (info.res);
 }
+
+
+int main(void)
+{
+	// sizes();
+	// maxes();
+	tests();
+
+
+}
+
+/*	main tests
+
+printf("\n|");
+	ft_printf("hello '%d'", 42);
+	printf("|\n");
+
+	printf("\n|");
+	ft_printf("hello '%0d'", 42);
+	printf("|\n");
+
+	printf("\n|");
+	ft_printf("hello '%0d'", 42);
+	printf("|\n");
+
+	printf("\n|");
+	ft_printf("hello '%0 -  -  0 -d'", 42);
+	printf("|\n");
+
+	printf("\n|");
+	ft_printf("hello '%+-d'", 42);
+	printf("|\n");
+
+	int x = 42;
+	ft_printf("|random '%d'\n'%d' another '%d'|\n", x, x + x, x * 5);
+	printf("|random '%d'\n'%d' another '%d'|\n", x, x + x, x * 5);
+	ft_printf("|\n%d * %d = %d\n|", 14, 2, 14*2);
+	printf("|\n%d * %d = %d\n|", 14, 2, 14*2);
+
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+// 	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
+// 	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
+// 	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
+// 	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
+// 	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
+
+
+
+
+
+
+
+
+
+
+
 
 // void check_type(void *ptr, char type)	//UNFINISHED
 // {
@@ -352,61 +406,76 @@ int	ft_printf(const char *str, ...)
 
 
 
-int main(void)
-{
-	// sizes();
-	// maxes();
-	tests();
 
-	// printf("\n|");
-	// ft_printf("hello '%d'", 42);
-	// printf("|\n");
+// int	check_specifiers(const char *s, t_info *info, va_list args)
+// {
+// 	int		i;
 
-	// printf("\n|");
-	// ft_printf("hello '%0d'", 42);
-	// printf("|\n");
+// 	i = 0;
+// 	if (str[i] == '%')
+// 	{
+// 		write(1, '%', 1);
+// 		info->res++;
+// 	}
+// 	{
+// 		info->cur_arg = va_arg(args, int);
+// 		write(1, &info->cur_arg, 1);
+// 		info->res++;
+// 	}
+// 	else if (s[i] == 's')
+// 	{
+// 		// flags ??
+// 		// works straight away??						// CONT HERE
+// 		info->str = va_arg(args, char*);
+// 		info->res += ft_strlen(info->str);
+// 		ft_putstr(info->str);
+// 		// vs
+// 		info->str = ft_strsub(va_arg(args, char*));
+// 		info->res += ft_strlen(info->str);
+// 		ft_putstr(info->str);
+// 		ft_strdel(info->str);
+// 		//
+// 		i++;
+// 	}
+// 	else if (s[i] == 'c')
+// 	else if (s[i] == 'p')
+// 	{
 
-	// printf("\n|");
-	// ft_printf("hello '%0d'", 42);
-	// printf("|\n");
+// 	}
+// 	else if (s[i] == 'f')
+// 	{
 
-	// printf("\n|");
-	// ft_printf("hello '%0 -  -  0 -d'", 42);
-	// printf("|\n");
+// 	}
 
-	// printf("\n|");
-	// ft_printf("hello '%+-d'", 42);
-	// printf("|\n");
+// 	else if (s[i] == 'l' || s[i] == 'c' || s[i] == 'd' || s[i] == 'i' || s[i] == 'l')
+// 	{
+
+// 	}
+// 	else if (s[i] == 'u' || s[i] == 'x' || s[i] == 'X' || s[i] == 'o')
+// 	{
+
+// 	}
 
 
+// 	else if (str[i] == 'c')
+// 	{
+// 		write(1, &str[i], 1);
+// 		info->res++;
+// 	}
+// 	else if (str[i] == 'l')
+// 	{
+// 		if (str[i + 1] == 'l')
+// 			// res++ ?
 
-	// int x = 42;
-	// ft_printf("|random '%d'\n'%d' another '%d'|\n", x, x + x, x * 5);
-	// printf("|random '%d'\n'%d' another '%d'|\n", x, x + x, x * 5);
-	// ft_printf("|\n%d * %d = %d\n|", 14, 2, 14*2);
-	// printf("|\n%d * %d = %d\n|", 14, 2, 14*2);
 
-	/* testcases
+// 	}
+// 	else if (str[i] == 'd' || str[i] == 'i')
+// 	{
 
-	int i = 42;
-    float x = 100.5;
+// 	}
 
-	printf("'%05d'\n", i); // 5 total length,
-    printf("'%+d'\n", i);
-    printf("'%-d'\n", i);
-    printf("'%4d'\n", i);
-    printf("'% d'\n", i);
-    printf("\n'%-10.3f'\n", x); // 10 = total len, .3 = 3 after '.'
-    printf("'%010.3f'\n", x); // 10 = total len, .3 = 3 after '.'
-    printf("'%10.3f'\n", x); // 10 = total len, .3 = 3 after '.'
-    printf("'%+10.3f'\n", x); // 10 = total len, .3 = 3 after '.'
-    printf("\n%x\n", i);
-    printf("%04X\n", i);
-    printf("%#X\n", i);
-    printf("'%#06X'\n", i);
-	 */
+// }
 
-}
 
 /*
 You are allowed to use the following functions:
