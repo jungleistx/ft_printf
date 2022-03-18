@@ -169,6 +169,7 @@ h and 0 in different order, or l and 0 etc
 bankers rounding only if .0 flag TEST
 int 0 with all different flag combos
 duplicate flags		%+++-++-+4.4d
+multiple hh or lll or mixed hlhlhlh
 
 .ZSHRC
 PROMPT='%F{45}%D, %T%f %F{190}%~%f%F{40} %#%f '

@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:08 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/17 20:31:34 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/03/18 18:11:42 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,10 @@ void	check_width(const char* str, t_info *info, va_list args)
 	{
 		info->flags |= DOT;
 		if (str[++i] == '*')
+		{
 			info->prec = va_arg(args, int);
+			// info->i++; 	// what
+		}
 		else
 		{
 			info->prec = ft_atoi(&str[i]);
@@ -176,21 +179,36 @@ void	check_width(const char* str, t_info *info, va_list args)
 	}
 }
 
-void	check_specifier(const char *str, t_info *info, va_list args)
+int	check_specifier(const char *str, t_info *info, va_list args)
 {
 	int	i;
+	int	j;
 
+	j = 0;
 	i = 0;
+	if (str[j] == 'h')
+	{
+		if (str[++j] == 'h')
+			j++;
+	}
+	else if (str[j] == 'l')
+	{
+		if (str[++j] == 'l')
+			j++;
+	}
 	while (SPECS[i])	// "diouxXncspf" etc
 	{
-		if (SPECS[i++] == str[0])
+		if (SPECS[i++] == str[j])
+		{
+			info->i += j;	//	check if correct pos
 			return (1);
+		}
 	}
-	return (0);						// CONT HERE, CHECK THAT SPECIFIER IS VALID, RETURN ACCORDING
+	return (0);
 }
 
 //should return -1 if error ?
-void	check_flags(const char *str, t_info *info, va_list args)
+int	check_flags(const char *str, t_info *info, va_list args)
 {
 	int i = 0;
 	while (str[i])
@@ -208,7 +226,8 @@ void	check_flags(const char *str, t_info *info, va_list args)
 		else	// this point we have flags (only)
 		{
 			check_width(str, info, args);
-			check_specifier()
+			if (!check_specifier(str, info, args))
+				return (0);
 			return ;
 		}
 		i++;
@@ -252,7 +271,8 @@ int	ft_printf(const char *str, ...)
 		if (str[info.i++] == '%')
 		{
 			// get_info_specifier(&str[i], args, &info);
-			check_flags(&str[info.i], &info, args);
+			if (!check_flags(&str[info.i], &info, args))
+				return (-1);
 			// check_specifier()
 			if (!check_error_input(&info, str[info.i]))
 				return (-1);
