@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvuorenl <rvuorenl@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:18:13 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/17 20:26:24 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/03/25 18:24:38 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,43 @@ typedef struct  		s_info
 {
     uint16_t    		flags;  // holds flags
     int         		res;    // res from printf
-	char				*str;
 
-	int					min_len;
-	unsigned long long	cur_arg;	// send to functions
+	char				*str;	// ? for what
+
+	// needed
+	int					arg_len;
 	int					width;	// minimum of printed, already stored ??
 	int					prec;
-	int					arg_len;
 	int					f_dec;	// count for floats # of decimal numbers
 	int					f_dec_len;	// floats after . len
+
+
+	unsigned long long	cur_arg; // send to funcs	//needed?
+
+
+	long long			tmp;
+
+
+	int					min_len;	// ?
 	// int					f_last;	//	store last % 10 before * -1
 
     int         		i;		// needed ?
     int         		tmpres;	// needed?
 }t_info;
+
+int	ft_atoi(const char *str);
+int	ft_isdigit(int c);
+size_t	ft_strlen(const char *s);
+int	ft_putchar_multi(char c, int i);
+void	ft_putchar(char c);
+void	ft_putstr(char const *s);
+void	ft_putnbr(int n);
+int	count_digits(long long num);
+int	check_error_input(t_info *info, char specifier);
+void	reset_info(t_info *info);
+void	check_width(const char* str, t_info *info, va_list args);
+void	check_flags(const char *str, t_info *info, va_list args);
+int	ft_printf(const char *str, ...);
 
 typedef enum e_spec
 {
@@ -57,27 +80,59 @@ typedef enum e_spec
 
 typedef enum e_flags
 {
-	PLUS = 1,
-	MINUS = 2,
-	HASH = 4,
+	SPACE = 1,
+	PLUS = 2,
+	MINUS = 4,
 	ZERO = 8,
-	SPACE = 16,
+	HASH = 16,
 	DOT = 32,
+	LONG = 64,
+	LLONG = 128,
+	SHORT = 256,
+	SSHORT = 512,
+	NEGATIVE = 1024
+
 	// ASTR = 64,	// straight up take arg to ->prec or ->width
-	NEG_NUM = 128
+	// NEG_NUM = 128	// ?
 }t_flags;
 
-/*
-0   ' '
-1   +
-2   -
-3   0
-4   ll
-5
+// typedef	int		(*func_pointer) (const char, t_info *, va_list);
+
+// static const func_pointer g_disp_table[10] =
+// {
+// 	ft_putnbr,
+
+// 	ft_putchar,
+// 	// ...
+
+// 	ft_putstr (5)
+// }
+
+
+// typedef void					(*t_print_conversion)(t_pformat *cur, \
+// va_list ap);
+
+// char *specs = "dioucxPms"
+// dc
+// 	(const char *str)
+// while specs[i]
+// {
+// 	if specs[i++] == str[0]
+// 		g_disp_table[i](str, info *, va_list);
+// }
 
 
 
-*/
+
+
+
+
+
+
+
+
+
+
 
 void printbin_2(uint16_t *ptr)
 {
@@ -187,6 +242,7 @@ void	tests(void)	// DELETE
 	printf("%-7s\t\t|%02d|\t\t|%02d|\n", "%02d", i, j);
 	printf("%-7s\t\t|%04d|\t\t|%04d|\n", "%04d", i, j);
 	printf("%-7s\t\t|%04.6d|\t|%04.6d|\n", "%04.6d", i, j);
+	printf("%-7s\t\t|%06.4d|\t|%06.4d|\n", "%06.4d", i, j);
 
 	printf("\n%-7s\t\t|%1d|\t\t|%1d|\n", "%1d", i, j);
 	printf("%-7s\t\t|%2d|\t\t|%2d|\n", "%2d", i, j);

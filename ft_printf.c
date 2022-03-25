@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rvuorenl <rvuorenl@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:08 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/18 18:11:42 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/03/25 18:35:26 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,14 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-void	ft_putchar_multi(char c, int i)
+int	ft_putchar_multi(char c, int i)
 {
+	int	res;
+
+	res = 0;
 	while (i-- > 0)
-		write(1, &c, 1);
+		res += write(1, &c, 1);
+	return (res);
 }
 
 void	ft_putchar(char c)
@@ -76,21 +80,29 @@ void	ft_putstr(char const *s)
 		write(1, s, ft_strlen(s));
 }
 
-void	ft_putnbr(int n)
+void	ft_putnbr_l(unsigned long long n)
 {
-	long	copy;
-
-	copy = n;
-	if (copy < 0)
-	{
-		ft_putchar('-');
-		copy *= -1;
-	}
-	if (copy > 9)
-		ft_putnbr(copy / 10);
-	ft_putchar(copy % 10 + '0');
+	if (n > 9)
+		ft_putnbr_l(n / 10);
+	ft_putchar(n % 10 + '0');
 }
 
+// int	ft_strchr_int(const void *s, int c, size_t n)
+// {
+// 	size_t			i;
+// 	unsigned char	*copy;
+
+// 	copy = (unsigned char *)s;
+// 	i = 0;
+// 	while (i < n)
+// 	{
+// 		if (copy[i] == (unsigned char)c)
+// 			return (&copy[i]);
+// 		i++;
+// 	}
+// 	return (NULL);
+// }
+
 
 
 
@@ -100,14 +112,13 @@ void	ft_putnbr(int n)
 // 	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
 
 
-// digits in num	DONE
-int	count_digits(unsigned long long num)
+int	count_digits(long long num)
 {
 	int	res;
 
 	res = 0;
-	if (num < 0)
-		res++;
+	// if (num < 0)		// handled in prec ?
+	// 	res++;
 	while (num != 0)
 	{
 		num /= 10;
@@ -145,73 +156,88 @@ void	reset_info(t_info *info)
 	// info->
 }
 
-// d hd hhd ld, i hi hhi li, o hho ho lo llo, u hu hhu lu llu, x hx hhx lx llx  = unsig long long
-// lld lli = reverse if minus, unsig long long
-// c = - && -num
-// s = num && (-num??)
+void	reset_info_no_res(t_info *info)
+{
+	info->flags = 0;
+	info->tmpres = 0;
+	info->f_dec_len = 0;
+	info->f_dec = 0;
+	// info->
+}
 
-void	check_width(const char* str, t_info *info, va_list args)
+
+
+
+// 	0 1 2 3
+// 	. *
+// 	. 1 9 9
+// 	. 0
+
+// OK
+int	dot_ast_flag(const char *str, t_info *info, va_list args)
 {
 	int	i;
-	int	tmp;
 
 	i = 0;
-	if (ft_isdigit(str[i]))
-	{
-		info->width = ft_atoi(&str[i]);
-		i += count_digits((unsigned long long)info->width);
-	}
-	if (str[i++] == '*')
-		info->width = va_arg(args, int);
-	if (str[i] == '.')
+	if (str[i++] == '.')
 	{
 		info->flags |= DOT;
-		if (str[++i] == '*')
-		{
+		if (str[i] == '*')
 			info->prec = va_arg(args, int);
-			// info->i++; 	// what
-		}
 		else
-		{
 			info->prec = ft_atoi(&str[i]);
-			i += count_digits((unsigned long long)info->prec);
-		}
+		if (info->prec < 0)
+			info->prec = 0;
+		if (str[i] == '*')
+			return (i);
+		i = count_digits((unsigned long long)info->prec);
+		if (i == 0)
+			return (1);
 	}
+	else
+		info->width = va_arg(args, int);
+	return (i);
 }
 
-int	check_specifier(const char *str, t_info *info, va_list args)
+//	OK
+int	digit_flag(const char *str, t_info *info)
 {
 	int	i;
-	int	j;
 
-	j = 0;
 	i = 0;
-	if (str[j] == 'h')
+	if (str[i] == '0')
+		info->flags |= ZERO;
+	else
 	{
-		if (str[++j] == 'h')
-			j++;
+		info->width = ft_atoi(&str[i]);
+		i = count_digits((unsigned long long)info->width);
+		if (i > 0)
+			i--;
 	}
-	else if (str[j] == 'l')
-	{
-		if (str[++j] == 'l')
-			j++;
-	}
-	while (SPECS[i])	// "diouxXncspf" etc
-	{
-		if (SPECS[i++] == str[j])
-		{
-			info->i += j;	//	check if correct pos
-			return (1);
-		}
-	}
-	return (0);
+	return (i);
 }
 
-//should return -1 if error ?
-int	check_flags(const char *str, t_info *info, va_list args)
+// 		% [flags]	[width]		[.precision]	[length]	specifier
+
+void	check_len_flags(char c, t_info *info)
 {
-	int i = 0;
-	while (str[i])
+	if (c == 'l' || c == 'L')
+	{
+		if (info->flags & LONG)
+			info->flags |= LLONG;
+		info->flags |= LONG;
+	}
+	else if (c == 'h')
+		info->flags |= SHORT;
+}
+
+
+void	check_flags(const char *str, t_info *info, va_list args)
+{
+	int i;
+
+	i = -1;
+	while (str[++i])
 	{
 		if (str[i] == ' ')
 			info->flags |= SPACE;
@@ -219,67 +245,233 @@ int	check_flags(const char *str, t_info *info, va_list args)
 			info->flags |= PLUS;
 		else if (str[i] == '-')
 			info->flags |= MINUS;
-		else if (str[i] == '0')
-			info->flags |= ZERO;
+		else if (ft_isdigit((int)str[i]))
+			i += digit_flag(&str[i], info);
 		else if (str[i] == '#')
 			info->flags |= HASH;
-		else	// this point we have flags (only)
-		{
-			check_width(str, info, args);
-			if (!check_specifier(str, info, args))
-				return (0);
+		else if (str[i] == '.' || str[i] == '*')
+			i += dot_ast_flag(&str[i], info, args);
+		else if (str[i] == 'l' || str[i] == 'L' || str[i] == 'h')
+			check_len_flags(str[i], info);
+		else	// this point we have flags + wid + prec
 			return ;
-		}
-		i++;
 	}
 }
-// 				-
-// 		% [flags]	[width]		[.precision]	[length]	specifier
 
+void	exit_error(char *str)
+{
+	ft_putstr(str);
+	exit(-1);
+}
 
-// void	check_length(const char *s, t_info *info)
+// d hd hhd ld, i hi hhi li, o hho ho lo llo, u hu hhu lu llu, x hx hhx lx llx  = unsig long long
+// lld lli = reverse if minus, unsig long long
+// c = - && -num
+// s = num && (-num??)
+
+// 		fun_pointer needed	-	-	-	-	-
+// int	check_specifier(const char *str, t_info *info, va_list args)	// CONT HERE
 // {
-// 	if (s[info->i] == 'l' && s[info->i + 1] == 'l')
-// 		info->flags |= (1 << 4);
-// 	while (s[info->i] == 'l' || s[info->i] == 'h')
-// 		info->i++;
+// 	int	i;
+// 	// func_pointer fun;	// ??
+
+// 	i = -1;
+// 	while (SPECS[++i])	// # define SPECS "dicouxXnspf"
+// 	{
+// 		if (SPECS[i] == str[0])
+// 		{
+// 			func_pointer(str, info, args);
+
+// 			// info->i += j;	//	check if correct pos
+// 			return (1);
+// 		}
+// 	}
+// 	return (0);
 // }
+// 	-	-	-	-	-	-	--	-	-	-	-
+
+/*	NOTES
+
+if prec > width || prec > arglen
+	write 0
+
+if width > prec
+	while if = true
+		write ' '
+	while prec > arglen
+		write 0
+
+
+- +
+	if w < prec, + doesnt affect total len
+%+-4.6d         |+000099|       |-000099|
+%+-6.4d         |+0099 |        |-0099 |
+
+cases
+%06.4d          |  0099|        | -0099|
+%04.6d          |000099|        |-000099|
+*/
+
+void	print_minus_flag(t_info *i)
+{
+	if (i->width > i->prec && i->prec > i->arg_len)
+		i->res += ft_putchar_multi(' ', i->width - i->prec);
+	else if (i->width > i->arg_len)
+		i->res += ft_putchar_multi(' ', i->width - i->arg_len);
+}
+
+void	print_zero_flag(t_info *i)
+{
+	if (i->prec > i->arg_len)
+		i->res += write(1, "0", i->prec - i->arg_len);
+	else if (i->width > i->arg_len)
+		i->res += write(1, "0", i->width - i->arg_len);
+}
+
+void	print_prefix_flag(t_info *i)
+{
+	if ((i->flags & PLUS) && !(i->flags & NEGATIVE))
+	{
+		i->res += write(1, "+", 1);
+		i->prec--;
+	}
+	else if (i->flags & NEGATIVE)
+	{
+		i->res += write(1, "-", 1);
+		i->prec--;
+	}
+}
+
+void	print_space_flag(t_info *i)
+{
+	if (i->flags & NEGATIVE)
+		i->prec++;
+	else if (i->flags & PLUS)
+	{
+		i->res += write(1, "+", 1);
+		i->flags ^= PLUS;
+	}
+	else
+	{
+		i->res += write(1, " ", 1);
+		i->width--;
+	}
+}
+void	neg_number(long long num, t_info *i)
+{
+	i->cur_arg = (unsigned long long) (num * -1);
+	i->flags |= NEGATIVE;
+}
+
+void	assing_number(t_info *i, va_list args)
+{
+	if (i->flags & LLONG)
+		i->tmp = va_arg(args, long long);
+	else if (i->flags & LONG)
+		i->tmp = (long long) va_arg(args, long);
+	else
+		i->tmp = (long long) va_arg(args, int);
 
 
 
+	i->arg_len = count_digits(i->tmp);
+
+	if (i->tmp < 0)
+		neg_number(i->tmp, i);
+	else
+		i->cur_arg = (unsigned long long) i->tmp;
+
+
+
+
+
+	if (i->tmp < 0)
+	{
+		i->flags |= NEGATIVE;
+		i->cur_arg = (unsigned long long)(i->tmp * -1);
+	}
+	else
+		i->cur_arg = (unsigned long long)i->tmp;
+
+	if ((i->flags & PLUS) && !(i->flags & NEGATIVE))
+		i->prec++;
+
+
+}
+
+int	print_number(t_info *i, va_list args)
+{
+	assing_number(i, args);
+	if (i->flags & SPACE)
+		print_space_flag(i);
+	if (i->prec < i->arg_len)
+		i->prec = i->arg_len;
+	if (i->width > i->prec && (i->flags & DOT))
+		i->res += ft_putchar_multi(' ', i->width - i->prec);
+	print_prefix_flag(i);
+	if (i->flags & ZERO)
+		print_zero_flag(i);
+	ft_putnbr_l(i->cur_arg);
+	if (i->flags & MINUS)
+		print_minus_flag(i);
+	return (i->res);
+}
+
+int	write_non_percent(const char *str, t_info *info)
+{
+	int	i;
+
+	i = 0;
+	while (str[info->i] != '%' && str[info->i] != '\0')
+	{
+		info->i++;
+		i++;
+	}
+	if (i > 0)
+		write(1, &str[info->i - i], i);
+	return (i);
+}
+
+void	write_percent(t_info *info)
+{
+	info->res += write(1, "%", 1);
+	info->i++;
+}
+
+int	check_specifier(const char *str, t_info *info, va_list args)
+{
+	if (str[0] == 'd')
+	{
+		info->res += print_number(info, args);
+		info->i++;
+		return (1);
+	}
+	return (0);
+}
 
 int	ft_printf(const char *str, ...)
 {
-	int		n;
 	va_list	args;
 	t_info	info;
 
 	reset_info(&info);
 	va_start(args, str);
-	info.i = 0;
 	while (str[info.i])
 	{
-		n = 0;
-		while (str[info.i] != '%' && str[info.i] != '\0')
+		if (str[info.i] != '%')
+			info.res += write_non_percent(str, &info);
+		if (str[info.i] == '%')
 		{
-			info.i++;
-			n++;
-		}
-		info.res += n;
-		// if (n > 0)		// commented for testing, UNCOMMENT
-			// write(1, &str[info.i - n], n);
-		if (str[info.i++] == '%')
-		{
-			// get_info_specifier(&str[i], args, &info);
-			if (!check_flags(&str[info.i], &info, args))
-				return (-1);
-			// check_specifier()
-			if (!check_error_input(&info, str[info.i]))
-				return (-1);
-			// info.res += check_specifier(&str[info.i], &info, args);
-			break ;
-
-			// info.flags = 0;
+			if (str[++info.i] == '%')
+				write_percent(&info);
+			else
+			{
+				check_flags(&str[info.i], &info, args);
+				if (!check_specifier(&str[info.i], &info, args))
+					exit_error("error, specifier not found!\n");
+					// exit_error("error\n");
+			}
+			reset_info_no_res(&info);
 		}
 	}
 	va_end(args);
@@ -291,7 +483,17 @@ int main(void)
 {
 	// sizes();
 	// maxes();
-	tests();
+	// tests();
+
+	int i = 42, j = 7, o = 9;
+	int x = -55;
+
+	printf("hello |%d|rand |%d| string %%|%d|\n", i, j, o);
+	ft_printf("hello |%d|rand |%d| string %%|%d|\n", i, j, o);
+
+	printf("\n");
+	printf("|%d| random string |%d|\n", x, x+5);
+	ft_printf("|%d| random string |%d|\n", x, x+5);
 
 
 }
@@ -324,178 +526,7 @@ printf("\n|");
 	ft_printf("|\n%d * %d = %d\n|", 14, 2, 14*2);
 	printf("|\n%d * %d = %d\n|", 14, 2, 14*2);
 
-
-
 */
-
-
-
-
-
-
-
-
-
-
-// 	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
-// 	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
-// 	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
-// 	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
-// 	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
-
-
-
-
-
-
-
-
-
-
-
-
-// void check_type(void *ptr, char type)	//UNFINISHED
-// {
-// 	unsigned long long num;
-
-// 	if (type == 'd')
-// 	{
-// 		if (*(int*)ptr < 0)
-// 			num = (unsigned long long) (-1 * (*(int*)ptr));
-// 		else
-// 			num = (unsigned long long)*(int*)ptr;
-
-// 	}
-// 	else if (type == 'l')
-// 	{
-// 		// if (-9223372036854775808)
-// 		if (*(long long*)ptr < 0)
-// 			num = (unsigned long long) (-1 * (*(long long*)ptr));
-// 		else
-// 			num = (unsigned long long)*(long long*)ptr;
-// 	}
-// 	else if (type == 's')
-// 	{
-// 		if (*(short*)ptr < 0)
-// 			num = (unsigned long long) (-1 * (*(short*)ptr));
-// 		else
-// 			num = (unsigned long long)*(short*)ptr;
-// 	}
-// 	else
-// 		num = 0;
-
-// 	printf("%llu\n", num);
-// }
-
-// int	h_flag_signed(void *ptr)
-// {
-// 	short	num;
-// 	int		res;
-
-// 	res = 0;
-// 	num = (short)*(int*)ptr;
-// 	res = count_numbers(num, 's');	// takes type as argument
-
-// 	return (res);
-
-// }
-
-// int	h_flag_unsigned(void *ptr, char type)
-// {
-// 	unsigned short	num;
-// 	int				res;
-
-// 	res = 0;
-// 	num = 0;
-// 	if (type == 'd' || type == 'i')
-// 	{
-// 		if (*(int*)ptr < 0)
-// 			num = *(int*)ptr * -1;
-// 		}
-// 		else
-// 			num = (short)
-
-// 	}
-// 	else if (type == 'o' || type == 'u' || type == 'x' || type == 'X')
-// 	{
-// 		num = (unsigned short)*(unsigned int*)ptr;
-// 	}
-// 	return (res);
-
-// }
-
-
-
-
-// int	check_specifiers(const char *s, t_info *info, va_list args)
-// {
-// 	int		i;
-
-// 	i = 0;
-// 	if (str[i] == '%')
-// 	{
-// 		write(1, '%', 1);
-// 		info->res++;
-// 	}
-// 	{
-// 		info->cur_arg = va_arg(args, int);
-// 		write(1, &info->cur_arg, 1);
-// 		info->res++;
-// 	}
-// 	else if (s[i] == 's')
-// 	{
-// 		// flags ??
-// 		// works straight away??						// CONT HERE
-// 		info->str = va_arg(args, char*);
-// 		info->res += ft_strlen(info->str);
-// 		ft_putstr(info->str);
-// 		// vs
-// 		info->str = ft_strsub(va_arg(args, char*));
-// 		info->res += ft_strlen(info->str);
-// 		ft_putstr(info->str);
-// 		ft_strdel(info->str);
-// 		//
-// 		i++;
-// 	}
-// 	else if (s[i] == 'c')
-// 	else if (s[i] == 'p')
-// 	{
-
-// 	}
-// 	else if (s[i] == 'f')
-// 	{
-
-// 	}
-
-// 	else if (s[i] == 'l' || s[i] == 'c' || s[i] == 'd' || s[i] == 'i' || s[i] == 'l')
-// 	{
-
-// 	}
-// 	else if (s[i] == 'u' || s[i] == 'x' || s[i] == 'X' || s[i] == 'o')
-// 	{
-
-// 	}
-
-
-// 	else if (str[i] == 'c')
-// 	{
-// 		write(1, &str[i], 1);
-// 		info->res++;
-// 	}
-// 	else if (str[i] == 'l')
-// 	{
-// 		if (str[i + 1] == 'l')
-// 			// res++ ?
-
-
-// 	}
-// 	else if (str[i] == 'd' || str[i] == 'i')
-// 	{
-
-// 	}
-
-// }
-
 
 /*
 You are allowed to use the following functions:

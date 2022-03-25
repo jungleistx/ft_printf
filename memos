@@ -29,9 +29,9 @@ f	float					double		-				-			long double?	-			long double
 n	num written so far		int*		signed char*							long long*
 
 ORDER
-	padding
+	padding	(space. if +, ignore)
 	prefix
-	0
+	0	(if ->dot, ignore)
 	%d
 	padd
 
@@ -42,8 +42,19 @@ ORDER
 
 	4 / *	.	4 / *
 
+-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
+-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
+-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
+-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
+-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
+
 	% [flags][width][.precision][length]specifier
-	% [flags]		[width]	[.precision][length]specifier
+
+-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
+-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
+-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
+-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
+-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
 
 SPECIAL CASES
 	. and 0		(nothing after .) doesnt matter because num_len > length (try with 0?)
@@ -64,6 +75,7 @@ FLAGS
 		doesnt affect width, +5 = write(6)
 
 ' '		blank left produced by signed conversion (d, f, i) (padding)
+		if negative && prec > width, ignore (doesnt prec--)
 
 #		alternate, no effect for 'cdinpsu'
 		For o, force first char to 0
@@ -115,6 +127,9 @@ f round
 	if 0, no len
 	if . atleast 1 num before .
 	bankers rounding
+x
+	if 0, hash not included (print '0x')
+	else 0x <value>
 random
 	write returns #written
 	Va_arg takes int and casted to unsig char, rather than va_arg unsig char
@@ -135,22 +150,26 @@ needed ?
 	buf[10] for flags, precision, field, width (?)
 
 BONUS
-n 	num printed so far		int* 	sig char*			short*			long *		longlong*
+-n 	num printed so far		int* 	sig char*			short*			long *		longlong*
+-Uppercase D, I etc
 
 	from printf manual
 following appear in sequence:
 	optional field:
 		decimal digit string, followed by 'dollarsign'. if no dollar, next arg is read
 	zero or more following flags:
+-colors	(same as printf / .sh)
 
 TODO
 - numbercounter that takes void*, can be used with all numbers. converts to longlong
+- putchar multi instead of write(more than 1)
 
 LIBFT_FUNCTIONS
 putstr
 putnbr
 putchar
 strlen
+isdigit
 
 BONUS
 -%n 	amount written at that moment, saved in (total?)
@@ -170,6 +189,14 @@ bankers rounding only if .0 flag TEST
 int 0 with all different flag combos
 duplicate flags		%+++-++-+4.4d
 multiple hh or lll or mixed hlhlhlh
+%c as null, width 12 + null
+.0 (precision 0)
+.0 (precision 0) int 0, prints nothing?
+testing with negative *
+null pointer, empty string, int 0
+return values
+octal 0 with flags (prec 0 )
+
 
 .ZSHRC
 PROMPT='%F{45}%D, %T%f %F{190}%~%f%F{40} %#%f '
@@ -196,3 +223,46 @@ Arena script
 Check unicode for d, esc
 D = U+0064 decimal 100 oct 144
 Esc = decimal 27 hex x1b u+001b?? Oct 33
+
+
+
+
+checked flags 	OK
+check spec 	- 	func_pointer TODO
+
+
+EVAL
+pre
+	git
+	norm
+	author
+	forbidden
+simple
+	%s
+	%p
+	%d
+	%%
+less simple
+	multiple conv
+	multiple args of same type
+slightly comp
+	%i
+	%o
+	%u
+	%x
+	%X
+	%c
+complicated
+	multiple convs of different size
+	int char int
+more comp
+	flags # 0 - + ' ' fieldwidth
+more stuff
+	%h
+	%hh
+	%l
+	%ll with diouxX
+	%l %L with f
+finally
+	flag .
+BONUS
