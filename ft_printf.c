@@ -116,9 +116,11 @@ int	count_digits(long long num)
 {
 	int	res;
 
+	if (num == 0)
+		return (1);
 	res = 0;
-	// if (num < 0)		// handled in prec ?
-	// 	res++;
+	if (num < 0)		// handled in prec ?
+		res++;
 	while (num != 0)
 	{
 		num /= 10;
@@ -231,7 +233,6 @@ void	check_len_flags(char c, t_info *info)
 		info->flags |= SHORT;
 }
 
-
 void	check_flags(const char *str, t_info *info, va_list args)
 {
 	int i;
@@ -254,7 +255,10 @@ void	check_flags(const char *str, t_info *info, va_list args)
 		else if (str[i] == 'l' || str[i] == 'L' || str[i] == 'h')
 			check_len_flags(str[i], info);
 		else	// this point we have flags + wid + prec
+		{
+			info->i += i;
 			return ;
+		}
 	}
 }
 
@@ -361,6 +365,8 @@ void	neg_number(long long num, t_info *i)
 {
 	i->cur_arg = (unsigned long long) (num * -1);
 	i->flags |= NEGATIVE;
+	// i->prec--; 	// added from width, needs to be in dot version?
+	
 }
 
 void	assing_number(t_info *i, va_list args)
@@ -372,8 +378,6 @@ void	assing_number(t_info *i, va_list args)
 	else
 		i->tmp = (long long) va_arg(args, int);
 
-
-
 	i->arg_len = count_digits(i->tmp);
 
 	if (i->tmp < 0)
@@ -381,32 +385,22 @@ void	assing_number(t_info *i, va_list args)
 	else
 		i->cur_arg = (unsigned long long) i->tmp;
 
-
-
-
-
-	if (i->tmp < 0)
-	{
-		i->flags |= NEGATIVE;
-		i->cur_arg = (unsigned long long)(i->tmp * -1);
-	}
-	else
-		i->cur_arg = (unsigned long long)i->tmp;
-
 	if ((i->flags & PLUS) && !(i->flags & NEGATIVE))
 		i->prec++;
-
-
 }
 
 int	print_number(t_info *i, va_list args)
 {
+	// printf(">>%d<<\n", i->width);
 	assing_number(i, args);
 	if (i->flags & SPACE)
 		print_space_flag(i);
+	// printf("----width %d, prec %d----\n", i->width, i->prec);
 	if (i->prec < i->arg_len)
 		i->prec = i->arg_len;
-	if (i->width > i->prec && (i->flags & DOT))
+	// printf("----width %d, prec %d----\n", i->width, i->prec);
+	// if (i->width > i->prec && (i->flags & DOT))
+	if (i->width > i->prec)
 		i->res += ft_putchar_multi(' ', i->width - i->prec);
 	print_prefix_flag(i);
 	if (i->flags & ZERO)
@@ -440,6 +434,7 @@ void	write_percent(t_info *info)
 
 int	check_specifier(const char *str, t_info *info, va_list args)
 {
+	// printbin_2(&info->flags);
 	if (str[0] == 'd')
 	{
 		info->res += print_number(info, args);
@@ -485,18 +480,34 @@ int main(void)
 	// maxes();
 	// tests();
 
-	int i = 42, j = 7, o = 9;
-	int x = -55;
+	int i = 0;
 
-	printf("hello |%d|rand |%d| string %%|%d|\n", i, j, o);
-	ft_printf("hello |%d|rand |%d| string %%|%d|\n", i, j, o);
+	// printf("hello |%d|\n", i);
+	// ft_printf("hello |%d|\n", i);
 
-	printf("\n");
-	printf("|%d| random string |%d|\n", x, x+5);
-	ft_printf("|%d| random string |%d|\n", x, x+5);
+	printf("%%7d|\n\n");
+	printf(">hello |%7d|\n", i);
+	ft_printf(">hello |%7d|\n", i);
+	printf("\n%%1d|\n\n");
+	printf(">hello |%1d|\n", i);
+	ft_printf(">hello |%1d|\n", i);
+	printf("\n%%4d|\n\n");
+	printf(">hello |%4d|\n", -42);
+	ft_printf(">hello |%4d|\n", -42);
 
-
+	// printf("hello |%+.5d|\n", i);
+	// ft_printf("hello |%+.5d|\n", i);
 }
+
+/* cleared tests :
+by themselves:
+d
+	d
+	width	with negative and 0
+	
+
+
+*/
 
 /*	main tests
 

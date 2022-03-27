@@ -150,6 +150,22 @@ void printbin_2(uint16_t *ptr)
 	printf("\n");
 }
 
+void printbin(uint64_t *map, char *str)
+{
+	printf("---printbin---\t\t>>>%s<<<\n", str);
+	printf("\tnum = %llu\n\n", *map);
+	uint16_t *ptr;
+	ptr = (uint16_t*)map;
+	ptr += 3;
+	int i = 0;
+	while (i < 4)
+	{
+		printbin_2(ptr);
+		i++;
+		ptr -= 1;
+	}
+}
+
 void	tests(void)	// DELETE
 {
 	// printf("\nCHAR\n\t%%c\t\t|%c|\n", 'a');
