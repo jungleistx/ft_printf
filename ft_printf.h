@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:18:13 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/28 15:48:14 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/03/28 15:50:07 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	ft_putstr(char const *s);
 void	ft_putnbr(int n);
 int	count_digits(long long num);
 int	check_error_input(t_info *info, char specifier);
-void	reset_info(t_info *info);
+void	reset_info(t_info *info, int res);
 void	check_width(const char* str, t_info *info, va_list args);
 void	check_flags(const char *str, t_info *info, va_list args);
 int	ft_printf(const char *str, ...);

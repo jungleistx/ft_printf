@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:08 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/28 15:48:44 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/03/28 15:51:27 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,12 +137,15 @@ int	check_error_input(t_info *info, char specifier)
 	return (0);
 }
 
-void	reset_info(t_info *info)
+void	reset_info(t_info *info, int res)
 {
+	if (res == 0)
+	{
+		info->i = 0;
+		info->res = 0;
+	}
 	info->flags = 0;
-	info->res = 0;
 	info->tmpres = 0;
-	info->i = 0;
 	info->f_dec_len = 0;
 	info->f_dec = 0;
 	info->arg_len = 0;
@@ -150,16 +153,16 @@ void	reset_info(t_info *info)
 	// info->
 }
 
-void	reset_info_no_res(t_info *info)
-{
-	info->flags = 0;
-	info->tmpres = 0;
-	info->f_dec_len = 0;
-	info->f_dec = 0;
-	info->width = 0;
-	info->arg_len = 0;
-	// info->
-}
+// void	reset_info_no_res(t_info *info)
+// {
+// 	info->flags = 0;
+// 	info->tmpres = 0;
+// 	info->f_dec_len = 0;
+// 	info->f_dec = 0;
+// 	info->width = 0;
+// 	info->arg_len = 0;
+// 	// info->
+// }
 
 // OK
 int	dot_ast_flag(const char *str, t_info *info, va_list args)
@@ -393,7 +396,7 @@ int	ft_printf(const char *str, ...)
 	va_list	args;
 	t_info	info;
 
-	reset_info(&info);
+	reset_info(&info, 0);
 	va_start(args, str);
 	while (str[info.i])
 	{
@@ -410,7 +413,7 @@ int	ft_printf(const char *str, ...)
 					exit_error("error, specifier not found!\n");
 					// exit_error("error\n");
 			}
-			reset_info_no_res(&info);
+			reset_info(&info, 1);
 		}
 	}
 	va_end(args);
