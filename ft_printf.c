@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:08 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/25 18:35:26 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/03/28 15:48:44 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,22 +87,12 @@ void	ft_putnbr_l(unsigned long long n)
 	ft_putchar(n % 10 + '0');
 }
 
-// int	ft_strchr_int(const void *s, int c, size_t n)
-// {
-// 	size_t			i;
-// 	unsigned char	*copy;
 
-// 	copy = (unsigned char *)s;
-// 	i = 0;
-// 	while (i < n)
-// 	{
-// 		if (copy[i] == (unsigned char)c)
-// 			return (&copy[i]);
-// 		i++;
-// 	}
-// 	return (NULL);
-// }
-
+void	exit_error(char *str)
+{
+	ft_putstr(str);
+	exit(-1);
+}
 
 
 
@@ -119,7 +109,7 @@ int	count_digits(long long num)
 	if (num == 0)
 		return (1);
 	res = 0;
-	if (num < 0)		// handled in prec ?
+	if (num < 0)
 		res++;
 	while (num != 0)
 	{
@@ -155,6 +145,8 @@ void	reset_info(t_info *info)
 	info->i = 0;
 	info->f_dec_len = 0;
 	info->f_dec = 0;
+	info->arg_len = 0;
+	info->width = 0;
 	// info->
 }
 
@@ -164,16 +156,10 @@ void	reset_info_no_res(t_info *info)
 	info->tmpres = 0;
 	info->f_dec_len = 0;
 	info->f_dec = 0;
+	info->width = 0;
+	info->arg_len = 0;
 	// info->
 }
-
-
-
-
-// 	0 1 2 3
-// 	. *
-// 	. 1 9 9
-// 	. 0
 
 // OK
 int	dot_ast_flag(const char *str, t_info *info, va_list args)
@@ -192,9 +178,7 @@ int	dot_ast_flag(const char *str, t_info *info, va_list args)
 			info->prec = 0;
 		if (str[i] == '*')
 			return (i);
-		i = count_digits((unsigned long long)info->prec);
-		if (i == 0)
-			return (1);
+		i = count_digits((long long)info->prec) - 1;
 	}
 	else
 		info->width = va_arg(args, int);
@@ -212,9 +196,8 @@ int	digit_flag(const char *str, t_info *info)
 	else
 	{
 		info->width = ft_atoi(&str[i]);
-		i = count_digits((unsigned long long)info->width);
-		if (i > 0)
-			i--;
+		i = count_digits((long long)info->width);
+		i--;
 	}
 	return (i);
 }
@@ -262,60 +245,6 @@ void	check_flags(const char *str, t_info *info, va_list args)
 	}
 }
 
-void	exit_error(char *str)
-{
-	ft_putstr(str);
-	exit(-1);
-}
-
-// d hd hhd ld, i hi hhi li, o hho ho lo llo, u hu hhu lu llu, x hx hhx lx llx  = unsig long long
-// lld lli = reverse if minus, unsig long long
-// c = - && -num
-// s = num && (-num??)
-
-// 		fun_pointer needed	-	-	-	-	-
-// int	check_specifier(const char *str, t_info *info, va_list args)	// CONT HERE
-// {
-// 	int	i;
-// 	// func_pointer fun;	// ??
-
-// 	i = -1;
-// 	while (SPECS[++i])	// # define SPECS "dicouxXnspf"
-// 	{
-// 		if (SPECS[i] == str[0])
-// 		{
-// 			func_pointer(str, info, args);
-
-// 			// info->i += j;	//	check if correct pos
-// 			return (1);
-// 		}
-// 	}
-// 	return (0);
-// }
-// 	-	-	-	-	-	-	--	-	-	-	-
-
-/*	NOTES
-
-if prec > width || prec > arglen
-	write 0
-
-if width > prec
-	while if = true
-		write ' '
-	while prec > arglen
-		write 0
-
-
-- +
-	if w < prec, + doesnt affect total len
-%+-4.6d         |+000099|       |-000099|
-%+-6.4d         |+0099 |        |-0099 |
-
-cases
-%06.4d          |  0099|        | -0099|
-%04.6d          |000099|        |-000099|
-*/
-
 void	print_minus_flag(t_info *i)
 {
 	if (i->width > i->prec && i->prec > i->arg_len)
@@ -361,12 +290,13 @@ void	print_space_flag(t_info *i)
 		i->width--;
 	}
 }
+
 void	neg_number(long long num, t_info *i)
 {
 	i->cur_arg = (unsigned long long) (num * -1);
 	i->flags |= NEGATIVE;
 	// i->prec--; 	// added from width, needs to be in dot version?
-	
+
 }
 
 void	assing_number(t_info *i, va_list args)
@@ -386,22 +316,27 @@ void	assing_number(t_info *i, va_list args)
 		i->cur_arg = (unsigned long long) i->tmp;
 
 	if ((i->flags & PLUS) && !(i->flags & NEGATIVE))
-		i->prec++;
+		i->arg_len++;	// ?
+		// i->prec++;
 }
 
 int	print_number(t_info *i, va_list args)
 {
 	// printf(">>%d<<\n", i->width);
 	assing_number(i, args);
+	// printf(">>> w = %d, len = %d<<<", i->width, i->arg_len);
 	if (i->flags & SPACE)
 		print_space_flag(i);
 	// printf("----width %d, prec %d----\n", i->width, i->prec);
-	if (i->prec < i->arg_len)
-		i->prec = i->arg_len;
+	if (i->flags & DOT)
+	{
+		if (i->prec < i->arg_len)
+			i->prec = i->arg_len;
+	}
 	// printf("----width %d, prec %d----\n", i->width, i->prec);
 	// if (i->width > i->prec && (i->flags & DOT))
-	if (i->width > i->prec)
-		i->res += ft_putchar_multi(' ', i->width - i->prec);
+	if (i->width > i->arg_len && !(i->flags & MINUS))
+		i->res += ft_putchar_multi(' ', i->width - i->arg_len);
 	print_prefix_flag(i);
 	if (i->flags & ZERO)
 		print_zero_flag(i);
@@ -435,11 +370,20 @@ void	write_percent(t_info *info)
 int	check_specifier(const char *str, t_info *info, va_list args)
 {
 	// printbin_2(&info->flags);
-	if (str[0] == 'd')
+	// # define SPECS "dicouxXnspf"	// zu same as l (sizeof)
+	int	i;
+
+	i = 0;
+	// special case for str[0] == 'n' ?
+	while (SPECS[i])
 	{
-		info->res += print_number(info, args);
-		info->i++;
-		return (1);
+		if (SPECS[i] == str[0])
+		{
+			info->res += g_disp_table[i](info, args);
+			info->i++;
+			return (1);
+		}
+		i++;
 	}
 	return (0);
 }
@@ -480,62 +424,32 @@ int main(void)
 	// maxes();
 	// tests();
 
-	int i = 0;
-
-	// printf("hello |%d|\n", i);
-	// ft_printf("hello |%d|\n", i);
-
-	printf("%%7d|\n\n");
-	printf(">hello |%7d|\n", i);
-	ft_printf(">hello |%7d|\n", i);
-	printf("\n%%1d|\n\n");
-	printf(">hello |%1d|\n", i);
-	ft_printf(">hello |%1d|\n", i);
-	printf("\n%%4d|\n\n");
-	printf(">hello |%4d|\n", -42);
-	ft_printf(">hello |%4d|\n", -42);
-
-	// printf("hello |%+.5d|\n", i);
-	// ft_printf("hello |%+.5d|\n", i);
-}
-
-/* cleared tests :
-by themselves:
-d
-	d
-	width	with negative and 0
-	
-
-
-*/
-
-/*	main tests
-
-printf("\n|");
-	ft_printf("hello '%d'", 42);
-	printf("|\n");
-
-	printf("\n|");
-	ft_printf("hello '%0d'", 42);
-	printf("|\n");
-
-	printf("\n|");
-	ft_printf("hello '%0d'", 42);
-	printf("|\n");
-
-	printf("\n|");
-	ft_printf("hello '%0 -  -  0 -d'", 42);
-	printf("|\n");
-
-	printf("\n|");
-	ft_printf("hello '%+-d'", 42);
-	printf("|\n");
-
 	int x = 42;
-	ft_printf("|random '%d'\n'%d' another '%d'|\n", x, x + x, x * 5);
-	printf("|random '%d'\n'%d' another '%d'|\n", x, x + x, x * 5);
-	ft_printf("|\n%d * %d = %d\n|", 14, 2, 14*2);
-	printf("|\n%d * %d = %d\n|", 14, 2, 14*2);
+	int y = -42;
+	int z = 0;
+
+	// working		not all together??
+	// d width
+
+	printf("\n|%d| |%d| |%d| \n", x, y, z);
+	ft_printf("|%d| |%d| |%d| \n", x, y, z);
+	printf("\n|%2d| |%2d| |%2d| \n", x, y, z);
+	ft_printf("|%2d| |%2d| |%2d| \n", x, y, z);
+	printf("\n|%4d| |%4d| |%4d| \n", x, y, z);
+	ft_printf("|%4d| |%4d| |%4d| \n", x, y, z);
+	//
+	printf("\t\t|%+-d| |%+-d| |%+-d|\n", x, y, z);
+	ft_printf("\t\t|%+-d| |%+-d| |%+-d|\n", x, y, z);
+	//
+	printf("|%+-4d|\n", x);
+	ft_printf("|%+-4d|\n", x);
+	printf("|%+-4d| |%+-4d| |%+-4d|\n", x, y, z);
+	ft_printf("|%+-4d| |%+-4d| |%+-4d|\n", x, y, z);
+
+}
+/*	NOT WORKING
+- flag
+
 
 */
 

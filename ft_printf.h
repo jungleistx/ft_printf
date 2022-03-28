@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:18:13 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/25 18:24:38 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/03/28 15:48:14 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ typedef struct  		s_info
     uint16_t    		flags;  // holds flags
     int         		res;    // res from printf
 
-	char				*str;	// ? for what
-
 	// needed
 	int					arg_len;
 	int					width;	// minimum of printed, already stored ??
@@ -42,11 +40,12 @@ typedef struct  		s_info
 	int					f_dec;	// count for floats # of decimal numbers
 	int					f_dec_len;	// floats after . len
 
+	long long			tmp;
 
+	char				*str;	// ? for what
 	unsigned long long	cur_arg; // send to funcs	//needed?
 
 
-	long long			tmp;
 
 
 	int					min_len;	// ?
@@ -55,20 +54,6 @@ typedef struct  		s_info
     int         		i;		// needed ?
     int         		tmpres;	// needed?
 }t_info;
-
-int	ft_atoi(const char *str);
-int	ft_isdigit(int c);
-size_t	ft_strlen(const char *s);
-int	ft_putchar_multi(char c, int i);
-void	ft_putchar(char c);
-void	ft_putstr(char const *s);
-void	ft_putnbr(int n);
-int	count_digits(long long num);
-int	check_error_input(t_info *info, char specifier);
-void	reset_info(t_info *info);
-void	check_width(const char* str, t_info *info, va_list args);
-void	check_flags(const char *str, t_info *info, va_list args);
-int	ft_printf(const char *str, ...);
 
 typedef enum e_spec
 {
@@ -96,17 +81,37 @@ typedef enum e_flags
 	// NEG_NUM = 128	// ?
 }t_flags;
 
-// typedef	int		(*func_pointer) (const char, t_info *, va_list);
+typedef	int		(*func_pointer) (t_info *, va_list);
 
-// static const func_pointer g_disp_table[10] =
-// {
-// 	ft_putnbr,
+int	ft_atoi(const char *str);
+int	ft_isdigit(int c);
+size_t	ft_strlen(const char *s);
+int	ft_putchar_multi(char c, int i);
+void	ft_putchar(char c);
+void	ft_putstr(char const *s);
+void	ft_putnbr(int n);
+int	count_digits(long long num);
+int	check_error_input(t_info *info, char specifier);
+void	reset_info(t_info *info);
+void	check_width(const char* str, t_info *info, va_list args);
+void	check_flags(const char *str, t_info *info, va_list args);
+int	ft_printf(const char *str, ...);
+int	print_number(t_info *i, va_list args);
 
-// 	ft_putchar,
-// 	// ...
-
-// 	ft_putstr (5)
-// }
+// # define SPECS "dicouxXnspf"	// zu same as l (sizeof)
+static const func_pointer g_disp_table[] =
+{
+	print_number,
+	print_number
+	// ft_putchar
+	// print_octal
+	// print_hex
+	// print_hex
+	// calc_newline
+	// print_str
+	// print_address
+	// print_float
+};
 
 
 // typedef void					(*t_print_conversion)(t_pformat *cur, \
