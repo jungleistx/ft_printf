@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:08 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/28 15:51:27 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/03/29 16:09:04 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ void	reset_info(t_info *info, int res)
 	info->f_dec = 0;
 	info->arg_len = 0;
 	info->width = 0;
+	info->prec = 0;
 	// info->
 }
 
@@ -185,7 +186,7 @@ int	dot_ast_flag(const char *str, t_info *info, va_list args)
 	}
 	else
 		info->width = va_arg(args, int);
-	return (i);
+	return (0);
 }
 
 //	OK
@@ -224,6 +225,7 @@ void	check_flags(const char *str, t_info *info, va_list args)
 	int i;
 
 	i = -1;
+	// printf(">>>flags start i = %d<<<", info->i);
 	while (str[++i])
 	{
 		if (str[i] == ' ')
@@ -243,6 +245,7 @@ void	check_flags(const char *str, t_info *info, va_list args)
 		else	// this point we have flags + wid + prec
 		{
 			info->i += i;
+			// printf(">>> flags end i = %d<<<", info->i);
 			return ;
 		}
 	}
@@ -258,10 +261,15 @@ void	print_minus_flag(t_info *i)
 
 void	print_zero_flag(t_info *i)
 {
+	// printf(">>>zero i = %d, len = %d, w = %d<<<", i->i, i->arg_len, i->width);
 	if (i->prec > i->arg_len)
-		i->res += write(1, "0", i->prec - i->arg_len);
+		// i->res += write(1, "0", i->prec - i->arg_len);
+		i->res += ft_putchar_multi('0', i->prec - i->arg_len);
 	else if (i->width > i->arg_len)
-		i->res += write(1, "0", i->width - i->arg_len);
+		i->res += ft_putchar_multi('0', i->width - i->arg_len);
+		// i->res += write(1, "0", i->width - i->arg_len);
+	// i->i++;
+	// printf(">>>zero end i = %d, len = %d, w = %d<<<", i->i, i->arg_len, i->width);
 }
 
 void	print_prefix_flag(t_info *i)
@@ -269,12 +277,13 @@ void	print_prefix_flag(t_info *i)
 	if ((i->flags & PLUS) && !(i->flags & NEGATIVE))
 	{
 		i->res += write(1, "+", 1);
-		i->prec--;
+		i->prec--;	// i->width-- || i->arg_len-- ???
 	}
 	else if (i->flags & NEGATIVE)
 	{
 		i->res += write(1, "-", 1);
-		i->prec--;
+		// i->prec--;
+		// i->arg_len--;
 	}
 }
 
@@ -304,6 +313,7 @@ void	neg_number(long long num, t_info *i)
 
 void	assing_number(t_info *i, va_list args)
 {
+	// printf(">>> assing i = %d<<<", i->i);
 	if (i->flags & LLONG)
 		i->tmp = va_arg(args, long long);
 	else if (i->flags & LONG)
@@ -326,8 +336,9 @@ void	assing_number(t_info *i, va_list args)
 int	print_number(t_info *i, va_list args)
 {
 	// printf(">>%d<<\n", i->width);
+	// printbin_2(&i->flags);
 	assing_number(i, args);
-	// printf(">>> w = %d, len = %d<<<", i->width, i->arg_len);
+	// printf("&&& w = %d, len = %d&&&", i->width, i->arg_len);
 	if (i->flags & SPACE)
 		print_space_flag(i);
 	// printf("----width %d, prec %d----\n", i->width, i->prec);
@@ -338,16 +349,32 @@ int	print_number(t_info *i, va_list args)
 	}
 	// printf("----width %d, prec %d----\n", i->width, i->prec);
 	// if (i->width > i->prec && (i->flags & DOT))
-	if (i->width > i->arg_len && !(i->flags & MINUS))
+	if (i->width > i->arg_len && !(i->flags & MINUS) && !(i->flags & ZERO))
 		i->res += ft_putchar_multi(' ', i->width - i->arg_len);
 	print_prefix_flag(i);
+
+	// printf("&&& prefix w = %d, len = %d&&&", i->width, i->arg_len);
+	// printf(">>> number bef zero i = %d<<<", i->i);
 	if (i->flags & ZERO)
 		print_zero_flag(i);
+	// printf(">>> number aft zero i = %d, res = %d<<<\n", i->i, i->res);
+
 	ft_putnbr_l(i->cur_arg);
 	if (i->flags & MINUS)
 		print_minus_flag(i);
 	return (i->res);
 }
+
+/*
+			42		-42		0
+printf("|%05d| |%05d| |%05d| \n", x, y, z);
+w 5, len 2	i4	i5
+w 5, len 3	11	12
+w 5, len 1	18	19
+     6        14	22 %n
+|00042| |-0042| |00000|
+|   042| |  -042| |    00|
+*/
 
 int	write_non_percent(const char *str, t_info *info)
 {
@@ -370,14 +397,39 @@ void	write_percent(t_info *info)
 	info->i++;
 }
 
+int	print_char(t_info *info, va_list args)
+{
+	// printf(">>> char beg i = %d<<<", info->i);
+	assing_number(info, args);
+	while (info->width > 1 && !(info->flags & MINUS))
+	{
+		info->res += write(1, " ", 1);
+		info->width--;
+	}
+	info->res += write(1, &info->cur_arg, 1);
+	if (info->width > 1)
+		info->width--;
+	if (info->flags & MINUS)
+	{
+		while(info->width-- > 0)
+			info->res += write(1, " ", 1);
+	}
+	// info->i++;
+	// printf(">>> char end i = %d<<<", info->i);
+	return (1);
+}
+
 int	check_specifier(const char *str, t_info *info, va_list args)
 {
 	// printbin_2(&info->flags);
-	// # define SPECS "dicouxXnspf"	// zu same as l (sizeof)
+	// printf(">>> specs i = %d<<<", info->i);
+
+
 	int	i;
 
-	i = 0;
 	// special case for str[0] == 'n' ?
+	i = 0;
+	// # define SPECS "dicouxXnspf"	// zu same as l (sizeof)
 	while (SPECS[i])
 	{
 		if (SPECS[i] == str[0])
@@ -408,10 +460,13 @@ int	ft_printf(const char *str, ...)
 				write_percent(&info);
 			else
 			{
+				// printf(">>> bef flags i = %d<<<", info.i);
 				check_flags(&str[info.i], &info, args);
+				// printf(">>> aft flags i = %d<<<", info.i);
 				if (!check_specifier(&str[info.i], &info, args))
 					exit_error("error, specifier not found!\n");
 					// exit_error("error\n");
+				// printf("print >>>i %d\t'%c'<<<", info.i, str[info.i]);
 			}
 			reset_info(&info, 1);
 		}
@@ -427,32 +482,56 @@ int main(void)
 	// maxes();
 	// tests();
 
-	int x = 42;
-	int y = -42;
-	int z = 0;
 
 	// working		not all together??
 	// d width
 
+							int x = 42;
+							int y = -42;
+							int z = 0;
 	printf("\n|%d| |%d| |%d| \n", x, y, z);
 	ft_printf("|%d| |%d| |%d| \n", x, y, z);
-	printf("\n|%2d| |%2d| |%2d| \n", x, y, z);
+	printf("|%2d| |%2d| |%2d| \n", x, y, z);
 	ft_printf("|%2d| |%2d| |%2d| \n", x, y, z);
-	printf("\n|%4d| |%4d| |%4d| \n", x, y, z);
+	printf("|%4d| |%4d| |%4d| \n", x, y, z);
 	ft_printf("|%4d| |%4d| |%4d| \n", x, y, z);
-	//
-	printf("\t\t|%+-d| |%+-d| |%+-d|\n", x, y, z);
-	ft_printf("\t\t|%+-d| |%+-d| |%+-d|\n", x, y, z);
-	//
-	printf("|%+-4d|\n", x);
-	ft_printf("|%+-4d|\n", x);
+	printf("|%+-d| |%+-d| |%+-d|\n", x, y, z);
+	ft_printf("|%+-d| |%+-d| |%+-d|\n", x, y, z);
 	printf("|%+-4d| |%+-4d| |%+-4d|\n", x, y, z);
 	ft_printf("|%+-4d| |%+-4d| |%+-4d|\n", x, y, z);
 
-}
-/*	NOT WORKING
-- flag
+	printf("\n|%05d| |%05d| |%05d| \n", x, y, z);
+	ft_printf("|%05d| |%05d| |%05d| \n", x, y, z);
 
+	// printf("|%05.6d| |%05.6d| |%05.6d| \n", x, y, z);
+	// ft_printf("|%05.6d| |%05.6d| |%05.6d| \n", x, y, z);
+
+
+	// char ch = 'x';
+	// printf("\n\n|%c| test\n", ch);
+	// ft_printf("|%c| test\n", ch);
+
+	// printf("|%*c| test\n",4,  ch);
+	// ft_printf("|%*c| test\n",4,  ch);
+
+	// printf("|%3c| test\n", ch);
+	// ft_printf("|%3c| test\n", ch);
+
+	// printf("|%-4c| test\n", ch);
+	// ft_printf("|%-4c| test\n", ch);
+
+	// char ch1 = 0;
+	// printf("\n|%c|\n", ch1);
+	// ft_printf("\n|%c|\n", ch1);
+
+	printf("\n");
+}
+/*
+c
+	no precision
+	no space
+	no 0
+	no +
 
 */
 
