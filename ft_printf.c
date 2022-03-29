@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:08 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/29 16:09:04 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/03/29 16:32:55 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	count_digits(long long num)
 	if (num == 0)
 		return (1);
 	res = 0;
-	if (num < 0)
+	if (num < 0)	//needed?, negative flag adds to arg_len ??
 		res++;
 	while (num != 0)
 	{
@@ -419,6 +419,46 @@ int	print_char(t_info *info, va_list args)
 	return (1);
 }
 
+void	assing_octal(t_info *info, va_list args)
+{
+	if (info->flags & LLONG)
+		info->cur_arg = va_arg(args, unsigned long long);
+	else	// needed to be something still ??
+		info->cur_arg = (unsigned long long) va_arg(args, unsigned int);
+	info->arg_len = count_digits((long long)info->cur_arg);		//ull vs ll ??
+}
+
+// int	ft_power(unsigned long long num, int mult)
+// {
+// 	unsigned long long	tmp;
+// 	while (mult-- > 0)
+// 	{
+// 		tmp += num * 8;
+	// }
+// }
+
+int	print_octal(t_info *info, va_list args)
+{
+	int					i;
+	unsigned long long	tmp;
+
+	assing_octal(info, args);
+	i = 0;
+	tmp = 0;
+	if (info->cur_arg > 7)
+	{
+		while (info->arg_len-- > 0)
+		{
+			tmp +=
+
+		}
+	}
+	else
+		info->res += ft_putnbr_l(info->cur_arg);
+
+	return (120);
+}
+
 int	check_specifier(const char *str, t_info *info, va_list args)
 {
 	// printbin_2(&info->flags);
@@ -483,26 +523,33 @@ int main(void)
 	// tests();
 
 
-	// working		not all together??
-	// d width
-
-							int x = 42;
-							int y = -42;
-							int z = 0;
-	printf("\n|%d| |%d| |%d| \n", x, y, z);
-	ft_printf("|%d| |%d| |%d| \n", x, y, z);
-	printf("|%2d| |%2d| |%2d| \n", x, y, z);
-	ft_printf("|%2d| |%2d| |%2d| \n", x, y, z);
-	printf("|%4d| |%4d| |%4d| \n", x, y, z);
-	ft_printf("|%4d| |%4d| |%4d| \n", x, y, z);
-	printf("|%+-d| |%+-d| |%+-d|\n", x, y, z);
-	ft_printf("|%+-d| |%+-d| |%+-d|\n", x, y, z);
-	printf("|%+-4d| |%+-4d| |%+-4d|\n", x, y, z);
-	ft_printf("|%+-4d| |%+-4d| |%+-4d|\n", x, y, z);
-
-	printf("\n|%05d| |%05d| |%05d| \n", x, y, z);
-	ft_printf("|%05d| |%05d| |%05d| \n", x, y, z);
-
+	// 						int x = 42;
+	// 						int y = -42;
+	// 						int z = 0;
+	// printf("\n|%d| |%d| |%d| \n", x, y, z);
+	// ft_printf("|%d| |%d| |%d| \n", x, y, z);
+	// printf("|%2d| |%2d| |%2d| \n", x, y, z);
+	// ft_printf("|%2d| |%2d| |%2d| \n", x, y, z);
+	// printf("|%4d| |%4d| |%4d| \n", x, y, z);
+	// ft_printf("|%4d| |%4d| |%4d| \n", x, y, z);
+	// printf("|%+-d| |%+-d| |%+-d|\n", x, y, z);
+	// ft_printf("|%+-d| |%+-d| |%+-d|\n", x, y, z);
+	// printf("|%+-4d| |%+-4d| |%+-4d|\n", x, y, z);
+	// ft_printf("|%+-4d| |%+-4d| |%+-4d|\n", x, y, z);
+	// printf("\n|%i| |%i| |%i| \n", x, y, z);
+	// ft_printf("|%i| |%i| |%i| \n", x, y, z);
+	// printf("|%2i| |%2i| |%2i| \n", x, y, z);
+	// ft_printf("|%2i| |%2i| |%2i| \n", x, y, z);
+	// printf("|%4i| |%4i| |%4i| \n", x, y, z);
+	// ft_printf("|%4i| |%4i| |%4i| \n", x, y, z);
+	// printf("|%+-i| |%+-i| |%+-i|\n", x, y, z);
+	// ft_printf("|%+-i| |%+-i| |%+-i|\n", x, y, z);
+	// printf("|%+-4i| |%+-4i| |%+-4i|\n", x, y, z);
+	// ft_printf("|%+-4i| |%+-4i| |%+-4i|\n", x, y, z);
+	// printf("\n|%05d| |%05d| |%05d| \n", x, y, z);
+	// ft_printf("|%05d| |%05d| |%05d| \n", x, y, z);
+	// printf("\n|%05i| |%05i| |%05i| \n", x, y, z);
+	// ft_printf("|%05i| |%05i| |%05i| \n", x, y, z);
 	// printf("|%05.6d| |%05.6d| |%05.6d| \n", x, y, z);
 	// ft_printf("|%05.6d| |%05.6d| |%05.6d| \n", x, y, z);
 
@@ -510,19 +557,27 @@ int main(void)
 	// char ch = 'x';
 	// printf("\n\n|%c| test\n", ch);
 	// ft_printf("|%c| test\n", ch);
-
 	// printf("|%*c| test\n",4,  ch);
 	// ft_printf("|%*c| test\n",4,  ch);
-
 	// printf("|%3c| test\n", ch);
 	// ft_printf("|%3c| test\n", ch);
-
 	// printf("|%-4c| test\n", ch);
 	// ft_printf("|%-4c| test\n", ch);
-
 	// char ch1 = 0;
 	// printf("\n|%c|\n", ch1);
 	// ft_printf("\n|%c|\n", ch1);
+
+
+	// octal
+	printf("\n|%o|\n", 12345);
+	printf("|%o|\n", 12345);
+	printf("|%o|\n", 7);
+	printf("|%o|\n", 8);
+	printf("|%o|\n", 9);
+
+	// hex
+	// printf("\n|%x|\n", 123456);
+	// printf("|%x|\n", 123456);
 
 	printf("\n");
 }

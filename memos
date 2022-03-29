@@ -56,6 +56,7 @@ ORDER
 -	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
 -	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
 
+
 SPECIAL CASES
 	. and 0		(nothing after .) doesnt matter because num_len > length (try with 0?)
 	. 			(float < 0 gives atleast 1 number before .)
@@ -115,6 +116,7 @@ c
 	-num && num (width)
 s
 	if .num added, thats maximum to print
+	-num?
 f
 	autocasts to double (long double?, holds every value straight)
 	Ignore zero padded .03 float (?)
@@ -143,6 +145,27 @@ random
 	aka dispatch table (printf.h=)
 	flags in uint16_t
 	minimum allocation, modify and print
+
+/*	NOTES
+
+if prec > width || prec > arglen
+	write 0
+
+if width > prec
+	while if = true
+		write ' '
+	while prec > arglen
+		write 0
+
+- +
+	if w < prec, + doesnt affect total len
+%+-4.6d         |+000099|       |-000099|
+%+-6.4d         |+0099 |        |-0099 |
+
+cases
+%06.4d          |  0099|        | -0099|
+%04.6d          |000099|        |-000099|
+*/
 
 needed ?
 	ftoa
@@ -177,24 +200,30 @@ BONUS
 -%zu 	same as %l, takes sizeof
 
 TESTCASES 			(d = 9)
+	all
 Too long output? 16bit, example with 4 bit: 42.4242 (6bit)
 long long min
 - 0, + ' '		error flags
-04d, 4d --> 0009, _ _ _9
-*4d, : _ _ _ 9 // width added as input
-(”*d”, 3, num) : _ _ 9 // width added as argument
-printf("%Lf\n", -0.0L);
 h and 0 in different order, or l and 0 etc
-bankers rounding only if .0 flag TEST
-int 0 with all different flag combos
 duplicate flags		%+++-++-+4.4d
 multiple hh or lll or mixed hlhlhlh
-%c as null, width 12 + null
 .0 (precision 0)
-.0 (precision 0) int 0, prints nothing?
 testing with negative *
 null pointer, empty string, int 0
 return values
+	d i
+04d, 4d --> 0009, _ _ _9
+*4d, : _ _ _ 9 // width added as input
+(”*d”, 3, num) : _ _ 9 // width added as argument
+int 0 with all different flag combos
+.0 (precision 0) int 0, prints nothing?
+	float
+printf("%Lf\n", -0.0L);
+bankers rounding only if .0 flag TEST
+	char
+%c as null, width 12 + null
+char c = 0;
+	octal
 octal 0 with flags (prec 0 )
 
 
