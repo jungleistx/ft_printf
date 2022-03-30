@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:08 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/29 16:32:55 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/03/30 14:52:01 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,13 +262,24 @@ void	print_minus_flag(t_info *i)
 void	print_zero_flag(t_info *i)
 {
 	// printf(">>>zero i = %d, len = %d, w = %d<<<", i->i, i->arg_len, i->width);
+	// printf(" >> prec %d, len %d, w %d<< ", i->prec, i->arg_len, i->width);
+
+	char	c;
+
+	if (i->flags & ZERO)
+		c = '0';
+	else
+		c = ' ';
+	if (i->width > i->arg_len && i->width > i->prec)
+	{
+		if (i->prec > i->arg_len)
+			i->res += ft_putchar_multi(c, i->width - i->prec);
+		else
+			i->res += ft_putchar_multi(c, i->width - i->arg_len);
+	}
 	if (i->prec > i->arg_len)
-		// i->res += write(1, "0", i->prec - i->arg_len);
 		i->res += ft_putchar_multi('0', i->prec - i->arg_len);
-	else if (i->width > i->arg_len)
-		i->res += ft_putchar_multi('0', i->width - i->arg_len);
-		// i->res += write(1, "0", i->width - i->arg_len);
-	// i->i++;
+
 	// printf(">>>zero end i = %d, len = %d, w = %d<<<", i->i, i->arg_len, i->width);
 }
 
@@ -421,43 +432,85 @@ int	print_char(t_info *info, va_list args)
 
 void	assing_octal(t_info *info, va_list args)
 {
-	if (info->flags & LLONG)
+	unsigned long long	tmp;
+	int					i;
+
+	// if (info->flags & LLONG)
+	if (info->flags & LONG)
 		info->cur_arg = va_arg(args, unsigned long long);
 	else	// needed to be something still ??
 		info->cur_arg = (unsigned long long) va_arg(args, unsigned int);
-	info->arg_len = count_digits((long long)info->cur_arg);		//ull vs ll ??
-}
-
-// int	ft_power(unsigned long long num, int mult)
-// {
-// 	unsigned long long	tmp;
-// 	while (mult-- > 0)
-// 	{
-// 		tmp += num * 8;
-	// }
-// }
-
-int	print_octal(t_info *info, va_list args)
-{
-	int					i;
-	unsigned long long	tmp;
-
-	assing_octal(info, args);
-	i = 0;
+	i = 1;
 	tmp = 0;
 	if (info->cur_arg > 7)
 	{
-		while (info->arg_len-- > 0)
+		while (info->cur_arg != 0)
 		{
-			tmp +=
-
+			tmp += (info->cur_arg % 8) * i;
+			i *= 10;
+			info->cur_arg /= 8;
 		}
 	}
 	else
-		info->res += ft_putnbr_l(info->cur_arg);
-
-	return (120);
+		tmp = info->cur_arg;
+	info->arg_len = count_digits(tmp);
+	info->cur_arg = tmp;
+	printf(" >> arg %lld, len %d<< ", info->cur_arg, info->arg_len);
 }
+
+// void	zero_octal(t_info *info)
+// {
+
+// }
+
+void	check_octal_flags(t_info *info)
+{
+	if ((info->width > info->arg_len) && (info->width > info->prec))
+	{
+		// if (info->flags & ZERO)
+		// 	zero_octal(info);
+		// else
+		// {
+			if (info->prec > info->arg_len)
+				info->res += ft_putchar_multi('0', 1); // tmp fix for gcc
+
+		// }
+	}
+		info->res += ft_putchar_multi(' ', info->width - info->arg_len);
+
+
+}
+
+int	print_octal(t_info *info, va_list args)
+{
+	// OK
+	assing_octal(info, args);
+	check_octal_flags(info);
+
+	// if (info->width > info->arg_len || info->flags & ZERO)
+	// 	info->res +=
+
+	if ((info->flags & HASH) && (info->cur_arg > 0))
+		info->res += write(1, "0", 1);
+	// if (info->flags & MINUS)
+	// if (info->flags & MINUS)
+
+	// printf(" >>>octal tmp = %lld<<< ", tmp);
+	ft_putnbr_l(info->cur_arg);
+
+	return (1234);
+}
+
+
+
+// |30071|
+// |7|
+// |10|
+// |11|
+// printf("\n|%o|\n", 12345);
+// 	printf("|%o|\n", 7);
+// 	printf("|%o|\n", 8);
+// 	printf("|%o|\n", 9);
 
 int	check_specifier(const char *str, t_info *info, va_list args)
 {
@@ -522,6 +575,69 @@ int main(void)
 	// maxes();
 	// tests();
 
+	// octal
+
+	printf("\n%-10s|%8o|\n", "%8o", 12345);
+	printf("%-10s|%.8o|\n", "%.8o", 12345);
+	printf("%-10s|%-o|\n", "%-o", 12345);
+	printf("%-10s|%-8o|\n", "%-8o", 12345);
+	printf("%-10s|%0o|\n", "%0o", 12345);
+	printf("%-10s|%08o|\n", "%08o", 12345);
+
+	printf("\n%-10s|%7.8o|\n", "%7.8o", 12345);
+	printf("%-10s|%#7.8o|\n", "%#7.8o", 12345);
+	printf("%-10s|%8.7o|\n", "%8.7o", 12345);
+	printf("%-10s|%8.3o|\n", "%8.3o", 12345);
+	printf("%-10s|%#8.7o|\n\n", "%#8.7o", 12345);
+
+
+	// printf("\n%-10s|%o|\n", "%o", 0);
+	// printf("%-10s|%#o|\n", "%#o", 0);
+	// printf("%-10s|%#0o|\n", "%#0o", 0);
+	// printf("%-10s|%#.o|\n", "%#.o", 0);
+	// printf("%-10s|%#0.o|\n", "%#0.o", 0);
+	// printf("%-10s|%.o|\n", "%.o", 0);
+	// printf("%-10s|%0.o|\n", "%0.o", 0);
+	// printf("%-10s|%.3o|\n", "%.3o", 0);
+	// printf("%-10s|%0.3o|\n", "%0.3o", 0);
+
+	// %d width prec zero tests
+	// printf("\n|%04.5d|\n", 123);
+	// ft_printf("|%04.5d|\n", 123);
+	// printf("\n|%05.4d|\n", 123);
+	// ft_printf("|%05.4d|\n", 123);
+	// printf("\n|%4.5d|\n", 123);
+	// ft_printf("|%4.5d|\n", 123);
+	// printf("\n|%5.4d|\n", 123);
+	// ft_printf("|%5.4d|\n", 123);
+
+	// ft_printf("\n\n|%o|\n", 12345);
+	// ft_printf("|%o|\n", 0);
+	// ft_printf("|%o|\n", 8);
+
+
+	// printf("\n|%o|\n", 12345);
+	// ft_printf("|%o|\n", 12345);
+	// printf("|%o|\n", 7);
+	// ft_printf("|%o|\n", 7);
+	// printf("|%o|\n", 8);
+	// ft_printf("|%o|\n", 8);
+	// printf("|%o|\n", 9);
+	// ft_printf("|%o|\n", 9);
+	// printf("|%o|\n", 0);
+	// ft_printf("|%o|\n", 0);
+	// printf("|%#o|\n", 12345);
+	// ft_printf("|%#o|\n", 12345);
+	// printf("|%#o|\n", 7);
+	// ft_printf("|%#o|\n", 7);
+	// printf("|%#o|\n", 8);
+	// ft_printf("|%#o|\n", 8);
+	// printf("|%#o|\n", 9);
+	// ft_printf("|%#o|\n", 9);
+	// printf("|%#o|\n", 0);
+	// ft_printf("|%#o|\n", 0);
+
+
 
 	// 						int x = 42;
 	// 						int y = -42;
@@ -568,19 +684,18 @@ int main(void)
 	// ft_printf("\n|%c|\n", ch1);
 
 
-	// octal
-	printf("\n|%o|\n", 12345);
-	printf("|%o|\n", 12345);
-	printf("|%o|\n", 7);
-	printf("|%o|\n", 8);
-	printf("|%o|\n", 9);
 
 	// hex
 	// printf("\n|%x|\n", 123456);
 	// printf("|%x|\n", 123456);
 
+
+
+
 	printf("\n");
 }
+
+
 /*
 c
 	no precision

@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:18:13 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/29 15:11:09 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/03/30 12:33:46 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,15 +98,16 @@ void	check_flags(const char *str, t_info *info, va_list args);
 int	ft_printf(const char *str, ...);
 int	print_number(t_info *i, va_list args);
 int	print_char(t_info *info, va_list args);
+int	print_octal(t_info *info, va_list args);
 
 // # define SPECS "dicouxXnspf"	// zu same as l (sizeof)
 static const func_pointer g_disp_table[] =
 {
 	print_number,
 	print_number,
-	print_char
+	print_char,
+	print_octal
 
-	// print_octal
 	// print_hex
 	// print_hex
 	// calc_newline

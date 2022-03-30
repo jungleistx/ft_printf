@@ -9,6 +9,11 @@
 
 % +-0-+* .* d
 
+
+TOCHECK
+	%cd with length (h and l etc)
+	%d prec vs width
+
 with flags: 				none		hh 				h 			l 			ll				L
 d	signed deci int			int			signed char		short		long		long long
 i 	-||-					&			&&				&			&			&
