@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:18:13 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/03/30 12:33:46 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/04/04 16:12:45 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,17 +131,6 @@ static const func_pointer g_disp_table[] =
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 void printbin_2(uint16_t *ptr)
 {
 	int i = 15;
@@ -174,125 +163,586 @@ void printbin(uint64_t *map, char *str)
 	}
 }
 
-void	tests(void)	// DELETE
+
+
+
+//	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
+//	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
+//	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
+//	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
+//	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
+//	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
+//	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
+//	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
+//	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
+//	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
+
+
+
+
+void plust(void)
 {
-	// printf("\nCHAR\n\t%%c\t\t|%c|\n", 'a');
-	// printf("\t%%-c\t\t|%-c|\n", 'b');
-	// printf("\t%%-4c\t\t|%-4c|\n", 'c');
-	// printf("\t%%*c\t\t|%*c|\n", 4, 'd');
-	// printf("\t%%4c\t\t|%4c|\n", 'e');
-	// printf("CHAR UNDEFINED:\n\t'%% c'\n\t'%%#c'\n\t'%%+c'\n\t'%%04c'\n");
-	// printf("\nSTRINGS, str = \"hello\"\n");
-	// printf("\t%%.2s\t\t|%.2s|\n", "hello"); // .num = maxlen
-	// printf("\t%%7s\t\t|%7s|\n", "hello");	// if num > len, padding left
-	// printf("\t%%-7s\t\t|%-7s|\n", "hello");	// if num > len, padding right
-	// printf("STRINGS UNDEFINED\n\t%%#s\n\t%% s\n");
+		int i = 7, j = -7, k = 0;
 
-	int i = 9, j = -9;
-	printf("\n%s", "% [flags][width][.precision][length]specifier\n");
-	printf("\n--- d ---\n");
-	printf("%-7s\t|%d|\t|%d|\n", "%d", i, j);
-	printf("%-7s\t|%.0d|\t|%.0d|\n", "%.0d", i, j);
-	printf("%-7s\t|%4.0d|\t|%4.0d|\n", "%4.0d", i, j);
-	printf("%-7s\t|%-4.0d|\t|%-4.0d|\n", "%-4.0d", i, j);
-	printf("%-7s\t|%+04.0d|\t|%+04.0d|\n", "%+04.0d", i, j);
-
-	printf("\n%-7s\t\t|%+d|\t\t|%+d|\n", "%+d", i, j);
-	printf("%-7s\t\t|%+4d|\t\t|%+4d|\n", "%+4d", i, j);
-	printf("%-7s\t\t|%+0d|\t\t|%+0d|\n", "%+0d", i, j);
-	printf("%-7s\t\t|%+01d|\t\t|%+01d|\n", "%+01d", i, j);
-	printf("%-7s\t\t|%+02d|\t\t|%+02d|\n", "%+02d", i, j);
-	printf("%-7s\t\t|%+04d|\t\t|%+04d|\n", "%+04d", i, j);
-	printf("%-7s\t\t|%+2d|\t\t|%+2d|\n", "%+2d", i, j);
-	printf("%-7s\t\t|%+1d|\t\t|%+1d|\n", "%+1d", i, j);
-	printf("%-7s\t\t|%+1.1d|\t\t|%+1.1d|\n", "%+1.1d", i, j);
-	printf("%-7s\t\t|%+4.1d|\t\t|%+4.1d|\n", "%+4.1d", i, j);
-	printf("%-7s\t\t|%+4.5d|\t|%+4.5d|\n", "%+4.5d", i, j);
-
-	printf("\n%-7s\t\t|% d|\t\t|% d|\n", "% d", i, j);
-	printf("%-7s\t\t|% .1d|\t\t|% .1d|\n", "% .1d", i, j);
-	printf("%-7s\t\t|% .4d|\t\t|% .4d|\n", "% .4d", i, j);
-	printf("%-7s\t\t|% 1d|\t\t|% 1d|\n", "% 1d", i, j);
-	printf("%-7s\t\t|% 1.1d|\t\t|% 1.1d|\n", "% 1.1d", i, j);
-	printf("%-7s\t\t|% 1.5d|\t|% 1.5d|\n", "% 1.5d", i, j);
-	printf("%-7s\t\t|% 2d|\t\t|% 2d|\n", "% 2d", i, j);
-	printf("%-7s\t\t|% 4d|\t\t|% 4d|\n", "% 4d", i, j);
-	printf("%-7s\t\t|% 4.1d|\t\t|% 4.1d|\n", "% 4.1d", i, j);
-	printf("%-7s\t\t|% 4.5d|\t|% 4.5d|\n", "% 4.5d", i, j);
-	printf("%-7s\t\t|% 6.4d|\t|% 6.4d|\n", "% 6.4d", i, j);
-	printf("%-7s\t\t|% 0d|\t\t|% 0d|\n", "% 0d", i, j);
-	printf("%-7s\t\t|% 0.1d|\t\t|% 0.1d|\n", "% 0.1d", i, j);
-	printf("%-7s\t\t|% 0.5d|\t|% 0.5d|\n", "% 0.5d", i, j);
-	printf("%-7s\t\t|% 01d|\t\t|% 01d|\n", "% 01d", i, j);
-	printf("%-7s\t\t|% 01.5d|\t|% 01.5d|\n", "% 01.5d", i, j);
-	printf("%-7s\t\t|% 02d|\t\t|% 02d|\n", "% 02d", i, j);
-	printf("%-7s\t\t|% 04d|\t\t|% 04d|\n", "% 04d", i, j);
-	printf("%-7s\t\t|% 04.1d|\t\t|% 04.1d|\n", "% 04.1d", i, j);
-	printf("%-7s\t\t|% 04.5d|\t|% 04.5d|\n", "% 04.5d", i, j);
-	printf("%-7s\t\t|% 05.3d|\t|% 05.3d|\n", "% 05.3d", i, j);
-
-	printf("\n%-7s\t\t|%+1.5d|\t|%+1.5d|\n", "%+1.5d", i, j);
-	printf("%-7s\t\t|%- d|\t\t|%- d|\n", "%- d", i, j);
-	printf("%-7s\t\t|%- .1d|\t\t|%- .1d|\n", "%- .1d", i, j);
-	printf("%-7s\t\t|%- .4d|\t\t|%- .4d|\n", "%- .4d", i, j);
-	printf("%-7s\t\t|%- 1d|\t\t|%- 1d|\n", "%- 1d", i, j);
-	printf("%-7s\t\t|%- 1.1d|\t\t|%- 1.1d|\n", "%- 1.1d", i, j);
-	printf("%-7s\t\t|%- 1.5d|\t|%- 1.5d|\n", "%- 1.5d", i, j);
-	printf("%-7s\t\t|%- 2d|\t\t|%- 2d|\n", "%- 2d", i, j);
-	printf("%-7s\t\t|%- 4d|\t\t|%- 4d|\n", "%- 4d", i, j);
-	printf("%-7s\t\t|%- 4.1d|\t\t|%- 4.1d|\n", "%- 4.1d", i, j);
-	printf("%-7s\t\t|%- 4.5d|\t|%- 4.5d|\n", "%- 4.5d", i, j);
-	printf("%-7s\t\t|%+-d|\t\t|%+-d|\n", "%+-d", i, j);
-	printf("%-7s\t\t|%+-1d|\t\t|%+-1d|\n", "%+-1d", i, j);
-	printf("%-7s\t\t|%+-2d|\t\t|%+-2d|\n", "%+-2d", i, j);
-	printf("%-7s\t\t|%+-4d|\t\t|%+-4d|\n", "%+-4d", i, j);
-
-	printf("\n%-7s\t\t|%-d|\t\t|%-d|\n", "%-d", i, j);
-	printf("%-7s\t\t|%-.1d|\t\t|%-.1d|\n", "%-.1d", i, j);
-	printf("%-7s\t\t|%-.5d|\t\t|%-.5d|\n", "%-.5d", i, j);
-	printf("%-7s\t\t|%-1d|\t\t|%-1d|\n", "%-1d", i, j);
-	printf("%-7s\t\t|%-1.2d|\t\t|%-1.2d|\n", "%-1.2d", i, j);
-	printf("%-7s\t\t|%-1.6d|\t|%-1.6d|\n", "%-1.6d", i, j);
-	printf("%-7s\t\t|%-2d|\t\t|%-2d|\n", "%-2d", i, j);
-	printf("%-7s\t\t|%-4d|\t\t|%-4d|\n", "%-4d", i, j);
-	printf("%-7s\t\t|%-4.2d|\t\t|%-4.2d|\n", "%-4.2d", i, j);
-	printf("%-7s\t\t|%-4.6d|\t|%-4.6d|\n", "%-4.6d", i, j);
-
-	printf("\n%-7s\t\t|%0d|\t\t|%0d|\n", "%0d", i, j);
-	printf("%-7s\t\t|%0.1d|\t\t|%0.1d|\n", "%0.1d", i, j);
-	printf("%-7s\t\t|%0.4d|\t\t|%0.4d|\n", "%0.4d", i, j);
-	printf("%-7s\t\t|%01d|\t\t|%01d|\n", "%01d", i, j);
-	printf("%-7s\t\t|%01.4d|\t\t|%01.4d|\n", "%01.4d", i, j);
-	printf("%-7s\t\t|%02d|\t\t|%02d|\n", "%02d", i, j);
-	printf("%-7s\t\t|%04d|\t\t|%04d|\n", "%04d", i, j);
-	printf("%-7s\t\t|%04.6d|\t|%04.6d|\n", "%04.6d", i, j);
-	printf("%-7s\t\t|%06.4d|\t|%06.4d|\n", "%06.4d", i, j);
-
-	printf("\n%-7s\t\t|%1d|\t\t|%1d|\n", "%1d", i, j);
-	printf("%-7s\t\t|%2d|\t\t|%2d|\n", "%2d", i, j);
-	printf("%-7s\t\t|%4d|\t\t|%4d|\n", "%4d", i, j);
-	printf("%-7s\t\t|%1.1d|\t\t|%1.1d|\n", "%1.1d", i, j);
-	printf("%-7s\t\t|%1.5d|\t\t|%1.5d|\n", "%1.5d", i, j);
-	printf("%-7s\t\t|%4.1d|\t\t|%4.1d|\n", "%4.1d", i, j);
-	printf("%-7s\t\t|%4.5d|\t\t|%4.5d|\n", "%4.5d", i, j);
-	printf("%-7s\t\t|%5.4d|\t\t|%5.4d|\n", "%5.4d", i, j);
-
-	printf("\n%-7s\t\t|%.1d|\t\t|%.1d|\n", "%.1d", i, j);
-	printf("%-7s\t\t|%.2d|\t\t|%.2d|\n", "%.2d", i, j);
-	printf("%-7s\t\t|%.5d|\t\t|%.5d|\n", "%.5d", i, j);
-	printf("\n");
-
-
-
-	// printf("|%+*d|\n", 4, 42);
-
-	// printf("\n%08.4f\n", 42.10);
-
-	// NOT
-	// printf("|%+ d|\n", 42);
-	// printf("|%+ 4d|\n", 42);
+	printf("\n%-8s|%+d|\t\t|%+d|\t|%+d|\n", "%+d", i, j, k);
+	ft_printf("\t|%+d|\t\t|%+d|\t|%+d|\n",  i, j, k);
+	printf("%-8s|%+1d|\t\t|%+1d|\t|%+1d|\n", "%+1d", i, j, k);
+	ft_printf("\t|%+1d|\t\t|%+1d|\t|%+1d|\n",  i, j, k);
+	printf("%-8s|%+3.0d|\t\t|%+3.0d|\t|%+3.0d|\n", "%+3.0d", i, j, k);
+	ft_printf("\t|%+3.0d|\t\t|%+3.0d|\t|%+3.0d|\n",  i, j, k);
+	printf("%-8s|%+4d|\t\t|%+4d|\t|%+4d|\n", "%+4d", i, j, k);
+	ft_printf("\t|%+4d|\t\t|%+4d|\t|%+4d|\n",  i, j, k);
+	printf("%-8s|%+.1d|\t\t|%+.1d|\t|%+.1d|\n", "%+.1d", i, j, k);
+	ft_printf("\t|%+.1d|\t\t|%+.1d|\t|%+.1d|\n", i, j, k);
+	printf("%-8s|%+.5d|\t|%+.5d|\t|%+.5d|\n", "%+.5d", i, j, k);
+	ft_printf("\t|%+.5d|\t|%+.5d|\t|%+.5d|\n",  i, j, k);
+	printf("%-8s|%+1.1d|\t\t|%+1.1d|\t|%+1.1d|\n", "%+1.1d", i, j, k);
+	ft_printf("\t|%+1.1d|\t\t|%+1.1d|\t|%+1.1d|\n",  i, j, k);
+	printf("%-8s|%+1.5d|\t|%+1.5d|\t|%+1.5d|\n", "%+1.5d", i, j, k);
+	ft_printf("\t|%+1.5d|\t|%+1.5d|\t|%+1.5d|\n",  i, j, k);
+	printf("%-8s|%+3.5d|\t|%+3.5d|\t|%+3.5d|\n", "%+3.5d", i, j, k);
+	ft_printf("\t|%+3.5d|\t|%+3.5d|\t|%+3.5d|\n", i, j, k);
+	printf("%-8s|%+4.1d|\t\t|%+4.1d|\t|%+4.1d|\n", "%+4.1d", i, j, k);
+	ft_printf("\t|%+4.1d|\t\t|%+4.1d|\t|%+4.1d|\n",  i, j, k);
+	printf("%-8s|%+5.2d|\t\t|%+5.2d|\t|%+5.2d|\n", "%+5.2d", i, j, k);
+	ft_printf("\t|%+5.2d|\t\t|%+5.2d|\t|%+5.2d|\n", i, j, k);
+	printf("%-8s|%+5.0d|\t\t|%+5.0d|\t|%+5.0d|\n", "%+5.0d", i, j, k);
+	ft_printf("\t|%+5.0d|\t\t|%+5.0d|\t|%+5.0d|\n",  i, j, k);
+	printf("%-8s|%+0d|\t\t|%+0d|\t|%+0d|\n", "%+0d", i, j, k);
+	ft_printf("\t|%+0d|\t\t|%+0d|\t|%+0d|\n",  i, j, k);
+	printf("%-8s|%+01d|\t\t|%+01d|\t|%+01d|\n", "%+01d", i, j, k);
+	ft_printf("\t|%+01d|\t\t|%+01d|\t|%+01d|\n",  i, j, k);
+	printf("%-8s|%+04d|\t\t|%+04d|\t|%+04d|\n", "%+04d", i, j, k);
+	ft_printf("\t|%+04d|\t\t|%+04d|\t|%+04d|\n",  i, j, k);
+	printf("%-8s|%+0.0d|\t\t|%+0.0d|\t|%+0.0d|\n", "%+0.0d", i, j, k);
+	ft_printf("\t|%+0.0d|\t\t|%+0.0d|\t|%+0.0d|\n",  i, j, k);
+	printf("%-8s|%+0.2d|\t\t|%+0.2d|\t|%+0.2d|\n", "%+0.2d", i, j, k);
+	ft_printf("\t|%+0.2d|\t\t|%+0.2d|\t|%+0.2d|\n",  i, j, k);
+	printf("%-8s|%+0.5d|\t|%+0.5d|\t|%+0.5d|\n", "%+0.5d", i, j, k);
+	ft_printf("\t|%+0.5d|\t|%+0.5d|\t|%+0.5d|\n",  i, j, k);
+	printf("%-8s|%+04.0d|\t\t|%+04.0d|\t|%+04.0d|\n", "%+04.0d", i, j, k);
+	ft_printf("\t|%+04.0d|\t\t|%+04.0d|\t|%+04.0d|\n",  i, j, k);
+	printf("%-8s|%+04.2d|\t\t|%+04.2d|\t|%+04.2d|\n", "%+04.2d", i, j, k);
+	ft_printf("\t|%+04.2d|\t\t|%+04.2d|\t|%+04.2d|\n",  i, j, k);
+	printf("%-8s|%+02.2d|\t\t|%+02.2d|\t|%+02.2d|\n", "%+02.2d", i, j, k);
+	ft_printf("\t|%+02.2d|\t\t|%+02.2d|\t|%+02.2d|\n", i, j, k);
+	printf("%-8s|%+02.5d|\t|%+02.5d|\t|%+02.5d|\n", "%+02.5d", i, j, k);
+	ft_printf("\t|%+02.5d|\t|%+02.5d|\t|%+02.5d|\n",  i, j, k);
+	printf("%-8s|%+-d|\t\t|%+-d|\t|%+-d|\n", "%+-d", i, j, k);
+	ft_printf("\t|%+-d|\t\t|%+-d|\t|%+-d|\n", i, j, k);
+	printf("%-8s|%+-1d|\t\t|%+-1d|\t|%+-1d|\n", "%+-1d", i, j, k);
+	ft_printf("\t|%+-1d|\t\t|%+-1d|\t|%+-1d|\n",  i, j, k);
+	printf("%-8s|%+-2d|\t\t|%+-2d|\t|%+-2d|\n", "%+-2d", i, j, k);
+	ft_printf("\t|%+-2d|\t\t|%+-2d|\t|%+-2d|\n",  i, j, k);
+	printf("%-8s|%+-4d|\t\t|%+-4d|\t|%+-4d|\n", "%+-4d", i, j, k);
+	ft_printf("\t|%+-4d|\t\t|%+-4d|\t|%+-4d|\n",  i, j, k);
+	printf("%-8s|%+-2.0d|\t\t|%+-2.0d|\t|%+-2.0d|\n", "%+-2.0d", i, j, k);
+	ft_printf("\t|%+-2.0d|\t\t|%+-2.0d|\t|%+-2.0d|\n",  i, j, k);
+	printf("%-8s|%+-2.1d|\t\t|%+-2.1d|\t|%+-2.1d|\n", "%+-2.1d", i, j, k);
+	ft_printf("\t|%+-2.1d|\t\t|%+-2.1d|\t|%+-2.1d|\n",  i, j, k);
+	printf("%-8s|%+-2.5d|\t|%+-2.5d|\t|%+-2.5d|\n", "%+-2.5d", i, j, k);
+	ft_printf("\t|%+-2.5d|\t|%+-2.5d|\t|%+-2.5d|\n", i, j, k);
+	printf("%-8s|%+-4.1d|\t\t|%+-4.1d|\t|%+-4.1d|\n", "%+-4.1d", i, j, k);
+	ft_printf("\t|%+-4.1d|\t\t|%+-4.1d|\t|%+-4.1d|\n",  i, j, k);
+	printf("%-8s|%+-4.5d|\t|%+-4.5d|\t|%+-4.5d|\n", "%+-4.5d", i, j, k);
+	ft_printf("\t|%+-4.5d|\t|%+-4.5d|\t|%+-4.5d|\n", i, j, k);
+	printf("%-8s|%+-4.6d|\t|%+-4.6d|\t|%+-4.6d|\n", "%+-4.6d", i, j, k);
+	ft_printf("\t|%+-4.6d|\t|%+-4.6d|\t|%+-4.6d|\n",  i, j, k);
+	printf("%-8s|%+-6.5d|\t|%+-6.5d|\t|%+-6.5d|\n", "%+-6.5d", i, j, k);
+	ft_printf("\t|%+-6.5d|\t|%+-6.5d|\t|%+-6.5d|\n",  i, j, k);
+	printf("%-8s|%+-6.3d|\t|%+-6.3d|\t|%+-6.3d|\n", "%+-6.3d", i, j, k);
+	ft_printf("\t|%+-6.3d|\t|%+-6.3d|\t|%+-6.3d|\n",  i, j, k);
+	printf("%-8s|%+-.0d|\t\t|%+-.0d|\t|%+-.0d|\n", "%+-.0d", i, j, k);
+	ft_printf("\t|%+-.0d|\t\t|%+-.0d|\t|%+-.0d|\n",  i, j, k);
+	printf("%-8s|%+-.2d|\t|%+-.2d|\t|%+-.2d|\n", "%+-.2d", i, j, k);
+	ft_printf("\t|%+-.2d|\t|%+-.2d|\t|%+-.2d|\n",  i, j, k);
+	printf("%-8s|%+-.5d|\t|%+-.5d|\t|%+-.5d|\n", "%+-.5d", i, j, k);
+	ft_printf("\t|%+-.5d|\t|%+-.5d|\t|%+-.5d|\n",  i, j, k);
 
 }
+void minust(void)
+{
+		int i = 7, j = -7, k = 0;
+
+	printf("\n%-8s|%-d|\t\t|%-d|\t|%-d|\n", "%-d", i, j, k);
+	ft_printf("\t|%-d|\t\t|%-d|\t|%-d|\n", i, j, k);
+	printf("%-8s|%-.1d|\t\t|%-.1d|\t|%-.1d|\n", "%-.1d", i, j, k);
+	ft_printf("\t|%-.1d|\t\t|%-.1d|\t|%-.1d|\n",  i, j, k);
+	printf("%-8s|%-.5d|\t\t|%-.5d|\t|%-.5d|\n", "%-.5d", i, j, k);
+	ft_printf("\t|%-.5d|\t\t|%-.5d|\t|%-.5d|\n",  i, j, k);
+	printf("%-8s|%-1d|\t\t|%-1d|\t|%-1d|\n", "%-1d", i, j, k);
+	ft_printf("\t|%-1d|\t\t|%-1d|\t|%-1d|\n",  i, j, k);
+	printf("%-8s|%-1.2d|\t\t|%-1.2d|\t|%-1.2d|\n", "%-1.2d", i, j, k);
+	ft_printf("\t|%-1.2d|\t\t|%-1.2d|\t|%-1.2d|\n", i, j, k);
+	printf("%-8s|%-1.6d|\t|%-1.6d|\t|%-1.6d|\n", "%-1.6d", i, j, k);
+	ft_printf("\t|%-1.6d|\t|%-1.6d|\t|%-1.6d|\n", i, j, k);
+	printf("%-8s|%-2d|\t\t|%-2d|\t|%-2d|\n", "%-2d", i, j, k);
+	ft_printf("\t|%-2d|\t\t|%-2d|\t|%-2d|\n", i, j, k);
+	printf("%-8s|%-2.0d|\t\t|%-2.0d|\t|%-2.0d|\n", "%-2.0d", i, j, k);
+	ft_printf("\t|%-2.0d|\t\t|%-2.0d|\t|%-2.0d|\n", i, j, k);
+	printf("%-8s|%-4d|\t\t|%-4d|\t|%-4d|\n", "%-4d", i, j, k);
+	ft_printf("\t|%-4d|\t\t|%-4d|\t|%-4d|\n",  i, j, k);
+	printf("%-8s|%-4.2d|\t\t|%-4.2d|\t|%-4.2d|\n", "%-4.2d", i, j, k);
+	ft_printf("\t|%-4.2d|\t\t|%-4.2d|\t|%-4.2d|\n", i, j, k);
+	printf("%-8s|%-4.6d|\t|%-4.6d|\t|%-4.6d|\n", "%-4.6d", i, j, k);
+	ft_printf("\t|%-4.6d|\t|%-4.6d|\t|%-4.6d|\n",  i, j, k);
+	printf("%-8s|%- d|\t\t|%- d|\t|%- d|\n", "%- d", i, j, k);
+	ft_printf("\t|%- d|\t\t|%- d|\t|%- d|\n",  i, j, k);
+	printf("%-8s|%- .1d|\t\t|%- .1d|\t|%- .1d|\n", "%- .1d", i, j, k);
+	ft_printf("\t|%- .1d|\t\t|%- .1d|\t|%- .1d|\n",  i, j, k);
+	printf("%-8s|%- .4d|\t\t|%- .4d|\t|%- .4d|\n", "%- .4d", i, j, k);
+	ft_printf("\t|%- .4d|\t\t|%- .4d|\t|%- .4d|\n",  i, j, k);
+	printf("%-8s|%- 1d|\t\t|%- 1d|\t|%- 1d|\n", "%- 1d", i, j, k);
+	ft_printf("\t|%- 1d|\t\t|%- 1d|\t|%- 1d|\n",  i, j, k);
+	printf("%-8s|%- 1.1d|\t\t|%- 1.1d|\t|%- 1.1d|\n", "%- 1.1d", i, j, k);
+	ft_printf("\t|%- 1.1d|\t\t|%- 1.1d|\t|%- 1.1d|\n", i, j, k);
+	printf("%-8s|%- 1.5d|\t|%- 1.5d|\t|%- 1.5d|\n", "%- 1.5d", i, j, k);
+	ft_printf("\t|%- 1.5d|\t|%- 1.5d|\t|%- 1.5d|\n",  i, j, k);
+	printf("%-8s|%- 2d|\t\t|%- 2d|\t|%- 2d|\n", "%- 2d", i, j, k);
+	ft_printf("\t|%- 2d|\t\t|%- 2d|\t|%- 2d|\n",  i, j, k);
+	printf("%-8s|%- 4d|\t\t|%- 4d|\t|%- 4d|\n", "%- 4d", i, j, k);
+	ft_printf("\t|%- 4d|\t\t|%- 4d|\t|%- 4d|\n",  i, j, k);
+	printf("%-8s|%- 4.1d|\t\t|%- 4.1d|\t|%- 4.1d|\n", "%- 4.1d", i, j, k);
+	ft_printf("\t|%- 4.1d|\t\t|%- 4.1d|\t|%- 4.1d|\n",  i, j, k);
+	printf("%-8s|%- 4.5d|\t|%- 4.5d|\t|%- 4.5d|\n", "%- 4.5d", i, j, k);
+	ft_printf("\t|%- 4.5d|\t|%- 4.5d|\t|%- 4.5d|\n",  i, j, k);
+	printf("%-8s|%- 6.4d|\t|%- 6.4d|\t|%- 6.4d|\n", "%- 6.4d", i, j, k);
+	ft_printf("\t|%- 6.4d|\t|%- 6.4d|\t|%- 6.4d|\n", i, j, k);
+	printf("%-8s|%+-d|\t\t|%+-d|\t|%+-d|\n", "%+-d", i, j, k);
+	ft_printf("\t|%+-d|\t\t|%+-d|\t|%+-d|\n", i, j, k);
+	printf("%-8s|%+-1d|\t\t|%+-1d|\t|%+-1d|\n", "%+-1d", i, j, k);
+	ft_printf("\t|%+-1d|\t\t|%+-1d|\t|%+-1d|\n",  i, j, k);
+	printf("%-8s|%+-2d|\t\t|%+-2d|\t|%+-2d|\n", "%+-2d", i, j, k);
+	ft_printf("\t|%+-2d|\t\t|%+-2d|\t|%+-2d|\n", i, j, k);
+	printf("%-8s|%+-3.2d|\t\t|%+-3.2d|\t|%+-3.2d|\n", "%+-3.2d", i, j, k);
+	ft_printf("\t|%+-3.2d|\t\t|%+-3.2d|\t|%+-3.2d|\n",  i, j, k);
+	printf("%-8s|%+-2.5d|\t|%+-2.5d|\t|%+-2.5d|\n", "%+-2.5d", i, j, k);
+	ft_printf("\t|%+-2.5d|\t|%+-2.5d|\t|%+-2.5d|\n",  i, j, k);
+	printf("%-8s|%+-4d|\t\t|%+-4d|\t|%+-4d|\n", "%+-4d", i, j, k);
+	ft_printf("\t|%+-4d|\t\t|%+-4d|\t|%+-4d|\n", i, j, k);
+	printf("%-8s|%+-4.2d|\t\t|%+-4.2d|\t|%+-4.2d|\n", "%+-4.2d", i, j, k);
+	ft_printf("\t|%+-4.2d|\t\t|%+-4.2d|\t|%+-4.2d|\n",  i, j, k);
+	printf("%-8s|%+-3.5d|\t|%+-3.5d|\t|%+-3.5d|\n", "%+-3.5d", i, j, k);
+	ft_printf("\t|%+-3.5d|\t|%+-3.5d|\t|%+-3.5d|\n", i, j, k);
+}
+
+
+void	spacet(void)
+{
+	int i = 7, j = -7, k = 0;
+
+	printf("\n%-8s|% d|\t\t|% d|\t|%d|\n", "% d", i, j, k);
+	ft_printf("\t|% d|\t\t|% d|\t|%d|\n",  i, j, k);
+	printf("%-8s|% .1d|\t\t|% .1d|\t|% .1d|\n", "% .1d", i, j, k);
+	ft_printf("\t|% .1d|\t\t|% .1d|\t|% .1d|\n",  i, j, k);
+	printf("%-8s|% .0d|\t\t|% .0d|\t|% .0d|\n", "% .0d", i, j, k);
+	ft_printf("\t|% .0d|\t\t|% .0d|\t|% .0d|\n",  i, j, k);
+	printf("%-8s|% 3.0d|\t\t|% 3.0d|\t|% 3.0d|\n", "% 3.0d", i, j, k);
+	ft_printf("\t|% 3.0d|\t\t|% 3.0d|\t|% 3.0d|\n",  i, j, k);
+	printf("%-8s|% 1.0d|\t\t|% 1.0d|\t|% 1.0d|\n", "% 1.0d", i, j, k);
+	ft_printf("\t|% 1.0d|\t\t|% 1.0d|\t|% 1.0d|\n",  i, j, k);
+	printf("%-8s|% 0.0d|\t\t|% 0.0d|\t|% 0.0d|\n", "% 0.0d", i, j, k);
+	ft_printf("\t|% 0.0d|\t\t|% 0.0d|\t|% 0.0d|\n",  i, j, k);
+	printf("%-8s|% .4d|\t\t|% .4d|\t|% .4d|\n", "% .4d", i, j, k);
+	ft_printf("\t|% .4d|\t\t|% .4d|\t|% .4d|\n", i, j, k);
+	printf("%-8s|% 1.1d|\t\t|% 1.1d|\t|% 1.1d|\n", "% 1.1d", i, j, k);
+	ft_printf("\t|% 1.1d|\t\t|% 1.1d|\t|% 1.1d|\n",  i, j, k);
+	printf("%-8s|% 1.5d|\t|% 1.5d|\t|% 1.5d|\n", "% 1.5d", i, j, k);
+	ft_printf("\t|% 1.5d|\t|% 1.5d|\t|% 1.5d|\n",  i, j, k);
+	printf("%-8s|% 4.1d|\t\t|% 4.1d|\t|% 4.1d|\n", "% 4.1d", i, j, k);
+	ft_printf("\t|% 4.1d|\t\t|% 4.1d|\t|% 4.1d|\n", i, j, k);
+	printf("%-8s|% 3.2d|\t\t|% 3.2d|\t|% 3.2d|\n", "% 3.2d", i, j, k);
+	ft_printf("\t|% 3.2d|\t\t|% 3.2d|\t|% 3.2d|\n", i, j, k);
+	printf("%-8s|% 4.5d|\t|% 4.5d|\t|% 4.5d|\n", "% 4.5d", i, j, k);
+	ft_printf("\t|% 4.5d|\t|% 4.5d|\t|% 4.5d|\n", i, j, k);
+	printf("%-8s|% 6.3d|\t|% 6.3d|\t|% 6.3d|\n", "% 6.3d", i, j, k);
+	ft_printf("\t|% 6.3d|\t|% 6.3d|\t|% 6.3d|\n",  i, j, k);
+	printf("%-8s|% 6.5d|\t|% 6.5d|\t|% 6.5d|\n", "% 6.5d", i, j, k);
+	ft_printf("\t|% 6.5d|\t|% 6.5d|\t|% 6.5d|\n",  i, j, k);
+	printf("%-8s|% 6.4d|\t|% 6.4d|\t|% 6.4d|\n", "% 6.4d", i, j, k);
+	ft_printf("\t|% 6.4d|\t|% 6.4d|\t|% 6.4d|\n",  i, j, k);
+	printf("%-8s|% 0d|\t\t|% 0d|\t|% 0d|\n", "% 0d", i, j, k);
+	ft_printf("\t|% 0d|\t\t|% 0d|\t|% 0d|\n", i, j, k);
+	printf("%-8s|% 1d|\t\t|% 1d|\t|% 1d|\n", "% 1d", i, j, k);
+	ft_printf("\t|% 1d|\t\t|% 1d|\t|% 1d|\n",  i, j, k);
+	printf("%-8s|% 2d|\t\t|% 2d|\t|% 2d|\n", "% 2d", i, j, k);
+	ft_printf("\t|% 2d|\t\t|% 2d|\t|% 2d|\n",  i, j, k);
+	printf("%-8s|% 4d|\t\t|% 4d|\t|% 4d|\n", "% 4d", i, j, k);
+	ft_printf("\t|% 4d|\t\t|% 4d|\t|% 4d|\n", i, j, k);
+	printf("%-8s|% 01d|\t\t|% 01d|\t|% 01d|\n", "% 01d", i, j, k);
+	ft_printf("\t|% 01d|\t\t|% 01d|\t|% 01d|\n",  i, j, k);
+	printf("%-8s|% 02d|\t\t|% 02d|\t|% 02d|\n", "% 02d", i, j, k);
+	ft_printf("\t|% 02d|\t\t|% 02d|\t|% 02d|\n", i, j, k);
+	printf("%-8s|% 04d|\t\t|% 04d|\t|% 04d|\n", "% 04d", i, j, k);
+	ft_printf("\t|% 04d|\t\t|% 04d|\t|% 04d|\n",  i, j, k);
+	printf("%-8s|% 0.1d|\t\t|% 0.1d|\t|% 0.1d|\n", "% 0.1d", i, j, k);
+	ft_printf("\t|% 0.1d|\t\t|% 0.1d|\t|% 0.1d|\n",  i, j, k);
+	printf("%-8s|% 0.5d|\t|% 0.5d|\t|% 0.5d|\n", "% 0.5d", i, j, k);
+	ft_printf("\t|% 0.5d|\t|% 0.5d|\t|% 0.5d|\n",  i, j, k);
+	printf("%-8s|% 01.5d|\t|% 01.5d|\t|% 01.5d|\n", "% 01.5d", i, j, k);
+	ft_printf("\t|% 01.5d|\t|% 01.5d|\t|% 01.5d|\n",  i, j, k);
+	printf("%-8s|% 04.1d|\t\t|% 04.1d|\t|% 04.1d|\n", "% 04.1d", i, j, k);
+	ft_printf("\t|% 04.1d|\t\t|% 04.1d|\t|% 04.1d|\n",  i, j, k);
+	printf("%-8s|% 04.6d|\t|% 04.6d|\t|% 04.6d|\n", "% 04.6d", i, j, k);
+	ft_printf("\t|% 04.6d|\t|% 04.6d|\t|% 04.6d|\n",  i, j, k);
+	printf("%-8s|% 05.3d|\t\t|% 05.3d|\t|% 05.3d|\n", "% 05.3d", i, j, k);
+	ft_printf("\t|% 05.3d|\t\t|% 05.3d|\t|% 05.3d|\n", i, j, k);
+	printf("%-8s|%- d|\t\t|%- d|\t|%- d|\n", "%- d", i, j, k);
+	ft_printf("\t|%- d|\t\t|%- d|\t|%- d|\n", i, j, k);
+	printf("%-8s|%- 1d|\t\t|%- 1d|\t|%- 1d|\n", "%- 1d", i, j, k);
+	ft_printf("\t|%- 1d|\t\t|%- 1d|\t|%- 1d|\n",  i, j, k);
+	printf("%-8s|%- 2d|\t\t|%- 2d|\t|%- 2d|\n", "%- 2d", i, j, k);
+	ft_printf("\t|%- 2d|\t\t|%- 2d|\t|%- 2d|\n",  i, j, k);
+	printf("%-8s|%- 4d|\t\t|%- 4d|\t|%- 4d|\n", "%- 4d", i, j, k);
+	ft_printf("\t|%- 4d|\t\t|%- 4d|\t|%- 4d|\n",  i, j, k);
+	printf("%-8s|%- .0d|\t\t|%- .0d|\t|%- .0d|\n", "%- .0d", i, j, k);
+	ft_printf("\t|%- .0d|\t\t|%- .0d|\t|%- .0d|\n",  i, j, k);
+	printf("%-8s|%- .1d|\t\t|%- .1d|\t|%- .1d|\n", "%- .1d", i, j, k);
+	ft_printf("\t|%- .1d|\t\t|%- .1d|\t|%- .1d|\n",  i, j, k);
+	printf("%-8s|%- .5d|\t|%- .5d|\t|%- .5d|\n", "%- .5d", i, j, k);
+	ft_printf("\t|%- .5d|\t|%- .5d|\t|%- .5d|\n",  i, j, k);
+	printf("%-8s|%- 1.1d|\t\t|%- 1.1d|\t|%- 1.1d|\n", "%- 1.1d", i, j, k);
+	ft_printf("\t|%- 1.1d|\t\t|%- 1.1d|\t|%- 1.1d|\n",  i, j, k);
+	printf("%-8s|%- 1.5d|\t|%- 1.5d|\t|%- 1.5d|\n", "%- 1.5d", i, j, k);
+	ft_printf("\t|%- 1.5d|\t|%- 1.5d|\t|%- 1.5d|\n",  i, j, k);
+	printf("%-8s|%- 4.0d|\t\t|%- 4.0d|\t|%- 4.0d|\n", "%- 4.0d", i, j, k);
+	ft_printf("\t|%- 4.0d|\t\t|%- 4.0d|\t|%- 4.0d|\n",  i, j, k);
+	printf("%-8s|%- 4.1d|\t\t|%- 4.1d|\t|%- 4.1d|\n", "%- 4.1d", i, j, k);
+	ft_printf("\t|%- 4.1d|\t\t|%- 4.1d|\t|%- 4.1d|\n",  i, j, k);
+	printf("%-8s|%- 4.6d|\t|%- 4.6d|\t|%- 4.6d|\n", "%- 4.6d", i, j, k);
+	ft_printf("\t|%- 4.6d|\t|%- 4.6d|\t|%- 4.6d|\n", i, j, k);
+	printf("%-8s|%- 6.3d|\t|%- 6.3d|\t|%- 6.3d|\n", "%- 6.3d", i, j, k);
+	ft_printf("\t|%- 6.3d|\t|%- 6.3d|\t|%- 6.3d|\n",  i, j, k);
+}
+void	widt(void)
+{
+		int i = 7, j = -7, k = 0;
+
+	printf("\n%-8s|%1d|\t\t|%1d|\t|%1d|\n", "%1d", i, j, k);
+	ft_printf("\t|%1d|\t\t|%1d|\t|%1d|\n",  i, j, k);
+	printf("%-8s|%2d|\t\t|%2d|\t|%2d|\n", "%2d", i, j, k);
+	ft_printf("\t|%2d|\t\t|%2d|\t|%2d|\n",  i, j, k);
+	printf("%-8s|%4d|\t\t|%4d|\t|%4d|\n", "%4d", i, j, k);
+	ft_printf("\t|%4d|\t\t|%4d|\t|%4d|\n",  i, j, k);
+	printf("%-8s|% 1d|\t\t|% 1d|\t|% 1d|\n", "% 1d", i, j, k);
+	ft_printf("\t|% 1d|\t\t|% 1d|\t|% 1d|\n",  i, j, k);
+	printf("%-8s|% 1.1d|\t\t|% 1.1d|\t|% 1.1d|\n", "% 1.1d", i, j, k);
+	ft_printf("\t|% 1.1d|\t\t|% 1.1d|\t|% 1.1d|\n",  i, j, k);
+	printf("%-8s|% 1.5d|\t|% 1.5d|\t|% 1.5d|\n", "% 1.5d", i, j, k);
+	ft_printf("\t|% 1.5d|\t|% 1.5d|\t|% 1.5d|\n", i, j, k);
+	printf("%-8s|% 2d|\t\t|% 2d|\t|% 2d|\n", "% 2d", i, j, k);
+	ft_printf("\t|% 2d|\t\t|% 2d|\t|% 2d|\n",  i, j, k);
+	printf("%-8s|% 4d|\t\t|% 4d|\t|% 4d|\n", "% 4d", i, j, k);
+	ft_printf("\t|% 4d|\t\t|% 4d|\t|% 4d|\n",  i, j, k);
+	printf("%-8s|% 4.5d|\t|% 4.5d|\t|% 4.5d|\n", "% 4.5d", i, j, k);
+	ft_printf("\t|% 4.5d|\t|% 4.5d|\t|% 4.5d|\n",  i, j, k);
+	printf("%-8s|% 4.1d|\t\t|% 4.1d|\t|% 4.1d|\n", "% 4.1d", i, j, k);
+	ft_printf("\t|% 4.1d|\t\t|% 4.1d|\t|% 4.1d|\n",  i, j, k);
+	printf("%-8s|% 6.4d|\t|% 6.4d|\t|% 6.4d|\n", "% 6.4d", i, j, k);
+	ft_printf("\t|% 6.4d|\t|% 6.4d|\t|% 6.4d|\n",  i, j, k);
+	printf("%-8s|% 01.5d|\t|% 01.5d|\t|% 01.5d|\n", "% 01.5d", i, j, k);
+	ft_printf("\t|% 01.5d|\t|% 01.5d|\t|% 01.5d|\n",  i, j, k);
+	printf("%-8s|% 01d|\t\t|% 01d|\t|% 01d|\n", "% 01d", i, j, k);
+	ft_printf("\t|% 01d|\t\t|% 01d|\t|% 01d|\n", i, j, k);
+	printf("%-8s|% 04d|\t\t|% 04d|\t|% 04d|\n", "% 04d", i, j, k);
+	ft_printf("\t|% 04d|\t\t|% 04d|\t|% 04d|\n",  i, j, k);
+	printf("%-8s|% 02d|\t\t|% 02d|\t|% 02d|\n", "% 02d", i, j, k);
+	ft_printf("\t|% 02d|\t\t|% 02d|\t|% 02d|\n", i, j, k);
+	printf("%-8s|% 04.1d|\t\t|% 04.1d|\t|% 04.1d|\n", "% 04.1d", i, j, k);
+	ft_printf("\t|% 04.1d|\t\t|% 04.1d|\t|% 04.1d|\n",  i, j, k);
+	printf("%-8s|% 04.5d|\t|% 04.5d|\t|% 04.5d|\n", "% 04.5d", i, j, k);
+	ft_printf("\t|% 04.5d|\t|% 04.5d|\t|% 04.5d|\n",  i, j, k);
+	printf("%-8s|% 05.3d|\t\t|% 05.3d|\t|% 05.3d|\n", "% 05.3d", i, j, k);
+	ft_printf("\t|% 05.3d|\t\t|% 05.3d|\t|% 05.3d|\n",  i, j, k);
+	printf("%-8s|%01d|\t\t|%01d|\t|%01d|\n", "%01d", i, j, k);
+	ft_printf("\t|%01d|\t\t|%01d|\t|%01d|\n",  i, j, k);
+	printf("%-8s|%01.4d|\t\t|%01.4d|\t|%01.4d|\n", "%01.4d", i, j, k);
+	ft_printf("\t|%01.4d|\t\t|%01.4d|\t|%01.4d|\n",  i, j, k);
+	printf("%-8s|%02d|\t\t|%02d|\t|%02d|\n", "%02d", i, j, k);
+	ft_printf("\t|%02d|\t\t|%02d|\t|%02d|\n",  i, j, k);
+	printf("%-8s|%04d|\t\t|%04d|\t|%04d|\n", "%04d", i, j, k);
+	ft_printf("\t|%04d|\t\t|%04d|\t|%04d|\n",  i, j, k);
+	printf("%-8s|%04.6d|\t|%04.6d|\t|%04.6d|\n", "%04.6d", i, j, k);
+	ft_printf("\t|%04.6d|\t|%04.6d|\t|%04.6d|\n", i, j, k);
+	printf("%-8s|%06.4d|\t|%06.4d|\t|%06.4d|\n", "%06.4d", i, j, k);
+	ft_printf("\t|%06.4d|\t|%06.4d|\t|%06.4d|\n",  i, j, k);
+	printf("%-8s|%- 1d|\t\t|%- 1d|\t|%- 1d|\n", "%- 1d", i, j, k);
+	ft_printf("\t|%- 1d|\t\t|%- 1d|\t|%- 1d|\n",  i, j, k);
+	printf("%-8s|%- 1.1d|\t\t|%- 1.1d|\t|%- 1.1d|\n", "%- 1.1d", i, j, k);
+	ft_printf("\t|%- 1.1d|\t\t|%- 1.1d|\t|%- 1.1d|\n",  i, j, k);
+	printf("%-8s|%- 1.5d|\t|%- 1.5d|\t|%- 1.5d|\n", "%- 1.5d", i, j, k);
+	ft_printf("\t|%- 1.5d|\t|%- 1.5d|\t|%- 1.5d|\n",  i, j, k);
+	printf("%-8s|%- 2d|\t\t|%- 2d|\t|%- 2d|\n", "%- 2d", i, j, k);
+	ft_printf("\t|%- 2d|\t\t|%- 2d|\t|%- 2d|\n",  i, j, k);
+	printf("%-8s|%- 4d|\t\t|%- 4d|\t|%- 4d|\n", "%- 4d", i, j, k);
+	ft_printf("\t|%- 4d|\t\t|%- 4d|\t|%- 4d|\n",  i, j, k);
+	printf("%-8s|%- 5.3d|\t\t|%- 5.3d|\t|%- 5.3d|\n", "%- 5.3d", i, j, k);
+	ft_printf("\t|%- 5.3d|\t\t|%- 5.3d|\t|%- 5.3d|\n",  i, j, k);
+	printf("%-8s|%- 4.5d|\t|%- 4.5d|\t|%- 4.5d|\n", "%- 4.5d", i, j, k);
+	ft_printf("\t|%- 4.5d|\t|%- 4.5d|\t|%- 4.5d|\n", i, j, k);
+	printf("%-8s|%- 6.4d|\t|%- 6.4d|\t|%- 6.4d|\n", "%- 6.4d", i, j, k);
+	ft_printf("\t|%- 6.4d|\t|%- 6.4d|\t|%- 6.4d|\n",  i, j, k);
+	printf("%-8s|%+-1d|\t\t|%+-1d|\t|%+-1d|\n", "%+-1d", i, j, k);
+	ft_printf("\t|%+-1d|\t\t|%+-1d|\t|%+-1d|\n", i, j, k);
+	printf("%-8s|%+-2d|\t\t|%+-2d|\t|%+-2d|\n", "%+-2d", i, j, k);
+	ft_printf("\t|%+-2d|\t\t|%+-2d|\t|%+-2d|\n",  i, j, k);
+	printf("%-8s|%+-3.2d|\t\t|%+-3.2d|\t|%+-3.2d|\n", "%+-3.2d", i, j, k);
+	ft_printf("\t|%+-3.2d|\t\t|%+-3.2d|\t|%+-3.2d|\n",  i, j, k);
+	printf("%-8s|%+-3.5d|\t|%+-3.5d|\t|%+-3.5d|\n", "%+-3.5d", i, j, k);
+	ft_printf("\t|%+-3.5d|\t|%+-3.5d|\t|%+-3.5d|\n",  i, j, k);
+	printf("%-8s|%+-4d|\t\t|%+-4d|\t|%+-4d|\n", "%+-4d", i, j, k);
+	ft_printf("\t|%+-4d|\t\t|%+-4d|\t|%+-4d|\n",  i, j, k);
+	printf("%-8s|%+-4.0d|\t\t|%+-4.0d|\t|%+-4.0d|\n", "%+-4.0d", i, j, k);
+	ft_printf("\t|%+-4.0d|\t\t|%+-4.0d|\t|%+-4.0d|\n",  i, j, k);
+	printf("%-8s|%+-4.2d|\t\t|%+-4.2d|\t|%+-4.2d|\n", "%+-4.2d", i, j, k);
+	ft_printf("\t|%+-4.2d|\t\t|%+-4.2d|\t|%+-4.2d|\n",  i, j, k);
+	printf("%-8s|%+-4.6d|\t|%+-4.6d|\t|%+-4.6d|\n", "%+-4.6d", i, j, k);
+	ft_printf("\t|%+-4.6d|\t|%+-4.6d|\t|%+-4.6d|\n", i, j, k);
+	printf("%-8s|%+-6.3d|\t|%+-6.3d|\t|%+-6.3d|\n", "%+-6.3d", i, j, k);
+	ft_printf("\t|%+-6.3d|\t|%+-6.3d|\t|%+-6.3d|\n",  i, j, k);
+	printf("%-8s|%-1d|\t\t|%-1d|\t|%-1d|\n", "%-1d", i, j, k);
+	ft_printf("\t|%-1d|\t\t|%-1d|\t|%-1d|\n",  i, j, k);
+	printf("%-8s|%-1.2d|\t\t|%-1.2d|\t|%-1.2d|\n", "%-1.2d", i, j, k);
+	ft_printf("\t|%-1.2d|\t\t|%-1.2d|\t|%-1.2d|\n",  i, j, k);
+	printf("%-8s|%-1.6d|\t|%-1.6d|\t|%-1.6d|\n", "%-1.6d", i, j, k);
+	ft_printf("\t|%-1.6d|\t|%-1.6d|\t|%-1.6d|\n",  i, j, k);
+	printf("%-8s|%-2d|\t\t|%-2d|\t|%-2d|\n", "%-2d", i, j, k);
+	ft_printf("\t|%-2d|\t\t|%-2d|\t|%-2d|\n", i, j, k);
+	printf("%-8s|%-4d|\t\t|%-4d|\t|%-4d|\n", "%-4d", i, j, k);
+	ft_printf("\t|%-4d|\t\t|%-4d|\t|%-4d|\n",  i, j, k);
+	printf("%-8s|%-4.2d|\t\t|%-4.2d|\t|%-4.2d|\n", "%-4.2d", i, j, k);
+	ft_printf("\t|%-4.2d|\t\t|%-4.2d|\t|%-4.2d|\n",  i, j, k);
+	printf("%-8s|%-4.6d|\t|%-4.6d|\t|%-4.6d|\n", "%-4.6d", i, j, k);
+	ft_printf("\t|%-4.6d|\t|%-4.6d|\t|%-4.6d|\n",  i, j, k);
+	printf("%-8s|%+04d|\t\t|%+04d|\t|%+04d|\n", "%+04d", i, j, k);
+	ft_printf("\t|%+04d|\t\t|%+04d|\t|%+04d|\n",  i, j, k);
+	printf("%-8s|%+02d|\t\t|%+02d|\t|%+02d|\n", "%+02d", i, j, k);
+	ft_printf("\t|%+02d|\t\t|%+02d|\t|%+02d|\n", i, j, k);
+	printf("%-8s|%+2d|\t\t|%+2d|\t|%+2d|\n", "%+2d", i, j, k);
+	ft_printf("\t|%+2d|\t\t|%+2d|\t|%+2d|\n", i, j, k);
+	printf("%-8s|%+4d|\t\t|%+4d|\t|%+4d|\n", "%+4d", i, j, k);
+	ft_printf("\t|%+4d|\t\t|%+4d|\t|%+4d|\n",  i, j, k);
+	printf("%-8s|%+4.0d|\t\t|%+4.0d|\t|%+4.0d|\n", "%+4.0d", i, j, k);
+	ft_printf("\t|%+4.0d|\t\t|%+4.0d|\t|%+4.0d|\n",  i, j, k);
+	printf("%-8s|%+3.6d|\t|%+3.6d|\t|%+3.6d|\n", "%+3.6d", i, j, k);
+	ft_printf("\t|%+3.6d|\t|%+3.6d|\t|%+3.6d|\n",  i, j, k);
+	printf("%-8s|%+6.3d|\t|%+6.3d|\t|%+6.3d|\n", "%+6.3d", i, j, k);
+	ft_printf("\t|%+6.3d|\t|%+6.3d|\t|%+6.3d|\n",  i, j, k);
+	printf("%-8s|%1.1d|\t\t|%1.1d|\t|%1.1d|\n", "%1.1d", i, j, k);
+	ft_printf("\t|%1.1d|\t\t|%1.1d|\t|%1.1d|\n",  i, j, k);
+	printf("%-8s|%1.5d|\t\t|%1.5d|\t|%1.5d|\n", "%1.5d", i, j, k);
+	ft_printf("\t|%1.5d|\t\t|%1.5d|\t|%1.5d|\n",  i, j, k);
+	printf("%-8s|%4.2d|\t\t|%4.2d|\t|%4.2d|\n", "%4.2d", i, j, k);
+	ft_printf("\t|%4.2d|\t\t|%4.2d|\t|%4.2d|\n",  i, j, k);
+	printf("%-8s|%4.0d|\t\t|%4.0d|\t|%4.0d|\n", "%4.0d", i, j, k);
+	ft_printf("\t|%4.0d|\t\t|%4.0d|\t|%4.0d|\n",  i, j, k);
+	printf("%-8s|%4.5d|\t\t|%4.5d|\t|%4.5d|\n", "%4.5d", i, j, k);
+	ft_printf("\t|%4.5d|\t\t|%4.5d|\t|%4.5d|\n", i, j, k);
+	printf("%-8s|%5.4d|\t\t|%5.4d|\t|%5.4d|\n", "%5.4d", i, j, k);
+	ft_printf("\t|%5.4d|\t\t|%5.4d|\t|%5.4d|\n",  i, j, k);
+}
+void	prect(void)
+{
+		int i = 7, j = -7, k = 0;
+
+	printf("\n%-8s|%.0d|\t\t|%.0d|\t|%.0d|\n", "%.0d", i, j, k);
+	ft_printf("\t|%.0d|\t\t|%.0d|\t|%.0d|\n",  i, j, k);
+	printf("%-8s|%.1d|\t\t|%.1d|\t|%.1d|\n", "%.1d", i, j, k);
+	ft_printf("\t|%.1d|\t\t|%.1d|\t|%.1d|\n",  i, j, k);
+	printf("%-8s|%.5d|\t\t|%.5d|\t|%.5d|\n", "%.5d", i, j, k);
+	ft_printf("\t|%.5d|\t\t|%.5d|\t|%.5d|\n",  i, j, k);
+	printf("%-8s|%0.5d|\t\t|%0.5d|\t|%0.5d|\n", "%0.5d", i, j, k);
+	ft_printf("\t|%0.5d|\t\t|%0.5d|\t|%0.5d|\n",  i, j, k);
+	printf("%-8s|%3.0d|\t\t|%3.0d|\t|%3.0d|\n", "%3.0d", i, j, k);
+	ft_printf("\t|%3.0d|\t\t|%3.0d|\t|%3.0d|\n",  i, j, k);
+	printf("%-8s|%2.5d|\t\t|%2.5d|\t|%2.5d|\n", "%2.5d", i, j, k);
+	ft_printf("\t|%2.5d|\t\t|%2.5d|\t|%2.5d|\n",  i, j, k);
+	printf("%-8s|%6.3d|\t|%6.3d|\t|%6.3d|\n", "%6.3d", i, j, k);
+	ft_printf("\t|%6.3d|\t|%6.3d|\t|%6.3d|\n",  i, j, k);
+	printf("%-8s|% .0d|\t\t|% .0d|\t|% .0d|\n", "% .0d", i, j, k);
+	ft_printf("\t|% .0d|\t\t|% .0d|\t|% .0d|\n",  i, j, k);
+	printf("%-8s|% .1d|\t\t|% .1d|\t|% .1d|\n", "% .1d", i, j, k);
+	ft_printf("\t|% .1d|\t\t|% .1d|\t|% .1d|\n",  i, j, k);
+	printf("%-8s|% .5d|\t|% .5d|\t|% .5d|\n", "% .5d", i, j, k);
+	ft_printf("\t|% .5d|\t|% .5d|\t|% .5d|\n",  i, j, k);
+	printf("%-8s|% 3.5d|\t|% 3.5d|\t|% 3.5d|\n", "% 3.5d", i, j, k);
+	ft_printf("\t|% 3.5d|\t|% 3.5d|\t|% 3.5d|\n",  i, j, k);
+	printf("%-8s|% 5.3d|\t\t|% 5.3d|\t|% 5.3d|\n", "% 5.3d", i, j, k);
+	ft_printf("\t|% 5.3d|\t\t|% 5.3d|\t|% 5.3d|\n",  i, j, k);
+	printf("%-8s|% 0.0d|\t\t|% 0.0d|\t|% 0.0d|\n", "% 0.0d", i, j, k);
+	ft_printf("\t|% 0.0d|\t\t|% 0.0d|\t|% 0.0d|\n",  i, j, k);
+	printf("%-8s|% 0.3d|\t\t|% 0.3d|\t|% 0.3d|\n", "% 0.3d", i, j, k);
+	ft_printf("\t|% 0.3d|\t\t|% 0.3d|\t|% 0.3d|\n",  i, j, k);
+	printf("%-8s|% 03.5d|\t|% 03.5d|\t|% 03.5d|\n", "% 03.5d", i, j, k);
+	ft_printf("\t|% 03.5d|\t|% 03.5d|\t|% 03.5d|\n",  i, j, k);
+	printf("%-8s|% 05.3d|\t\t|% 05.3d|\t|% 05.3d|\n", "% 05.3d", i, j, k);
+	ft_printf("\t|% 05.3d|\t\t|% 05.3d|\t|% 05.3d|\n",  i, j, k);
+	printf("%-8s|%-.0d|\t\t|%-.0d|\t|%-.0d|\n", "%-.0d", i, j, k);
+	ft_printf("\t|%-.0d|\t\t|%-.0d|\t|%-.0d|\n",  i, j, k);
+	printf("%-8s|%-4.0d|\t\t|%-4.0d|\t|%-4.0d|\n", "%-4.0d", i, j, k);
+	ft_printf("\t|%-4.0d|\t\t|%-4.0d|\t|%-4.0d|\n",  i, j, k);
+	printf("%-8s|%-.5d|\t\t|%-.5d|\t|%-.5d|\n", "%-.5d", i, j, k);
+	ft_printf("\t|%-.5d|\t\t|%-.5d|\t|%-.5d|\n",  i, j, k);
+	printf("%-8s|%-3.5d|\t\t|%-3.5d|\t|%-3.5d|\n", "%-3.5d", i, j, k);
+	ft_printf("\t|%-3.5d|\t\t|%-3.5d|\t|%-3.5d|\n",  i, j, k);
+	printf("%-8s|%-5.3d|\t\t|%-5.3d|\t|%-5.3d|\n", "%-5.3d", i, j, k);
+	ft_printf("\t|%-5.3d|\t\t|%-5.3d|\t|%-5.3d|\n",  i, j, k);
+	printf("%-8s|%- .0d|\t\t|%- .0d|\t|%- .0d|\n", "%- .0d", i, j, k);
+	ft_printf("\t|%- .0d|\t\t|%- .0d|\t|%- .0d|\n",  i, j, k);
+	printf("%-8s|%- .5d|\t|%- .5d|\t|%- .5d|\n", "%- .5d", i, j, k);
+	ft_printf("\t|%- .5d|\t|%- .5d|\t|%- .5d|\n",  i, j, k);
+	printf("%-8s|%- 3.5d|\t|%- 3.5d|\t|%- 3.5d|\n", "%- 3.5d", i, j, k);
+	ft_printf("\t|%- 3.5d|\t|%- 3.5d|\t|%- 3.5d|\n",  i, j, k);
+	printf("%-8s|%- 5.3d|\t\t|%- 5.3d|\t|%- 5.3d|\n", "%- 5.3d", i, j, k);
+	ft_printf("\t|%- 5.3d|\t\t|%- 5.3d|\t|%- 5.3d|\n",  i, j, k);
+	printf("%-8s|%-+.0d|\t\t|%-+.0d|\t|%-+.0d|\n", "%-+.0d", i, j, k);
+	ft_printf("\t|%-+.0d|\t\t|%-+.0d|\t|%-+.0d|\n",  i, j, k);
+	printf("%-8s|%-+.5d|\t|%-+.5d|\t|%-+.5d|\n", "%-+.5d", i, j, k);
+	ft_printf("\t|%-+.5d|\t|%-+.5d|\t|%-+.5d|\n",  i, j, k);
+	printf("%-8s|%-+3.5d|\t|%-+3.5d|\t|%-+3.5d|\n", "%-+3.5d", i, j, k);
+	ft_printf("\t|%-+3.5d|\t|%-+3.5d|\t|%-+3.5d|\n",  i, j, k);
+	printf("%-8s|%-+5.3d|\t\t|%-+5.3d|\t|%-+5.3d|\n", "%-+5.3d", i, j, k);
+	ft_printf("\t|%-+5.3d|\t\t|%-+5.3d|\t|%-+5.3d|\n",  i, j, k);
+	printf("%-8s|%+.0d|\t\t|%+.0d|\t|%+.0d|\n", "%+.0d", i, j, k);
+	ft_printf("\t|%+.0d|\t\t|%+.0d|\t|%+.0d|\n",  i, j, k);
+	printf("%-8s|%+4.0d|\t\t|%+4.0d|\t|%+4.0d|\n", "%+4.0d", i, j, k);
+	ft_printf("\t|%+4.0d|\t\t|%+4.0d|\t|%+4.0d|\n",  i, j, k);
+	printf("%-8s|%+.3d|\t\t|%+.3d|\t|%+.3d|\n", "%+.3d", i, j, k);
+	ft_printf("\t|%+.3d|\t\t|%+.3d|\t|%+.3d|\n",  i, j, k);
+	printf("%-8s|%+3.5d|\t|%+3.5d|\t|%+3.5d|\n", "%+3.5d", i, j, k);
+	ft_printf("\t|%+3.5d|\t|%+3.5d|\t|%+3.5d|\n",  i, j, k);
+	printf("%-8s|%+5.3d|\t\t|%+5.3d|\t|%+5.3d|\n", "%+5.3d", i, j, k);
+	ft_printf("\t|%+5.3d|\t\t|%+5.3d|\t|%+5.3d|\n",  i, j, k);
+}
+void	zerot(void)
+{
+		int i = 7, j = -7, k = 0;
+
+	printf("\n%-8s|%0d|\t\t|%0d|\t|%0d|\n", "%0d", i, j, k);
+	ft_printf("\t|%0d|\t\t|%0d|\t|%0d|\n",  i, j, k);
+	printf("%-8s|%04d|\t\t|%04d|\t|%04d|\n", "%04d", i, j, k);
+	ft_printf("\t|%04d|\t\t|%04d|\t|%04d|\n",  i, j, k);
+	printf("%-8s|%03.5d|\t\t|%03.5d|\t|%03.5d|\n", "%03.5d", i, j, k);
+	ft_printf("\t|%03.5d|\t\t|%03.5d|\t|%03.5d|\n",  i, j, k);
+	printf("%-8s|%04.0d|\t\t|%04.0d|\t|%04.0d|\n", "%04.0d", i, j, k);
+	ft_printf("\t|%04.0d|\t\t|%04.0d|\t|%04.0d|\n",  i, j, k);
+	printf("%-8s|%04.2d|\t\t|%04.2d|\t|%04.2d|\n", "%04.2d", i, j, k);
+	ft_printf("\t|%04.2d|\t\t|%04.2d|\t|%04.2d|\n",  i, j, k);
+	printf("%-8s|%04.3d|\t\t|%04.3d|\t|%04.3d|\n", "%04.3d", i, j, k);
+	ft_printf("\t|%04.3d|\t\t|%04.3d|\t|%04.3d|\n",  i, j, k);
+	printf("%-8s|%+0d|\t\t|%+0d|\t|%+0d|\n", "%+0d", i, j, k);
+	ft_printf("\t|%+0d|\t\t|%+0d|\t|%+0d|\n", i, j, k);
+	printf("%-8s|%+04d|\t\t|%+04d|\t|%+04d|\n", "%+04d", i, j, k);
+	ft_printf("\t|%+04d|\t\t|%+04d|\t|%+04d|\n", i, j, k);
+	printf("%-8s|%+0.0d|\t\t|%+0.0d|\t|%+0.0d|\n", "%+0.0d", i, j, k);
+	ft_printf("\t|%+0.0d|\t\t|%+0.0d|\t|%+0.0d|\n",  i, j, k);
+	printf("%-8s|%+0.3d|\t\t|%+0.3d|\t|%+0.3d|\n", "%+0.3d", i, j, k);
+	ft_printf("\t|%+0.3d|\t\t|%+0.3d|\t|%+0.3d|\n",  i, j, k);
+	printf("%-8s|%+03.5d|\t|%+03.5d|\t|%+03.5d|\n", "%+03.5d", i, j, k);
+	ft_printf("\t|%+03.5d|\t|%+03.5d|\t|%+03.5d|\n",  i, j, k);
+	printf("%-8s|%+05.3d|\t\t|%+05.3d|\t|%+05.3d|\n", "%+05.3d", i, j, k);
+	ft_printf("\t|%+05.3d|\t\t|%+05.3d|\t|%+05.3d|\n",  i, j, k);
+	printf("%-8s|%0 d|\t\t|%0 d|\t|%0 d|\n", "%0 d", i, j, k);
+	ft_printf("\t|%0 d|\t\t|%0 d|\t|%0 d|\n",  i, j, k);
+	printf("%-8s|%0 4d|\t\t|%0 4d|\t|%0 4d|\n", "%0 4d", i, j, k);
+	ft_printf("\t|%0 4d|\t\t|%0 4d|\t|%0 4d|\n",  i, j, k);
+	printf("%-8s|%0 .0d|\t\t|%0 .0d|\t|%0 .0d|\n", "%0 .0d", i, j, k);
+	ft_printf("\t|%0 .0d|\t\t|%0 .0d|\t|%0 .0d|\n",  i, j, k);
+	printf("%-8s|%0 .5d|\t|%0 .5d|\t|%0 .5d|\n", "%0 .5d", i, j, k);
+	ft_printf("\t|%0 .5d|\t|%0 .5d|\t|%0 .5d|\n",  i, j, k);
+	printf("%-8s|%0 3.5d|\t|%0 3.5d|\t|%0 3.5d|\n", "%0 3.5d", i, j, k);
+	ft_printf("\t|%0 3.5d|\t|%0 3.5d|\t|%0 3.5d|\n",  i, j, k);
+	printf("%-8s|%0 5.3d|\t\t|%0 5.3d|\t|%0 5.3d|\n", "%0 5.3d", i, j, k);
+	ft_printf("\t|%0 5.3d|\t\t|%0 5.3d|\t|%0 5.3d|\n",  i, j, k);
+}
+
+void	test_d(void)
+{
+	printf("\n%s", "% [flags][width][.precision][length]specifier\n");
+	printf("\n--- d ---\n");
+	printf("%-8s|%d|\t|%d|\t|%d|\n", "%d", 7, -7, 0);
+	ft_printf("\t|%d|\t|%d|\t|%d|\n",  7, -7, 0);
+	spacet();
+	widt();
+	plust();
+	prect();
+	zerot();
+	minust();
+	printf("\n");
+}
+
+void	chart(void)
+{
+	// char ch = 'x';
+	// printf("\n\n|%c| test\n", ch);
+	// ft_printf("|%c| test\n", ch);
+	// printf("|%*c| test\n",4,  ch);
+	// ft_printf("|%*c| test\n",4,  ch);
+	// printf("|%3c| test\n", ch);
+	// ft_printf("|%3c| test\n", ch);
+	// printf("|%-4c| test\n", ch);
+	// ft_printf("|%-4c| test\n", ch);
+	// char ch1 = 0;
+	// printf("\n|%c|\n", ch1);
+	// ft_printf("\n|%c|\n", ch1);
+
+}
+
+void	hext(void)
+{
+	// hex
+	// printf("\n|%x|\n", 123456);
+	// printf("|%x|\n", 123456);
+}
+void	octals(void)
+{
+	printf("\nOCTALSn\n");
+
+	printf("\n%-8s|%o|\n", "12345",12345);
+	ft_printf("\t|%o|\n", 12345);
+	printf("%-8s|%o|\n", "7", 7);
+	ft_printf("\t|%o|\n", 7);
+	printf("%-8s|%o|\n","8", 8);
+	ft_printf("\t|%o|\n", 8);
+	printf("%-8s|%o|\n","9", 9);
+	ft_printf("\t|%o|\n", 9);
+	printf("%-8s|%o|\n","0", 0);
+	ft_printf("\t|%o|\n", 0);
+	printf("%-8s|%#o|\n","#12345", 12345);
+	ft_printf("\t|%#o|\n", 12345);
+	printf("%-8s|%#o|\n","#7", 7);
+	ft_printf("\t|%#o|\n", 7);
+	printf("%-8s|%#o|\n","#8", 8);
+	ft_printf("\t|%#o|\n", 8);
+	printf("%-8s|%#o|\n","#9", 9);
+	ft_printf("\t|%#o|\n", 9);
+	printf("%-8s|%#o|\n","#0", 0);
+	ft_printf("\t|%#o|\n", 0);
+
+	// printf("\n%-10s|%8o|\n", "%8o", 12345);
+	// printf("%-10s|%.8o|\n", "%.8o", 12345);
+	// printf("%-10s|%-o|\n", "%-o", 12345);
+	// printf("%-10s|%-8o|\n", "%-8o", 12345);
+	// printf("%-10s|%0o|\n", "%0o", 12345);
+	// printf("%-10s|%08o|\n", "%08o", 12345);
+
+	// printf("\n%-10s|%7.8o|\n", "%7.8o", 12345);
+	// printf("%-10s|%#7.8o|\n", "%#7.8o", 12345);
+	// printf("%-10s|%8.7o|\n", "%8.7o", 12345);
+	// printf("%-10s|%8.3o|\n", "%8.3o", 12345);
+	// printf("%-10s|%#8.7o|\n\n", "%#8.7o", 12345);
+
+	// printf("\n%-10s|%o|\n", "%o", 0);
+	// printf("%-10s|%#o|\n", "%#o", 0);
+	// printf("%-10s|%#0o|\n", "%#0o", 0);
+	// printf("%-10s|%#.o|\n", "%#.o", 0);
+	// printf("%-10s|%#0.o|\n", "%#0.o", 0);
+	// printf("%-10s|%.o|\n", "%.o", 0);
+	// printf("%-10s|%0.o|\n", "%0.o", 0);
+	// printf("%-10s|%.3o|\n", "%.3o", 0);
+	// printf("%-10s|%0.3o|\n", "%0.3o", 0);
+}
+
 
 void	sizes(void)			// DELETE
 {

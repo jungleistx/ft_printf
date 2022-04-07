@@ -1,11 +1,32 @@
 *** *** *** *** *** 		printf		 *** *** *** *** *** ***
 
+		neg						pos & 0
+space	zero | minus | w<len R	w--
+		else 	w--
 
- TRACEROUTE
-	ft_printf
-		reset
-		%
-			check flags	' ' + - 0 #
+		all same
+width	PLUS=w--, w-res (w-prec | w-len)
+
+prefix	write only -			write +, w--
+		
+		all same
+prec	ZERO= w-res (w-len) else: w-prec, prec = 0	
+
+num		w-(len + 1)				w-len
+
+		all same
+minus	DOT: w-prec				if w>0: write w
+
+
++ - ' ' . 0
+
+not
+- 0
++ ' '
+
+
+
+
 
 % +-0-+* .* d
 
@@ -13,6 +34,27 @@
 TOCHECK
 	%cd with length (h and l etc)
 	%d prec vs width
+
+arg_len ++ when negative in neg_number
+
+*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
+*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
+*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
+*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
+mess with numbers, where is flags and padding handled ---- TODO ----
+*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
+*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
+*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
+*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
+*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
+
+
+
+
+
+
+
+
 
 with flags: 				none		hh 				h 			l 			ll				L
 d	signed deci int			int			signed char		short		long		long long
@@ -300,3 +342,30 @@ more stuff
 finally
 	flag .
 BONUS
+
+
+
+ELLA
+^
+titus	B2	^
+
+1		2		3		4		F5
+chen 	a1		kce/I1	h/e
+
+hmar 	E
+ehelm	E
+
+_
+jjun	F
+spuu	B1
+
+1		2		3		4		F5
+max		jun 	kiwi	spuu
+
+--
+wins
+scoring diff
+repricocal match
+if tie, highest points
+
+
