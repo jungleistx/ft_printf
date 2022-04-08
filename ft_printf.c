@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:08 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/04/08 18:09:15 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/04/08 18:10:37 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,7 +221,7 @@ int	dot_ast_flag(const char *str, t_info *info, va_list args)
 		if (info->width < 0)
 		{
 			info->width *= -1;
-			info->flags & MINUS;
+			info->flags |= MINUS;
 			if (info->flags & ZERO)
 				info->flags ^= ZERO;
 		}
