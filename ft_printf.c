@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:08 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/04/07 19:57:27 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/04/08 18:09:15 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ void	neg_number(long long num, t_info *i)
 	i->cur_arg = (unsigned long long) (num * -1);
 	i->flags |= NEGATIVE;
 
-	if (i->prec > 0)
+	if (i->prec > 1)
 		i->prec++;
 	i->arg_len++;
 
@@ -144,6 +144,13 @@ void	assing_number(t_info *i, va_list args)
 		neg_number(i->tmp, i);
 	else
 		i->cur_arg = (unsigned long long) i->tmp;
+	if (i->width < 0)
+	{
+		i->flags |= MINUS;
+		i->width *= -1;
+		if (i->flags & ZERO)
+			i->flags ^= ZERO;
+	}
 }
 
 // check for compilation error combinations	, flags done, spec todo
@@ -164,9 +171,9 @@ int	check_error_input(t_info *info, char specifier)
 	return (0);
 }
 
-void	reset_info(t_info *info, int res)
+void	reset_info(t_info *info, int reset)
 {
-	if (res == 0)
+	if (reset == 0)
 	{
 		info->i = 0;
 		info->res = 0;
@@ -177,20 +184,9 @@ void	reset_info(t_info *info, int res)
 	info->f_dec = 0;
 	info->arg_len = 0;
 	info->width = 0;
-	info->prec = 0;
+	info->prec = 1;
 	// info->
 }
-
-// void	reset_info_no_res(t_info *info)
-// {
-// 	info->flags = 0;
-// 	info->tmpres = 0;
-// 	info->f_dec_len = 0;
-// 	info->f_dec = 0;
-// 	info->width = 0;
-// 	info->arg_len = 0;
-// 	// info->
-// }
 
 // OK
 int	dot_ast_flag(const char *str, t_info *info, va_list args)
@@ -208,7 +204,11 @@ int	dot_ast_flag(const char *str, t_info *info, va_list args)
 		else
 			info->prec = ft_atoi(&str[i]);
 		if (info->prec < 0)
-			info->prec = 0;
+		{
+			info->flags ^= DOT;
+			info->prec = 1;
+			return (0);
+		}
 		if (str[i] == '*')
 			return (i);
 		// i = count_digits((long long)info->prec) - 1;
@@ -216,7 +216,16 @@ int	dot_ast_flag(const char *str, t_info *info, va_list args)
 		return (i);
 	}
 	else
+	{
 		info->width = va_arg(args, int);
+		if (info->width < 0)
+		{
+			info->width *= -1;
+			info->flags & MINUS;
+			if (info->flags & ZERO)
+				info->flags ^= ZERO;
+		}
+	}
 	return (0);
 }
 
@@ -238,6 +247,13 @@ int	digit_minus_flag(const char *str, t_info *info)
 	}
 	if ((info->flags & MINUS) && (info->flags & ZERO))
 		info->flags ^= ZERO;
+	if (info->width < 0)
+	{
+		info->width *= -1;
+		info->flags |= MINUS;
+		if (info->flags & ZERO)
+			info->flags ^= ZERO;
+	}
 	return (i);
 }
 
@@ -611,13 +627,20 @@ void	write_percent(t_info *info)
 int	print_char(t_info *info, va_list args)
 {
 	// printf(">>> char beg i = %d<<<", info->i);
-	assing_number(info, args);
+	// assing_number(info, args);
+	long long	cur_arg;
+	if (info->flags & LLONG)
+		cur_arg = va_arg(args, long long);
+	else if (info->flags & LONG)
+		cur_arg = (long long)va_arg(args, long);
+	else
+		cur_arg = (long long)va_arg(args, int);
 	while (info->width > 1 && !(info->flags & MINUS))
 	{
 		info->res += write(1, " ", 1);
 		info->width--;
 	}
-	info->res += write(1, &info->cur_arg, 1);
+	info->res += write(1, &cur_arg, 1);
 	if (info->width > 1)
 		info->width--;
 	if (info->flags & MINUS)
@@ -655,7 +678,7 @@ void	assing_octal(t_info *info, va_list args)
 		tmp = info->cur_arg;
 	info->arg_len = count_digits(tmp);
 	info->cur_arg = tmp;
-	printf(" >> arg %lld, len %d<< ", info->cur_arg, info->arg_len);
+	// printf(" >> arg %lld, len %d<< ", info->cur_arg, info->arg_len);
 }
 
 // void	zero_octal(t_info *info)
@@ -769,79 +792,16 @@ int	ft_printf(const char *str, ...)
 }
 
 
+
+
 int main(void)
 {
 	// sizes();
 	// maxes();
 
 
-
-
-	// printf("%-8s|%- 4d|\t|%- 4d|\n", "%- 4d", 7, 0);
-	// ft_printf("\t|%- 4d|\t|%- 4d|\n",  7, 0);
-	// printf("%-8s|%-4.0d|\n", "%-4.0d", 7);
-	// ft_printf("\t|%-4.0d|\n",  7);
-
-	// printf("%-8s|%- 6.3d|\n", "%- 6.3d", 7);
-	// ft_printf("\t|%- 6.3d|\n", 7);
-	// printf("%-8s|%- 1d|\n", "%- 1d", -7);
-	// ft_printf("\t|%- 1d|\n", -7);
-	// printf("%-8s|%- 6.3d|\n", "%- 6.3d", 0);
-	// ft_printf("\t|%- 6.3d|\n", 0);
-
-
-	// // //
-	// printf("\n%-8s|%- 6.3d|\n", "%- 6.3d", -7);
-	// ft_printf("\t|%- 6.3d|\n",  -7);
-	// // //
-
-	// int i = 7, j = -7, k = 0;
-	// printf("\n%-8s|%- 4d|\t\t|%- 4d|\t|%- 4d|\n", "%- 4d", i, j, k);
-	// ft_printf("\t|%- 4d|\t\t|%- 4d|\t|%- 4d|\n",  i, j, k);
-	// printf("%-8s|%- 4.0d|\t\t|%- 4.0d|\t|%- 4.0d|\n", "%- 4.0d", i, j, k);
-	// ft_printf("\t|%- 4.0d|\t\t|%- 4.0d|\t|%- 4.0d|\n",  i, j, k);
-	// printf("%-8s|%- 4.1d|\t\t|%- 4.1d|\t|%- 4.1d|\n", "%- 4.1d", i, j, k);
-	// ft_printf("\t|%- 4.1d|\t\t|%- 4.1d|\t|%- 4.1d|\n",  i, j, k);
-	// printf("%-8s|%- 6.3d|\t|%- 6.3d|\t|%- 6.3d|\n", "%- 6.3d", i, j, k);
-	// ft_printf("\t|%- 6.3d|\t|%- 6.3d|\t|%- 6.3d|\n",  i, j, k);
-	// printf("%-8s|%02d|\t\t|%02d|\t|%02d|\n", "%02d", i, j, k);
-	// ft_printf("\t|%02d|\t\t|%02d|\t|%02d|\n",  i, j, k);
-	// printf("%-8s|%04d|\t\t|%04d|\t|%04d|\n", "%04d", i, j, k);
-	// ft_printf("\t|%04d|\t\t|%04d|\t|%04d|\n",  i, j, k);
-	// printf("%-8s|%+-4d|\t\t|%+-4d|\t|%+-4d|\n", "%+-4d", i, j, k);
-	// ft_printf("\t|%+-4d|\t\t|%+-4d|\t|%+-4d|\n",  i, j, k);
-	// printf("%-8s|%+-4.2d|\t\t|%+-4.2d|\t|%+-4.2d|\n", "%+-4.2d", i, j, k);
-	// ft_printf("\t|%+-4.2d|\t\t|%+-4.2d|\t|%+-4.2d|\n",  i, j, k);
-	// printf("%-8s|%+-6.3d|\t|%+-6.3d|\t|%+-6.3d|\n", "%+-6.3d", i, j, k);
-	// ft_printf("\t|%+-6.3d|\t|%+-6.3d|\t|%+-6.3d|\n",  i, j, k);
-	// printf("%-8s|%-4d|\t\t|%-4d|\t|%-4d|\n", "%-4d", i, j, k);
-	// ft_printf("\t|%-4d|\t\t|%-4d|\t|%-4d|\n",  i, j, k);
-	// printf("%-8s|%-5.3d|\t\t|%-5.3d|\t|%-5.3d|\n", "%-5.3d", i, j, k);
-	// ft_printf("\t|%-5.3d|\t\t|%-5.3d|\t|%-5.3d|\n",  i, j, k);
-	// printf("%-8s|%+04d|\t\t|%+04d|\t|%+04d|\n", "%+04d", i, j, k);
-	// ft_printf("\t|%+04d|\t\t|%+04d|\t|%+04d|\n",  i, j, k);
-	// printf("%-8s|%-2d|\t\t|%-2d|\t|%-2d|\n", "%-2d", i, j, k);
-	// ft_printf("\t|%-2d|\t\t|%-2d|\t|%-2d|\n",  i, j, k);
-	// printf("%-8s|%-2.0d|\t\t|%-2.0d|\t|%-2.0d|\n", "%-2.0d", i, j, k);
-	// ft_printf("\t|%-2.0d|\t\t|%-2.0d|\t|%-2.0d|\n",  i, j, k);
-
-
-	// printf("%-8s|%-4.2d|\t\t|%-4.2d|\t|%-4.2d|\n", "%-4.2d", i, j, k);
-	// ft_printf("\t|%-4.2d|\t\t|%-4.2d|\t|%-4.2d|\n",  i, j, k);
-	// printf("%-8s|%+-4.2d|\t\t|%+-4.2d|\t|%+-4.2d|\n", "%+-4.2d", i, j, k);
-	// ft_printf("\t|%+-4.2d|\t\t|%+-4.2d|\t|%+-4.2d|\n",  i, j, k);
-	// printf("%-8s|% 04d|\t\t|% 04d|\t|% 04d|\n", "% 04d", i, j, k);
-	// ft_printf("\t|% 04d|\t\t|% 04d|\t|% 04d|\n",  i, j, k);
-
-	// printf("%-8s|%+-4.0d|\t\t|%+-4.0d|\t|%+-4.0d|\n", "%+-4.0d", i, j, k);
-	// ft_printf("\t|%+-4.0d|\t\t|%+-4.0d|\t|%+-4.0d|\n",  i, j, k);
-	// printf("%-8s|%-4.0d|\t\t|%-4.0d|\t|%-4.0d|\n", "%-4.0d", i, j, k);
-	// ft_printf("\t|%-4.0d|\t\t|%-4.0d|\t|%-4.0d|\n",  i, j, k);
-
-
+	// //	--- d ---
 	// test_d();
-
-	// // individual d/i
 	// spacet();
 	// widt();
 	// plust();
@@ -849,9 +809,13 @@ int main(void)
 	// zerot();
 	// minust();
 
+	// printf("%-8s|%-4c|\n", "%-4c", 'a');
+	// printf("%-8s|%-4c|\n", "%-4c", 'a');
+
 	// octals();
 	// hext();
-	// chart();
+	chart();
+
 
 	printf("\n");
 }
@@ -864,6 +828,9 @@ c
 	no 0
 	no +
 
+	yes
+	-
+	width
 */
 
 /*

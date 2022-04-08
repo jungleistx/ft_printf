@@ -8,9 +8,9 @@ space	zero | minus | w<len R	w--
 width	PLUS=w--, w-res (w-prec | w-len)
 
 prefix	write only -			write +, w--
-		
+
 		all same
-prec	ZERO= w-res (w-len) else: w-prec, prec = 0	
+prec	ZERO= w-res (w-len) else: w-prec, prec = 0
 
 num		w-(len + 1)				w-len
 
@@ -176,6 +176,7 @@ f round
 	if 0, no len
 	if . atleast 1 num before .
 	bankers rounding
+	if # and prec 0:	print '.' after num
 x
 	if 0, hash not included (print '0x')
 	else 0x <value>

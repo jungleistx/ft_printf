@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:18:13 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/04/04 16:12:45 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/04/08 18:02:49 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -673,19 +673,20 @@ void	test_d(void)
 
 void	chart(void)
 {
-	// char ch = 'x';
-	// printf("\n\n|%c| test\n", ch);
-	// ft_printf("|%c| test\n", ch);
-	// printf("|%*c| test\n",4,  ch);
-	// ft_printf("|%*c| test\n",4,  ch);
-	// printf("|%3c| test\n", ch);
-	// ft_printf("|%3c| test\n", ch);
-	// printf("|%-4c| test\n", ch);
-	// ft_printf("|%-4c| test\n", ch);
-	// char ch1 = 0;
-	// printf("\n|%c|\n", ch1);
-	// ft_printf("\n|%c|\n", ch1);
+	int a = 65, b = -65, c = 0;
 
+	printf("%-8s|%c|\t|%c|\t|%c|\n", "%c", a, b, c);
+	ft_printf("\t|%c|\t|%c|\t|%c|\n", a, b, c);
+	printf("%-8s|%3c|\t|%3c|\t|%3c|\n", "%3c", a, b, c);
+	ft_printf("\t|%3c|\t|%3c|\t|%3c|\n", a, b, c);
+	printf("%-8s|%-c|\t|%-c|\t|%-c|\n", "%-c", a, b, c);
+	ft_printf("\t|%-c|\t|%-c|\t|%-c|\n", a, b, c);
+	printf("%-8s|%-3c|\t|%-3c|\t|%-3c|\n", "%-3c", a, b, c);
+	ft_printf("\t|%-3c|\t|%-3c|\t|%-3c|\n", a, b, c);
+	printf("%-8s|%*c|\t|%*c|\t|%*c|\n", "%*c", 3, a, 3, b, 3, c);
+	ft_printf("\t|%*c|\t|%*c|\t|%*c|\n", 3, a, 3, b, 3, c);
+	printf("%-8s|%*c|\t|%*c|\t|%*c|\n", "%*c", -3, a, -3, b, -3, c);
+	ft_printf("\t|%*c|\t|%*c|\t|%*c|\n", -3, a, -3, b, -3, c);
 }
 
 void	hext(void)
