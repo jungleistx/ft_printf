@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:18:13 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/04/08 18:02:49 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/04/08 18:17:01 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -697,8 +697,6 @@ void	hext(void)
 }
 void	octals(void)
 {
-	printf("\nOCTALSn\n");
-
 	printf("\n%-8s|%o|\n", "12345",12345);
 	ft_printf("\t|%o|\n", 12345);
 	printf("%-8s|%o|\n", "7", 7);
@@ -719,6 +717,17 @@ void	octals(void)
 	ft_printf("\t|%#o|\n", 9);
 	printf("%-8s|%#o|\n","#0", 0);
 	ft_printf("\t|%#o|\n", 0);
+
+	printf("%-8s|%-o|\n","-0", 0);
+	ft_printf("\t|%-o|\n", 0);
+	printf("%-8s|%0o|\n","00", 0);
+	ft_printf("\t|%0o|\n", 0);
+	printf("%-8s|%-o|\n","-17", 17);
+	ft_printf("\t|%-o|\n", 17);
+	printf("%-8s|%0o|\n","017", 17);
+	ft_printf("\t|%0o|\n", 17);
+	// printf("%-8s|%+o|\n","#0", 0);
+	// printf("%-8s|% o|\n","#0", 0);
 
 	// printf("\n%-10s|%8o|\n", "%8o", 12345);
 	// printf("%-10s|%.8o|\n", "%.8o", 12345);
