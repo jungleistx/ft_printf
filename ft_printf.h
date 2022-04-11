@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:18:13 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/04/08 18:17:01 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/04/11 15:14:29 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 
 // only used specs
-# define SPECS "dicouxXnspf"	// zu same as l (sizeof)
+# define SPECS "%dicouxXnspf"	// zu same as l (sizeof)
 
 int	ft_printf(const char *str, ...);
 
@@ -99,10 +99,12 @@ int	ft_printf(const char *str, ...);
 int	print_number(t_info *i, va_list args);
 int	print_char(t_info *info, va_list args);
 int	print_octal(t_info *info, va_list args);
+int	print_percent(t_info *info, va_list args);
 
-// # define SPECS "dicouxXnspf"	// zu same as l (sizeof)
+// # define SPECS "%dicouxXnspf"	// zu same as l (sizeof)
 static const func_pointer g_disp_table[] =
 {
+	print_percent,
 	print_number,
 	print_number,
 	print_char,
@@ -671,6 +673,50 @@ void	test_d(void)
 	printf("\n");
 }
 
+void	percent(void)
+{
+	printf("%-8s|%%|\n", "%%");
+	ft_printf("\t|%%|\n");
+	printf("%-8s|%-4%|\n", "%-4%");
+	ft_printf("\t|%-4%|\n");
+	printf("%-8s|%-2%|\n", "%-2%");
+	ft_printf("\t|%-2%|\n");
+	printf("%-8s|%4%|\n", "%4%");
+	ft_printf("\t|%4%|\n");
+	printf("%-8s|%2%|\n", "%2%");
+	ft_printf("\t|%2%|\n");
+	printf("%-8s|%1%|\n", "%1%");
+	ft_printf("\t|%1%|\n");
+	printf("%-8s|%0%|\n", "%0%");
+	ft_printf("\t|%0%|\n");
+	printf("%-8s|%-%|\n", "%-%");
+	ft_printf("\t|%-%|\n");
+	printf("%-8s|% %|\n", "% %");
+	ft_printf("\t|% %|\n");
+	printf("%-8s|%+%|\n", "%+%");
+	ft_printf("\t|%+%|\n");
+	printf("%-8s|%+4%|\n", "%+4%");
+	ft_printf("\t|%+4%|\n");
+	printf("%-8s|%04%|\n", "%04%");
+	ft_printf("\t|%04%|\n");
+	printf("%-8s|% 04%|\n", "% 04%");
+	ft_printf("\t|% 04%|\n");
+	printf("%-8s|%-04%|\n", "%-04%");
+	ft_printf("\t|%-04%|\n");
+	printf("%-8s|% 4%|\n", "% 4%");
+	ft_printf("\t|% 4%|\n");
+	printf("%-8s|% 3%|\n", "% 3%");
+	ft_printf("\t|% 3%|\n");
+	printf("%-8s|% 2%|\n", "% 2%");
+	ft_printf("\t|% 2%|\n");
+	printf("%-8s|% 1%|\n", "% 1%");
+	ft_printf("\t|% 1%|\n");
+	printf("%-8s|%.2%|\n", "%.2%");
+	ft_printf("\t|%.2%|\n");
+	printf("%-8s|%4.2%|\n", "%4.2%");
+	ft_printf("\t|%4.2%|\n");
+}
+
 void	chart(void)
 {
 	int a = 65, b = -65, c = 0;
@@ -697,35 +743,26 @@ void	hext(void)
 }
 void	octals(void)
 {
-	printf("\n%-8s|%o|\n", "12345",12345);
-	ft_printf("\t|%o|\n", 12345);
-	printf("%-8s|%o|\n", "7", 7);
-	ft_printf("\t|%o|\n", 7);
-	printf("%-8s|%o|\n","8", 8);
-	ft_printf("\t|%o|\n", 8);
-	printf("%-8s|%o|\n","9", 9);
-	ft_printf("\t|%o|\n", 9);
-	printf("%-8s|%o|\n","0", 0);
-	ft_printf("\t|%o|\n", 0);
-	printf("%-8s|%#o|\n","#12345", 12345);
-	ft_printf("\t|%#o|\n", 12345);
-	printf("%-8s|%#o|\n","#7", 7);
-	ft_printf("\t|%#o|\n", 7);
-	printf("%-8s|%#o|\n","#8", 8);
-	ft_printf("\t|%#o|\n", 8);
-	printf("%-8s|%#o|\n","#9", 9);
-	ft_printf("\t|%#o|\n", 9);
-	printf("%-8s|%#o|\n","#0", 0);
-	ft_printf("\t|%#o|\n", 0);
+	printf("\n%-8s|%o|%9s|%o|%5s|%o|\n", "12345:",12345, "7: ", 7, "8: ", 8);
+	ft_printf("\t|%o|\t\t|%o|\t|%o|\n", 12345, 7, 8);
+	printf("%-8s|%o|%12s|%o|\n","9:", 9, "0: ", 0);
+	ft_printf("\t|%o|\t\t|%o|\n", 9, 0);
 
-	printf("%-8s|%-o|\n","-0", 0);
-	ft_printf("\t|%-o|\n", 0);
-	printf("%-8s|%0o|\n","00", 0);
-	ft_printf("\t|%0o|\n", 0);
-	printf("%-8s|%-o|\n","-17", 17);
-	ft_printf("\t|%-o|\n", 17);
-	printf("%-8s|%0o|\n","017", 17);
-	ft_printf("\t|%0o|\n", 17);
+
+	printf("%-8s|%#o|%8s|%#o|\n","#12345:", 12345, "#7: ", 7);
+	ft_printf("\t|%#o|\t|%#o|\n", 12345, 7);
+
+	printf("%-8s|%#o|%11s|%#o|%11s|%#o|\n","#8:", 8, "#9: ", 9, "#0: ", 0);
+	ft_printf("\t|%#o|\t\t|%#o|\t\t|%#o|\n", 8, 9, 0);
+
+	// printf("%-8s|%-o|\n","-0", 0);
+	// ft_printf("\t|%-o|\n", 0);
+	// printf("%-8s|%0o|\n","00", 0);
+	// ft_printf("\t|%0o|\n", 0);
+	// printf("%-8s|%-o|\n","-17", 17);
+	// ft_printf("\t|%-o|\n", 17);
+	// printf("%-8s|%0o|\n","017", 17);
+	// ft_printf("\t|%0o|\n", 17);
 	// printf("%-8s|%+o|\n","#0", 0);
 	// printf("%-8s|% o|\n","#0", 0);
 

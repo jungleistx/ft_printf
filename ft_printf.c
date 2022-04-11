@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:08 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/04/08 18:10:37 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/04/11 15:04:36 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -735,6 +735,29 @@ int	print_octal(t_info *info, va_list args)
 // 	printf("|%o|\n", 8);
 // 	printf("|%o|\n", 9);
 
+int	print_percent(t_info *i, va_list args)
+{
+	(void)args;
+	i->width--;
+	if (i->flags & SPACE && i->width > 0 && !(i->flags & ZERO))
+	{
+		i->res += ft_putchar_multi(' ', i->width);
+		i->width = 0;
+	}
+	if (i->width > 0 && !(i->flags & MINUS))
+	{
+		if (i->flags & ZERO)
+			i->res += ft_putchar_multi('0', i->width);
+		else
+			i->res += ft_putchar_multi(' ', i->width);
+		i->width = 0;
+	}
+	i->res += write(1, "%", 1);
+	if (i->flags & MINUS && i->width > 0)
+		i->res += ft_putchar_multi(' ', i->width);
+	return (123);
+}
+
 int	check_specifier(const char *str, t_info *info, va_list args)
 {
 	// printbin_2(&info->flags);
@@ -745,12 +768,12 @@ int	check_specifier(const char *str, t_info *info, va_list args)
 
 	// special case for str[0] == 'n' ?
 	i = 0;
-	// # define SPECS "dicouxXnspf"	// zu same as l (sizeof)
+	// # define SPECS "%dicouxXnspf"	// zu same as l (sizeof)
 	while (SPECS[i])
 	{
 		if (SPECS[i] == str[0])
 		{
-			info->res += g_disp_table[i](info, args);
+			info->res += g_disp_table[i](info, args);	// no need for i->res +=
 			info->i++;
 			return (1);
 		}
@@ -758,6 +781,8 @@ int	check_specifier(const char *str, t_info *info, va_list args)
 	}
 	return (0);
 }
+
+
 
 int	ft_printf(const char *str, ...)
 {
@@ -770,20 +795,27 @@ int	ft_printf(const char *str, ...)
 	{
 		if (str[info.i] != '%')
 			info.res += write_non_percent(str, &info);
-		if (str[info.i] == '%')
+		// if (str[info.i] == '%')
+		else
 		{
-			if (str[++info.i] == '%')
-				write_percent(&info);
-			else
-			{
-				// printf(">>> bef flags i = %d<<<", info.i);
-				check_flags(&str[info.i], &info, args);
-				// printf(">>> aft flags i = %d<<<", info.i);
-				if (!check_specifier(&str[info.i], &info, args))
-					exit_error("error, specifier not found!\n");
-					// exit_error("error\n");
-				// printf("print >>>i %d\t'%c'<<<", info.i, str[info.i]);
-			}
+			info.i++;
+			check_flags(&str[info.i], &info, args);
+			if (!check_specifier(&str[info.i], &info, args))
+				exit_error("error, specifier not found!\n");
+
+			// if (str[++info.i] == '%')
+			// 	print_percent(&info, args);
+			// else
+			// {
+			// 	// printf(">>> bef flags i = %d<<<", info.i);
+			// 	check_flags(&str[info.i], &info, args);
+			// 	// printf(">>> aft flags i = %d<<<", info.i);
+			// 	if (!check_specifier(&str[info.i], &info, args))
+			// 		exit_error("error, specifier not found!\n");
+			// 		// exit_error("error\n");
+			// 	// printf("print >>>i %d\t'%c'<<<", info.i, str[info.i]);
+			// }
+
 			reset_info(&info, 1);
 		}
 	}
@@ -809,12 +841,17 @@ int main(void)
 	// zerot();
 	// minust();
 
+	// //	--- %% ---
+	// percent();
+
+	// //	--- c ---
+	// chart();
+
 	// printf("%-8s|%-4c|\n", "%-4c", 'a');
 	// printf("%-8s|%-4c|\n", "%-4c", 'a');
 
-	// octals();
+	octals();
 	// hext();
-	chart();
 
 
 	printf("\n");
