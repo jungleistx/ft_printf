@@ -24,18 +24,18 @@ not
 - 0
 + ' '
 
-
-
-
-
 % +-0-+* .* d
 
 
 TOCHECK
 	%cd with length (h and l etc)
 	%d prec vs width
+	%o 	with undefined flags + and ' '
+	if . and NO PREC, dont jump
+	length conversion: convert to smaller type and back
+	%x undefined + and ' '
 
-arg_len ++ when negative in neg_number
+
 
 *	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
 *	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*

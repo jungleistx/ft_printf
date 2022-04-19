@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:08 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/04/11 15:04:36 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/04/19 14:30:53 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,21 @@ void	ft_putnbr_l(unsigned long long n)
 	ft_putchar(n % 10 + '0');
 }
 
+void	ft_putnbr(int n)
+{
+	long	copy;
+
+	copy = n;
+	if (copy < 0)
+	{
+		ft_putchar('-');
+		copy *= -1;
+	}
+	if (copy > 9)
+		ft_putnbr(copy / 10);
+	ft_putchar(copy % 10 + '0');
+}
+
 
 void	exit_error(char *str)
 {
@@ -131,7 +146,7 @@ void	neg_number(long long num, t_info *i)
 	// printf(" >> len %d, arg %lld, w %d<< ", i->arg_len, i->cur_arg, i->width);
 }
 
-void	assing_number(t_info *i, va_list args)
+void	assign_number(t_info *i, va_list args)
 {
 	if (i->flags & LLONG)
 		i->tmp = va_arg(args, long long);
@@ -185,6 +200,9 @@ void	reset_info(t_info *info, int reset)
 	info->arg_len = 0;
 	info->width = 0;
 	info->prec = 1;
+	info->hex = 65;
+	info->f_arg = 0;
+	info->lf_arg = 0;
 	// info->
 }
 
@@ -196,13 +214,20 @@ int	dot_ast_flag(const char *str, t_info *info, va_list args)
 	i = 0;
 	if (str[i++] == '.')
 	{
-		if (info->flags & ZERO)
+		if (info->flags & ZERO)		// need zero for %%, also with prec. FIX needed in %d ?
 			info->flags ^= ZERO;
 		info->flags |= DOT;
 		if (str[i] == '*')
 			info->prec = va_arg(args, int);
 		else
+		{
+			if (!ft_isdigit((int)str[i]) && str[i] != '-')
+			{
+				info->prec = 0;
+				return (0);
+			}
 			info->prec = ft_atoi(&str[i]);
+		}
 		if (info->prec < 0)
 		{
 			info->flags ^= DOT;
@@ -268,7 +293,11 @@ void	check_len_flags(char c, t_info *info)
 		info->flags |= LONG;
 	}
 	else if (c == 'h')
+	{
+		if (info->flags & SHORT)
+			info->flags |= SSHORT;
 		info->flags |= SHORT;
+	}
 }
 
 void	plus_space_flag(const char *str, t_info *i)
@@ -509,7 +538,7 @@ int	print_number(t_info *i, va_list args)
 {
 	// printf(">>%d<<\n", i->width);
 	// printbin_2(&i->flags);
-	assing_number(i, args);
+	assign_number(i, args);
 
 	// printf(" >>w = %d, len = %d, prec = %d<< ", i->width, i->arg_len, i->prec);
 
@@ -627,7 +656,7 @@ void	write_percent(t_info *info)
 int	print_char(t_info *info, va_list args)
 {
 	// printf(">>> char beg i = %d<<<", info->i);
-	// assing_number(info, args);
+	// assign_number(info, args);
 	long long	cur_arg;
 	if (info->flags & LLONG)
 		cur_arg = va_arg(args, long long);
@@ -653,7 +682,7 @@ int	print_char(t_info *info, va_list args)
 	return (1);
 }
 
-void	assing_octal(t_info *info, va_list args)
+void	assign_octal(t_info *info, va_list args)
 {
 	unsigned long long	tmp;
 	int					i;
@@ -679,6 +708,8 @@ void	assing_octal(t_info *info, va_list args)
 	info->arg_len = count_digits(tmp);
 	info->cur_arg = tmp;
 	// printf(" >> arg %lld, len %d<< ", info->cur_arg, info->arg_len);
+
+
 }
 
 // void	zero_octal(t_info *info)
@@ -704,22 +735,143 @@ void	check_octal_flags(t_info *info)
 
 }
 
-int	print_octal(t_info *info, va_list args)
+/*
+if prec = 0 & !HASH & !ZERO & width < 1
+return 0
+
+arg		prints
+08		8x0
+
+
+*/
+
+int	print_zero_octal(t_info *i)
+{
+	if (!(i->flags & HASH) && i->width < 1 && i->prec == 0 && !(i->flags & ZERO))
+		return (0);
+
+	// if (i->flags & HASH || i->flags & ZERO)
+	// 	i->width--;
+
+	// if (i->prec == 0 && )
+	// 	i->arg_len = 0;
+	if (i->prec == 0 && !(i->flags & HASH) && !(i->flags & ZERO))
+		i->arg_len = 0;
+
+	if (!(i->flags & MINUS && i->width > 0) && i->width > i->prec)
+	{
+		if (i->flags & ZERO)
+			i->res += ft_putchar_multi('0', i->width - i->arg_len);
+		else if (i->flags & DOT && i->width > i->prec && i->prec > 0)
+			i->res += ft_putchar_multi(' ', i->width - i->prec);
+		else
+			i->res += ft_putchar_multi(' ', i->width - i->arg_len);
+	}
+	if (i->flags & DOT)
+		i->res += ft_putchar_multi('0', i->prec - 1);
+
+	if (i->flags & HASH || i->flags & ZERO || i->prec > 0)
+		i->res += write(1, "0", 1);
+
+	// #6.0 	1 too much _ 	|      0|		|     0|
+	// #4.8		extra w _		|    00000000|	|00000000|
+	// 8		1 e _
+	// #8		1 e _
+
+	if (i->flags & MINUS && i->width > 1 && i->width > i->prec)
+	{
+		if (i->flags & DOT && i->prec > 0)
+			i->res += ft_putchar_multi(' ', i->width - i->prec);
+		else
+			i->res += ft_putchar_multi(' ', i->width - i->arg_len);	//
+	}
+	return (0);
+}
+
+int	print_octal(t_info *i, va_list args)
 {
 	// OK
-	assing_octal(info, args);
-	check_octal_flags(info);
+	assign_octal(i, args);	// add hash w-- && pre-- ?
+	// check_octal_flags(i);
 
-	// if (info->width > info->arg_len || info->flags & ZERO)
-	// 	info->res +=
+	if (i->cur_arg == 0)
+		return (print_zero_octal(i));
 
-	if ((info->flags & HASH) && (info->cur_arg > 0))
-		info->res += write(1, "0", 1);
-	// if (info->flags & MINUS)
-	// if (info->flags & MINUS)
+	if (i->flags & HASH)
+	{
+		i->width--;
+		i->prec--;
+	}
 
-	// printf(" >>>octal tmp = %lld<<< ", tmp);
-	ft_putnbr_l(info->cur_arg);
+	if (!(i->flags & MINUS))
+	{
+		if (i->width > 0 && i->flags & ZERO)
+			i->res += ft_putchar_multi('0', i->width - i->arg_len);
+		else if (i->width > 0 && i->flags & DOT && i->prec > i->arg_len)
+			i->res += ft_putchar_multi(' ', i->width - i->prec);
+		else if (i->width > 0)
+		{
+			i->res += ft_putchar_multi(' ', i->width - i->arg_len);
+			if (i->cur_arg == 0)
+				i->res += write(1, " ", 1);
+		}
+
+
+		if (i->flags & HASH)
+			i->res += write(1, "0", 1);
+		if (i->prec > i->arg_len)
+			i->res += ft_putchar_multi('0', i->prec - i->arg_len);
+		if (i->cur_arg > 0 || (i->cur_arg == 0 && i->flags & ZERO && !(i->flags & HASH)))
+		{
+			ft_putnbr_l(i->cur_arg);
+			i->res += i->arg_len;
+		}
+		// if (i->width > i->prec && i->width > i->arg_len)
+		// {
+		// 	if (i->prec > i->arg_len)
+		// 		i->res += ft_putchar_multi(' ', i->width - i->prec);
+		// 	else
+		// 		i->res += ft_putchar_multi(' ', i->width - i->arg_len);
+		// }
+	}
+	else
+	{
+		if (i->flags & HASH)
+			i->res += write(1, "0", 1);
+		if (i->prec > i->arg_len)
+			i->res += ft_putchar_multi('0', i->prec - i->arg_len);
+		if (i->cur_arg > 0)
+		{
+			ft_putnbr_l(i->cur_arg);
+			i->res += i->arg_len;
+		}
+		if (i->width > i->prec && i->width > i->arg_len)
+		{
+			if (i->prec > i->arg_len)
+				i->res += ft_putchar_multi(' ', i->width - i->prec);
+			else
+				i->res += ft_putchar_multi(' ', i->width - i->arg_len);
+
+		}
+	}
+
+	/*
+
+
+	all
+		if hash && prec - len > 1, write 0
+
+	if minus,
+		if hash write 0, width--
+		write arg, if prec write 0
+		write width
+
+	!minus
+		write width
+		if hash write 0 width--
+		write arg, if prec write 0 arg
+
+	*/
 
 	return (1234);
 }
@@ -735,26 +887,415 @@ int	print_octal(t_info *info, va_list args)
 // 	printf("|%o|\n", 8);
 // 	printf("|%o|\n", 9);
 
-int	print_percent(t_info *i, va_list args)
+int	print_percent(t_info *i, va_list args)	// ERROR, ZERO OFF WHEN PREC FLAG!: %03.5%
 {
 	(void)args;
 	i->width--;
-	if (i->flags & SPACE && i->width > 0 && !(i->flags & ZERO))
-	{
-		i->res += ft_putchar_multi(' ', i->width);
-		i->width = 0;
-	}
-	if (i->width > 0 && !(i->flags & MINUS))
+	if (!(i->flags & MINUS) && i->width > 0)
 	{
 		if (i->flags & ZERO)
 			i->res += ft_putchar_multi('0', i->width);
 		else
 			i->res += ft_putchar_multi(' ', i->width);
-		i->width = 0;
 	}
 	i->res += write(1, "%", 1);
 	if (i->flags & MINUS && i->width > 0)
 		i->res += ft_putchar_multi(' ', i->width);
+	return (123);	// check value
+}
+void	assign_dic(t_info *i, va_list args)
+{
+	long long	temp;
+
+	if (i->flags & LLONG)
+		temp = va_arg(args, long long);
+	else if (i->flags & LONG)
+		temp = (long long) va_arg(args, long);
+	// else if (i->flags & SSHORT)
+	// 	temp = (long long) va_arg(args, int);
+	// else if (i->flags & SHORT)
+	// 	temp = (long long) va_arg(args, int);
+	else
+		temp = (long long) va_arg(args, int);
+
+	if (temp < 0)
+	{
+		i->flags |= NEGATIVE;
+		i->cur_arg = temp * -1;
+	}
+	else
+		i->cur_arg = (unsigned long long)temp;
+
+	// i->arg_len = count_digits(i->cur_arg);
+}
+
+void	assign_ouxX(t_info *i, va_list args)
+{
+	if (i->flags & LLONG)
+		i->cur_arg = va_arg(args, unsigned long long);
+	else if (i->flags & LONG)
+		i->cur_arg = (unsigned long long) va_arg(args, unsigned long);
+	// else if (i->flags & SSHORT)
+	// 	i->cur_arg = (unsigned long long) va_arg(args, int);
+	// else if (i->flags & SHORT)
+	// 	i->cur_arg = (unsigned long long) va_arg(args, int);
+	else
+		i->cur_arg = (unsigned long long) va_arg(args, unsigned int);
+
+	// i->arg_len = count_digits(i->cur_arg);	// change to ULL
+}
+
+void	count_hex(t_info *i, unsigned long long tmp)
+{
+	while (tmp >= 0)
+	{
+		if (tmp < 16)
+		{
+			i->arg_len++;
+			return ;
+		}
+		tmp /= 16;
+		i->arg_len++;
+	}
+}
+
+int	print_zero_hex(t_info *i)
+{
+	if (i->prec == 0)
+		i->res += ft_putchar_multi(' ', i->width);
+	else if (i->prec >= i->width)
+		i->res += ft_putchar_multi('0', i->prec);
+	else
+	{
+		if (!(i->flags & MINUS && i->width > 1))
+		{
+			if (i->flags & DOT)
+				i->res += ft_putchar_multi(' ', i->width - i->prec);
+			else
+			{
+				if (i->flags & ZERO)
+					i->res += ft_putchar_multi('0', i->width - 1);
+				else
+					i->res += ft_putchar_multi(' ', i->width - 1);
+			}
+		}
+		if (i->prec > 0)
+			i->res += ft_putchar_multi('0', i->prec - 1);
+		i->res += write(1, "0", 1);
+		if (i->flags & MINUS && i->width > 1)
+		{
+			if (i->flags & DOT)
+				i->res += ft_putchar_multi(' ', i->width - i->prec);
+			else
+				i->res += ft_putchar_multi(' ', i->width - 1);
+		}
+	}
+	return (0);
+}
+
+void	print_hex(unsigned long long i, char letter)
+{
+	if (i > 15)
+	{
+		print_hex(i / 16, letter);
+		if (i % 16 > 9)
+			ft_putchar(i % 16 - 10 + letter);
+		else
+			ft_putchar(i % 16 + '0');
+	}
+	else
+	{
+		if (i > 9)
+			ft_putchar(i % 10 + letter);
+		else
+			ft_putchar(i + '0');
+	}
+}
+
+int	print_hex_flags(t_info *i, va_list args)
+{
+	assign_ouxX(i, args);
+	count_hex(i, i->cur_arg);
+	if (i->cur_arg == 0)
+		return (print_zero_hex(i));
+
+	if (i->flags & HASH)
+		i->width -= 2;
+
+	if (!(i->flags & MINUS) && i->width > i->arg_len && i->width > i->prec)
+	{
+		if (i->width > i->prec && i->width > i->arg_len)
+		{
+			if (i->flags & DOT && i->prec > i->arg_len)
+				i->res += ft_putchar_multi(' ', i->width - i->prec);
+			else if (i->flags & ZERO)
+				i->res += ft_putchar_multi('0', i->width - i->arg_len);
+			else
+				i->res += ft_putchar_multi(' ', i->width - i->arg_len);
+		}
+	}
+
+	if (i->flags & HASH)
+	{
+		i->res += 2;
+		ft_putchar('0');
+		ft_putchar(i->hex);
+	}
+	i->hex -= 23;
+	if (i->prec > i->arg_len)
+		i->res += ft_putchar_multi('0', i->prec - i->arg_len);
+	print_hex(i->cur_arg, i->hex);
+	i->res += i->arg_len;
+	if (i->flags & MINUS && i->width > i->arg_len && i->width > i->prec)
+	{
+		if (i->prec > i->arg_len)
+			i->res += ft_putchar_multi(' ', i->width - i->prec);
+		else
+			i->res += ft_putchar_multi(' ', i->width - i->arg_len);
+	}
+	return (123);
+}
+
+int	print_zero_unsig(t_info *i)
+{
+	if (i->width > 0)
+		i->res += ft_putchar_multi(' ', i->width);
+
+	// if (!(i->flags & MINUS) && i->width > 0)
+	// 	i->res += ft_putchar_multi(' ', i->width);
+	// else if (i->flags & MINUS && i->width > 0)
+	// 	i->res += ft_putchar_multi(' ', i->width);
+
+	return (0);
+}
+
+int	print_unsigned(t_info *i, va_list args)
+{
+	assign_ouxX(i, args);
+	i->arg_len = count_digits(i->cur_arg);
+
+	if (i->prec == 0 && i->cur_arg == 0)
+		return (print_zero_unsig(i));
+
+	if (!(i->flags & MINUS) && (i->width > i->arg_len && i->width > i->prec))
+	{
+		if (i->flags & DOT && i->prec > i->arg_len)
+			i->res += ft_putchar_multi(' ', i->width - i->prec);
+		else if (i->flags & ZERO)
+			i->res += ft_putchar_multi('0', i->width - i->arg_len);
+		else
+			i->res += ft_putchar_multi(' ', i->width - i->arg_len);
+
+	}
+	if (i->prec > i->arg_len)
+		i->res += ft_putchar_multi('0', i->prec - i->arg_len);
+	// if (i->prec > 0)
+	// {
+		i->res += i->arg_len;
+		ft_putnbr_l(i->cur_arg);
+	// }
+	if (i->flags & MINUS && i->width > i->arg_len && i->width > i->prec)
+	{
+		if (i->prec > i->arg_len)
+			i->res += ft_putchar_multi(' ', i->width - i->prec);
+		else
+			i->res += ft_putchar_multi(' ', i->width - i->arg_len);
+	}
+	return (123);
+}
+
+int	print_str(t_info *i, va_list args)
+{
+	char	*str;
+	int		len;
+
+	len = 0;
+	str = va_arg(args, char*);
+	if (!str)
+		return (0);
+	if (i->flags & DOT)
+		i->arg_len = i->prec;
+	else
+		i->arg_len = (int)ft_strlen(str);
+
+	if (!(i->flags & MINUS) && i->width > i->arg_len && i->width > i->prec)
+	{
+		if (i->prec >= i->arg_len)
+			i->res += ft_putchar_multi(' ', i->width - i->prec);
+		else
+			i->res += ft_putchar_multi(' ', i->width - i->arg_len);
+
+	}
+	if (i->flags & DOT)
+	{
+		while (i->prec-- > 0)
+		{
+			ft_putchar(str[len++]);
+		}
+		i->res += len;
+		// i->width -= len;
+	}
+	else
+	{
+		ft_putstr(str);
+		// i->res += (int)ft_strlen(str);
+		i->res += i->arg_len;
+	}
+
+	if (i->flags & MINUS && i->width > i->arg_len)
+		i->res += ft_putchar_multi(' ', i->width - i->arg_len);
+
+	// if (i->flags & MINUS && i->width > i->arg_len && i->width > i->prec)
+	// {
+	// 	if (i->prec > i->arg_len)
+	// 		i->res += ft_putchar_multi(' ', i->width - i->prec);
+	// 	else
+	// 		i->res += ft_putchar_multi(' ', i->width - i->arg_len);
+	// }
+
+	/*
+	prec = max text	(str[prec] = '\0')
+
+	*/
+	return (123);
+}
+
+int	print_address(t_info *i, va_list args)
+{
+	void	*ptr;
+	// unsigned long long	adr;
+
+	ptr = va_arg(args, void *);
+	if (!ptr)
+		return (0);
+	// adr = (unsigned long long)ptr;
+	i->cur_arg = (unsigned long long)ptr;
+	count_hex(i, i->cur_arg);
+	i->width -= 2;
+
+	if (!(i->flags & MINUS) && i->width > i->arg_len)
+		i->res += ft_putchar_multi(' ', i->width - i->arg_len);
+
+	i->res += 2;
+	ft_putchar('0');
+	ft_putchar('x');
+
+	// printf(" >> adr = %llu<< ", adr);
+	print_hex(i->cur_arg, 'a');
+
+	if (i->flags & MINUS && i->width > i->arg_len)
+		i->res += ft_putchar_multi(' ', i->width - i->arg_len);
+
+	return (123);
+}
+
+int	calc_printed(t_info *i, va_list args)
+{
+	long long	*lptr;
+	signed char	*cptr;
+	int			*iptr;
+
+	iptr = NULL;
+	cptr = NULL;
+	lptr = NULL;
+	if (i->flags & LLONG)
+	{
+		lptr = va_arg(args, long long *);
+		*lptr = (long long)i->res;
+	}
+	if (i->flags & SSHORT)
+	{
+		cptr = va_arg(args, signed char *);
+		*cptr = (signed char)i->res;
+	}
+	else
+	{
+		iptr = va_arg(args, int *);
+		*iptr = i->res;
+	}
+	return (0);
+}
+
+void	assing_float_to_ints(long double num, long double prec, t_info *i)
+{
+	unsigned long long	whole;
+	unsigned long long	fraction;
+	int					x;
+	unsigned long long	tmp;
+	unsigned long long	tmp2;
+
+	x = 1;
+	fraction = 0;
+	whole = 0;
+	tmp = (int)num;
+	while (tmp > 0)
+	{
+		whole += x * (tmp % 10);
+		tmp /= 10;
+		x *= 10;
+	}
+	prec -= (long double)whole;	// 123.4 - 123 = 0.4
+	prec *= 10;
+	x = 1;
+	while (prec >= 1)
+	{
+		tmp = (int)prec;
+		fraction += x * (tmp % 10);
+		x *= 10;
+		prec -= tmp;
+		prec *= 10;
+	}
+	i->arg_len = count_digits(fraction);
+	x = 1;
+	while (i->arg_len-- > 0)
+		x *= 10;
+	tmp2 = 0;
+	while (x != 0)
+	{
+		x /= 10;
+		tmp2 += x * (fraction % 10);
+		fraction /= 10;
+	}
+	// while (fraction > 0)
+	// {
+	// 	tmp2 += i * (fraction % 10);
+	// 	i *= 10;
+	// 	fraction /= 10;
+	// }
+	printf("tmp2 = %llu\tfrac = %llu\n", tmp2, fraction);
+	fraction = tmp2;
+	printf("\n\nwhole %llu\tfrac %llu\n", whole, fraction);
+}
+
+
+void	assign_float(t_info *i, va_list args)
+{
+	if (i->flags & LONG)
+	{
+		i->lf_arg = va_arg(args, long double);
+		// printf(" >>>>%Lf<<<< ", i->lf_arg);
+	}
+	else
+	{
+		// i->f_arg = va_arg(args, double);
+		// printf(" ff%fff ", i->f_arg);
+		i->lf_arg = (long double) va_arg(args, double);
+		// printf(" ff%Lfff ", i->lf_arg);
+	}
+	if (i->lf_arg < 0)
+	{
+		i->lf_arg *= -1;
+		i->flags |= NEGATIVE;
+	}
+		printf("num = '%.9Lf'\n", i->lf_arg);
+	assing_float_to_ints(i->lf_arg, i->lf_arg, i);
+}
+
+int	print_float(t_info *i, va_list args)
+{
+	assign_float(i, args);
+
+
 	return (123);
 }
 
@@ -773,6 +1314,8 @@ int	check_specifier(const char *str, t_info *info, va_list args)
 	{
 		if (SPECS[i] == str[0])
 		{
+			if (SPECS[i] == 'x' || SPECS[i] == 'X')
+				info->hex = SPECS[i];
 			info->res += g_disp_table[i](info, args);	// no need for i->res +=
 			info->i++;
 			return (1);
@@ -831,7 +1374,6 @@ int main(void)
 	// sizes();
 	// maxes();
 
-
 	// //	--- d ---
 	// test_d();
 	// spacet();
@@ -841,17 +1383,16 @@ int main(void)
 	// zerot();
 	// minust();
 
-	// //	--- %% ---
 	// percent();
-
-	// //	--- c ---
 	// chart();
-
-	// printf("%-8s|%-4c|\n", "%-4c", 'a');
-	// printf("%-8s|%-4c|\n", "%-4c", 'a');
-
-	octals();
+	// octals();
 	// hext();
+	// unsigt();
+	// strt();
+	// adrt();
+	// printed();
+
+	floatt();
 
 
 	printf("\n");
