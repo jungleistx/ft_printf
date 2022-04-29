@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:08 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/04/19 14:30:53 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/04/29 14:17:78 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,13 +196,13 @@ void	reset_info(t_info *info, int reset)
 	info->flags = 0;
 	info->tmpres = 0;
 	info->f_dec_len = 0;
-	info->f_dec = 0;
+	info->f_dec_arg = 0;
 	info->arg_len = 0;
 	info->width = 0;
 	info->prec = 1;
 	info->hex = 65;
 	info->f_arg = 0;
-	info->lf_arg = 0;
+	info->cur_arg = 0;
 	// info->
 }
 
@@ -738,11 +738,8 @@ void	check_octal_flags(t_info *info)
 /*
 if prec = 0 & !HASH & !ZERO & width < 1
 return 0
-
 arg		prints
 08		8x0
-
-
 */
 
 int	print_zero_octal(t_info *i)
@@ -856,21 +853,16 @@ int	print_octal(t_info *i, va_list args)
 	}
 
 	/*
-
-
 	all
 		if hash && prec - len > 1, write 0
-
 	if minus,
 		if hash write 0, width--
 		write arg, if prec write 0
 		write width
-
 	!minus
 		write width
 		if hash write 0 width--
 		write arg, if prec write 0 arg
-
 	*/
 
 	return (1234);
@@ -1155,7 +1147,6 @@ int	print_str(t_info *i, va_list args)
 
 	/*
 	prec = max text	(str[prec] = '\0')
-
 	*/
 	return (123);
 }
@@ -1189,7 +1180,7 @@ int	print_address(t_info *i, va_list args)
 	return (123);
 }
 
-int	calc_printed(t_info *i, va_list args)
+int	calc_printed(t_info *i, va_list args)	// %n
 {
 	long long	*lptr;
 	signed char	*cptr;
@@ -1216,84 +1207,70 @@ int	calc_printed(t_info *i, va_list args)
 	return (0);
 }
 
-void	assing_float_to_ints(long double num, long double prec, t_info *i)
+// void	assing_float_frac(long double value, int prec, t_info *i)
+// {
+// 	if (!(i->flags & DOT))
+// 		prec = 6;
+// 	while (prec > 0)
+// 	{
+// 		value *= 10;
+// 		prec--;
+// 	}
+// 	i->f_dec_arg = (int)value;
+// 	printf("new frac = %llu\n", i->f_dec_arg);
+// }
+
+void	assing_float_to_ints(long double num, long double frac, t_info *i)
 {
-	unsigned long long	whole;
-	unsigned long long	fraction;
 	int					x;
 	unsigned long long	tmp;
-	unsigned long long	tmp2;
+	int					prec;
 
 	x = 1;
-	fraction = 0;
-	whole = 0;
-	tmp = (int)num;
-	while (tmp > 0)
+	tmp = (unsigned long long)num;
+	while (tmp != 0)
 	{
-		whole += x * (tmp % 10);
+		i->cur_arg += x * (tmp % 10);
 		tmp /= 10;
 		x *= 10;
 	}
-	prec -= (long double)whole;	// 123.4 - 123 = 0.4
-	prec *= 10;
-	x = 1;
-	while (prec >= 1)
-	{
-		tmp = (int)prec;
-		fraction += x * (tmp % 10);
-		x *= 10;
-		prec -= tmp;
-		prec *= 10;
-	}
-	i->arg_len = count_digits(fraction);
-	x = 1;
-	while (i->arg_len-- > 0)
-		x *= 10;
-	tmp2 = 0;
-	while (x != 0)
-	{
-		x /= 10;
-		tmp2 += x * (fraction % 10);
-		fraction /= 10;
-	}
-	// while (fraction > 0)
-	// {
-	// 	tmp2 += i * (fraction % 10);
-	// 	i *= 10;
-	// 	fraction /= 10;
-	// }
-	printf("tmp2 = %llu\tfrac = %llu\n", tmp2, fraction);
-	fraction = tmp2;
-	printf("\n\nwhole %llu\tfrac %llu\n", whole, fraction);
+	i->arg_len = count_digits(i->cur_arg);	// len of before .
+	frac -= (long double)i->cur_arg;	// 123.4 - 123 = 0.4
+
+	prec = i->prec;
+	if (!(i->flags & DOT))
+		prec = 6;
+	while (prec-- > 0)
+		frac *= 10;
+	i->f_dec_arg = (unsigned long long)frac;
+	i->f_dec_len = count_digits(i->f_dec_arg);
+	printf("new frac = %llu\tnum = %llu\n", i->f_dec_arg, i->cur_arg);
+	printf("frac len = %d\tnum len = %d\n", i->f_dec_len, i->arg_len);
+
 }
 
 
 void	assign_float(t_info *i, va_list args)
 {
 	if (i->flags & LONG)
-	{
-		i->lf_arg = va_arg(args, long double);
-		// printf(" >>>>%Lf<<<< ", i->lf_arg);
-	}
+		i->f_arg = va_arg(args, long double);
 	else
+		i->f_arg = (long double) va_arg(args, double);
+	if (i->f_arg < 0)
 	{
-		// i->f_arg = va_arg(args, double);
-		// printf(" ff%fff ", i->f_arg);
-		i->lf_arg = (long double) va_arg(args, double);
-		// printf(" ff%Lfff ", i->lf_arg);
-	}
-	if (i->lf_arg < 0)
-	{
-		i->lf_arg *= -1;
+		i->f_arg *= -1;
 		i->flags |= NEGATIVE;
 	}
-		printf("num = '%.9Lf'\n", i->lf_arg);
-	assing_float_to_ints(i->lf_arg, i->lf_arg, i);
+		// printf("num = '%.20Lf'\n", i->f_arg);
+	assing_float_to_ints(i->f_arg, i->f_arg, i);
 }
 
 int	print_float(t_info *i, va_list args)
 {
 	assign_float(i, args);
+
+	// if (!(i->flags & DOT))
+	// 	i->prec = 6;
 
 
 	return (123);
@@ -1392,8 +1369,20 @@ int main(void)
 	// adrt();
 	// printed();
 
-	floatt();
-
+	// floatt();
+	printf("num = 6985.123459876\n");
+	ft_printf("%f", 6985.123459876);
+	printf("\n\n\n");
+	printf("print\t%.10f\n", 6985.123459876);
+	ft_printf("  %.10f", 6985.123459876);
+	// printf("num = 100.525\n");
+	// ft_printf("%f", 100.525);
+	// printf("num = 6985123.12345987610101789123\n");
+	// ft_printf("%f", 6985123.12345987610101789123);
+	// printf("num = 1234567891.4\n");
+	// ft_printf("%f", 1234567891.4);
+	// printf("num = 7.1234567891234567\n");
+	// ft_printf("%f", 7.1234567891234567);
 
 	printf("\n");
 }
@@ -1405,7 +1394,6 @@ c
 	no space
 	no 0
 	no +
-
 	yes
 	-
 	width
@@ -1424,7 +1412,6 @@ You are allowed to use the following functions:
 	va_end
 	va_copy
 )
-
 You have to recode the libc’s printf function.
 • Your function will be called ft_printf and will be prototyped similarly to printf.
 • You won’t do the buffer management in the printf function.
@@ -1437,6 +1424,3 @@ h, l and ll.
 • You must manage the minimum field-width
 • You must manage the precision
 */
-
-
-

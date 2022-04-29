@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:18:13 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/04/19 14:31:47 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/04/29 14:16:01 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 
 // only used specs
-# define SPECS "%dicoxXuspnf"	// zu same as l (sizeof)
+# define SPECS "%dicoxXuspnf"	// z same as lu (sizeof), e && E same as f ?
 
 int	ft_printf(const char *str, ...);
 
@@ -32,26 +32,19 @@ typedef struct  		s_info
 {
     uint16_t    		flags;  // holds flags
     int         		res;    // res from printf
-
-	// needed
-	int					arg_len;
+	//	needed
 	int					width;	// minimum of printed, already stored ??
 	int					prec;
-	int					f_dec;	// count for floats # of decimal numbers
+	int					arg_len;
 	int					f_dec_len;	// floats after . len
-
-	long long			tmp;
-
+	long double			f_arg;	// store floats
+	unsigned long long	f_dec_arg;	// store int after .
+	unsigned long long	cur_arg;	// send to funcs
 	char				hex;	// a || A
-	unsigned long long	cur_arg; // send to funcs	//needed?
-
-	double				f_arg;
-	long double			lf_arg;
-
+    int         		i;		// counts original str[i]
+	//	??
+	long long			tmp;
 	int					min_len;	// ?
-	// int					f_last;	//	store last % 10 before * -1
-
-    int         		i;		// needed ?
     int         		tmpres;	// needed?
 }t_info;
 
@@ -1178,8 +1171,10 @@ void	printed(void)
 
 void	floatt(void)
 {
-	printf("\n\t--- FLOAT %%f ---\n");
-	printf("CASES:\t0\t\t100.5\t\t42.49\t\t-42.5555\t\t10000.5000912\n\n");
+	double	z = 0, fm = 100.1234, f = -100.1234;
+	printf("\n\t--- FLOAT %%f ---\n\n");
+	printf("CASES:\t0\t\t100.1234\t-100.1234\n\n");
+	// printf("CASES:\t0\t\t100.5\t\t42.49\t\t-42.5555\t\t10000.5000912\n\n");
 
 	// printf("%-8s|%f|\t|%f|\t|%f|\t|%f|\t\t|%f|\n", "%", (double)0, 100.5, 42.49, -42.5555, 10000.5000912);
 	// printf("\n\n\n");
@@ -1188,11 +1183,165 @@ void	floatt(void)
 	// unsigned long long b = 12345;
 	// ft_printf("%f", 100.525);
 	// ft_printf("%f", 6985.123459876);
+	// ft_printf("%f", 6985123.12345987610101789123);
+	// ft_printf("%f", 1234567891.4);
+	// ft_printf("%f", 7.1234567891234567);
 	// ft_printf("%Lf", a);
 	// ft_printf("%Lf", 9999.4l);
 	// ft_printf("%.10Lf", -2.9123349876123123l);
 	// ft_printf("%.10Lf", 2.9123349876123123l);
 	// printf("%Lf\n", (long double)b);
+
+
+
+	printf("\n");
+	// single cases
+	printf("%-8s", "%f");
+	printf("|%f|\t", z);
+	printf("|%f|\t", fm);
+	printf("|%f|\n", f);
+	printf("%-8s", "%+f");
+	printf("|%+f|\t", z);
+	printf("|%+f|\t", fm);
+	printf("|%+f|\n", f);
+	printf("%-8s", "%-f");
+	printf("|%-f|\t", z);
+	printf("|%-f|\t", fm);
+	printf("|%-f|\n", f);
+	printf("%-8s", "%0f");
+	printf("|%0f|\t", z);
+	printf("|%0f|\t", fm);
+	printf("|%0f|\n", f);
+	printf("%-8s", "%8f");
+	printf("|%8f|\t", z);
+	printf("|%8f|\t", fm);
+	printf("|%8f|\n", f);
+	printf("%-8s", "%3f");
+	printf("|%3f|\t", z);
+	printf("|%3f|\t", fm);
+	printf("|%3f|\n", f);
+	printf("%-8s", "%.0f");
+	printf("|%.0f|\t\t", z);
+	printf("|%.0f|\t\t", fm);
+	printf("|%.0f|\n", f);
+	printf("%-8s", "%.3f");
+	printf("|%.3f|\t\t", z);
+	printf("|%.3f|\t", fm);
+	printf("|%.3f|\n", f);
+	printf("%-8s", "%.9f");
+	printf("|%.9f|\t", z);
+	printf("|%.9f|\t", fm);
+	printf("|%.9f|\n", f);
+	printf("%-8s", "%#f");
+	printf("|%#f|\t", z);
+	printf("|%#f|\t", fm);
+	printf("|%#f|\n", f);
+	printf("%-8s", "% f");
+	printf("|% f|\t", z);
+	printf("|% f|\t", fm);
+	printf("|% f|\n", f);
+
+	// + ' '
+	//
+	// all +0
+	printf("%-8s", "%+0f");
+	printf("|%+0f|\t", z);
+	printf("|%+0f|\t", fm);
+	printf("|%+0f|\n", f);
+	printf("%-8s", "%+0.0f");
+	printf("|%+0.0f|\t\t", z);
+	printf("|%+0.0f|\t\t", fm);
+	printf("|%+0.0f|\n", f);
+	printf("%-8s", "%+0.3f");
+	printf("|%+0.3f|\t", z);
+	printf("|%+0.3f|\t", fm);
+	printf("|%+0.3f|\n", f);
+	printf("%-8s", "%+0.8f");
+	printf("|%+0.8f|\t", z);
+	printf("|%+0.8f|\t", fm);
+	printf("|%+0.8f|\n", f);
+	printf("%-8s", "%+03f");
+	printf("|%+03f|\t", z);
+	printf("|%+03f|\t", fm);
+	printf("|%+03f|\n", f);
+	printf("%-8s", "%+03.0f");
+	printf("|%+03.0f|\t\t", z);
+	printf("|%+03.0f|\t\t", fm);
+	printf("|%+03.0f|\n", f);
+	printf("%-8s", "%+03.8f");
+	printf("|%+03.8f|\t", z);
+	printf("|%+03.8f|\t", fm);
+	printf("|%+03.8f|\n", f);
+	printf("%-8s", "%+08f");
+	printf("|%+08f|\t", z);
+	printf("|%+08f|\t", fm);
+	printf("|%+08f|\n", f);
+	printf("%-8s", "%+08.0f");
+	printf("|%+08.0f|\t", z);
+	printf("|%+08.0f|\t", fm);
+	printf("|%+08.0f|\n", f);
+	printf("%-8s", "%+08.3f");
+	printf("|%+08.3f|\t", z);
+	printf("|%+08.3f|\t", fm);
+	printf("|%+08.3f|\n", f);
+	//  + - 0 ' ' # num prec
+
+	//	all +-
+	printf("%-8s", "%+-f");
+	printf("|%+-f|\t", z);
+	printf("|%+-f|\t", fm);
+	printf("|%+-f|\n", f);
+	printf("%-8s", "%+-.0f");
+	printf("|%+-.0f|\t\t", z);
+	printf("|%+-.0f|\t\t", fm);
+	printf("|%+-.0f|\n", f);
+	printf("%-8s", "%+-.3f");
+	printf("|%+-.3f|\t", z);
+	printf("|%+-.3f|\t", fm);
+	printf("|%+-.3f|\n", f);
+	printf("%-8s", "%+-.8f");
+	printf("|%+-.8f|\t", z);
+	printf("|%+-.8f|\t", fm);
+	printf("|%+-.8f|\n", f);
+	printf("%-8s", "%+-3f");
+	printf("|%+-3f|\t", z);
+	printf("|%+-3f|\t", fm);
+	printf("|%+-3f|\n", f);
+	printf("%-8s", "%+-3.0f");
+	printf("|%+-3.0f|\t\t", z);
+	printf("|%+-3.0f|\t\t", fm);
+	printf("|%+-3.0f|\n", f);
+	printf("%-8s", "%+-3.8f");
+	printf("|%+-3.8f|\t", z);
+	printf("|%+-3.8f|\t", fm);
+	printf("|%+-3.8f|\n", f);
+	printf("%-8s", "%+-8f");
+	printf("|%+-8f|\t", z);
+	printf("|%+-8f|\t", fm);
+	printf("|%+-8f|\n", f);
+	printf("%-8s", "%+-8.0f");
+	printf("|%+-8.0f|\t", z);
+	printf("|%+-8.0f|\t", fm);
+	printf("|%+-8.0f|\n", f);
+	printf("%-8s", "%+-8.3f");
+	printf("|%+-8.3f|\t", z);
+	printf("|%+-8.3f|\t", fm);
+	printf("|%+-8.3f|\n", f);
+	printf("%-8s", "%+-8.9f");
+	printf("|%+-8.9f|\t", z);
+	printf("|%+-8.9f|\t", fm);
+	printf("|%+-8.9f|\n", f);
+	printf("%-8s", "%+#f");
+	printf("|%+#f|\t", z);
+	printf("|%+#f|\t", fm);
+	printf("|%+#f|\n", f);
+	printf("%-8s", "%#.0f");
+	printf("|%#.0f|\t\t", z);
+	printf("|%#.0f|\t\t", fm);
+	printf("|%#.0f|\n", f);
+
+
+
 
 }
 
