@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:18:13 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/04/29 14:16:01 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/04/29 18:23:44 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct  		s_info
 	unsigned long long	cur_arg;	// send to funcs
 	char				hex;	// a || A
     int         		i;		// counts original str[i]
+	int					f_total;	// total length of num + . + prec
 	//	??
 	long long			tmp;
 	int					min_len;	// ?
@@ -1327,6 +1328,9 @@ void	floatt(void)
 	printf("|%+-8.3f|\t", z);
 	printf("|%+-8.3f|\t", fm);
 	printf("|%+-8.3f|\n", f);
+	printf("%-8s|%8.1f|\t|%8.1f|\t|%8.1f|\n", "%8.1f", z, fm, f);
+	printf("%-8s|%8.1f|\t|%8.1f|\t|%8.1f|\n", "%8.1f", z, fm, f);
+	printf("%-8s|%+8.1f|\t|%+8.1f|\t|%+8.1f|\n", "%+8.1f", z, fm, f);
 	printf("%-8s", "%+-8.9f");
 	printf("|%+-8.9f|\t", z);
 	printf("|%+-8.9f|\t", fm);
@@ -1340,8 +1344,25 @@ void	floatt(void)
 	printf("|%#.0f|\t\t", fm);
 	printf("|%#.0f|\n", f);
 
+	printf("%-8s|%#4.0f|\t\t|%#4.0f|\t\t|%#4.0f|\n", "%#4.0f", z, fm, f);
+	printf("%-8s|%#08.0f|\t|%#08.0f|\t|%#08.0f|\n", "%#08.0f", z, fm, f);
 
+	printf("\n");
 
+	printf("%-8s|%.1f|\t\t|%.1f|\t\t|%.1f|\n", "%.1f", (double)0, 9.96, 2.95);
+	printf("%-8s|%.2f|\t\t|%.2f|\t\t|%.2f|\n", "%.2f", (double)0, 9.969, 2.959);
+	printf("%-8s|%.1f|\t\t|%.1f|\t\t|%.1f|\n", "%.1f", (double)0, 9.9, 2.9);
+	printf("%-8s|%.0f|\t\t|%.0f|\t\t|%.0f|\t\t|%.0f|\n", "%.0f", 0.5, 1.5, 2.5, 3.5);
+
+	printf("\n");
+	printf("%.2f\n", 1.15);
+	printf("%.2f\n", 1.55);
+	printf("%.2f\n", 1.59);
+	printf("%.15f\n", 1.15);
+	printf("%.17f\n", 1.15);
+
+	printf("end of test\n");
+	printf("\n");
 
 }
 

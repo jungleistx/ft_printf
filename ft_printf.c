@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:08 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/04/29 14:17:78 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/04/29 18:32:09 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,7 @@ void	reset_info(t_info *info, int reset)
 	info->hex = 65;
 	info->f_arg = 0;
 	info->cur_arg = 0;
+	info->f_total = 0;
 	// info->
 }
 
@@ -1220,35 +1221,81 @@ int	calc_printed(t_info *i, va_list args)	// %n
 // 	printf("new frac = %llu\n", i->f_dec_arg);
 // }
 
-void	assing_float_to_ints(long double num, long double frac, t_info *i)
+void		float_calc_total(t_info *i)
 {
-	int					x;
-	unsigned long long	tmp;
-	int					prec;
+	i->f_total = i->arg_len;
 
-	x = 1;
-	tmp = (unsigned long long)num;
-	while (tmp != 0)
+	if (i->flags & HASH)
+		i->f_total++;
+	if (i->prec > 0)
+		i->f_total += i->prec;
+	// if (i->flags & PLUS)
+	// 	i->f_total++;
+}
+
+void	float_rounding(t_info *i, long double frac)
+{
+	int	tmp;
+
+	frac -= (long double)i->f_dec_arg;
+	tmp = (int)(frac * 10);
+	if (tmp % 10 >= 5)
 	{
-		i->cur_arg += x * (tmp % 10);
-		tmp /= 10;
-		x *= 10;
+		if (i->prec < 2 && i->cur_arg % 2 == 1)
+			i->cur_arg++;
+		else
+			i->f_dec_arg++;
 	}
+}
+
+/*	rounding:
+	if num if even
+		round is down
+	else up
+*/
+
+void	assing_float_to_ints(long double frac, t_info *i, int prec)
+{
+	i->cur_arg = (unsigned long long)frac;
 	i->arg_len = count_digits(i->cur_arg);	// len of before .
+	if (i->flags & NEGATIVE || i->flags & PLUS)	//	?
+		i->arg_len++;
+
 	frac -= (long double)i->cur_arg;	// 123.4 - 123 = 0.4
 
-	prec = i->prec;
 	if (!(i->flags & DOT))
 		prec = 6;
+	// else	//	?
+	// 	prec++;
+
 	while (prec-- > 0)
 		frac *= 10;
 	i->f_dec_arg = (unsigned long long)frac;
-	i->f_dec_len = count_digits(i->f_dec_arg);
-	printf("new frac = %llu\tnum = %llu\n", i->f_dec_arg, i->cur_arg);
-	printf("frac len = %d\tnum len = %d\n", i->f_dec_len, i->arg_len);
+	if (i->f_dec_arg % 10 >= 5)
+		float_rounding(i, (int)frac * 10);
+
+	// rounding checks
+	// frac -= i->f_dec_arg;
+	// frac *= 10;
+	// if (i->f_dec_arg % 10 >= 5 && frac % 10 >= 5)
+		// i->f_dec_arg++;
+
+	// rounding
+	// if (i->f_dec_arg % 10 >= 5)
+	// 	i->f_dec_arg += 10;
+	// i->f_dec_arg /= 10;
+	//
+
+	// if (i->f_dec_arg == 10)
+	// 	i->cur_arg++;
+
+	i->f_dec_len = count_digits(i->f_dec_arg);	// not needed, len == i->prec ??
+
+	float_calc_total(i);
+	// printf("new frac = %llu\tnum = %llu\n", i->f_dec_arg, i->cur_arg);
+	// printf("frac len = %d\tnum len = %d\n", i->f_dec_len, i->arg_len);
 
 }
-
 
 void	assign_float(t_info *i, va_list args)
 {
@@ -1262,16 +1309,53 @@ void	assign_float(t_info *i, va_list args)
 		i->flags |= NEGATIVE;
 	}
 		// printf("num = '%.20Lf'\n", i->f_arg);
-	assing_float_to_ints(i->f_arg, i->f_arg, i);
+	assing_float_to_ints(i->f_arg, i, i->prec);
 }
 
 int	print_float(t_info *i, va_list args)
 {
 	assign_float(i, args);
 
-	// if (!(i->flags & DOT))
-	// 	i->prec = 6;
 
+	if (i->width > i->arg_len + i->f_dec_len + 1 && !(i->flags & MINUS))
+	{
+		if (i->flags & ZERO)
+			i->res += ft_putchar_multi('0', i->width - (i->arg_len + i->f_dec_len + 1));
+		else
+			i->res += ft_putchar_multi(' ', i->width - (i->arg_len + i->f_dec_len + 1));
+	}
+
+	/*
+		width 	0 / ' '
+		prefix	+ / -
+		num
+		dot
+		prec
+		minus	' '
+	*/
+
+	if (i->flags & NEGATIVE || i->flags & PLUS)
+		print_prefix_flag(i);
+
+	if (i->f_dec_len + 1 > i->width)
+	{
+		if (i->flags & MINUS)
+			i->flags ^= MINUS;
+		i->width = 1;
+	}
+	if (i->flags & HASH)
+		i->arg_len--;	//	. counts as width in arg len
+
+	if (i->flags & HASH || i->prec != 0)
+		i->res += write(1, ".", 1);
+
+	if (i->prec != 0)
+	{
+		ft_putnbr_l(i->f_dec_arg);
+		i->res += i->f_dec_len;
+	}
+
+	// if (i->flags & MINUS && i->width )
 
 	return (123);
 }
@@ -1369,12 +1453,12 @@ int main(void)
 	// adrt();
 	// printed();
 
-	// floatt();
-	printf("num = 6985.123459876\n");
+	floatt();
+	// printf("num = 6985.123459876\n");
 	ft_printf("%f", 6985.123459876);
-	printf("\n\n\n");
-	printf("print\t%.10f\n", 6985.123459876);
-	ft_printf("  %.10f", 6985.123459876);
+	// printf("\n\n\n");
+	// printf("print\t%.10f\n", 6985.123459876);
+	// ft_printf("  %.10f", 6985.123459876);
 	// printf("num = 100.525\n");
 	// ft_printf("%f", 100.525);
 	// printf("num = 6985123.12345987610101789123\n");
