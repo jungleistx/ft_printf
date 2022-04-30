@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:18:13 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/04/29 18:23:44 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/04/30 12:40:44 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1193,176 +1193,156 @@ void	floatt(void)
 	// ft_printf("%.10Lf", 2.9123349876123123l);
 	// printf("%Lf\n", (long double)b);
 
-
-
 	printf("\n");
 	// single cases
 	printf("%-8s", "%f");
-	printf("|%f|\t", z);
-	printf("|%f|\t", fm);
-	printf("|%f|\n", f);
+	printf("|%f|\t|%f|\t|%f|\n", z, fm , f);
+	ft_printf("\t|%f|\t|%f|\t|%f|\n", z, fm , f);
 	printf("%-8s", "%+f");
-	printf("|%+f|\t", z);
-	printf("|%+f|\t", fm);
-	printf("|%+f|\n", f);
+	printf("|%+f|\t|%+f|\t|%+f|\n", z, fm , f);
+	ft_printf("\t|%+f|\t|%+f|\t|%+f|\n", z, fm , f);
 	printf("%-8s", "%-f");
-	printf("|%-f|\t", z);
-	printf("|%-f|\t", fm);
-	printf("|%-f|\n", f);
+	printf("|%-f|\t|%-f|\t|%-f|\n", z, fm , f);
+	ft_printf("\t|%-f|\t|%-f|\t|%-f|\n", z, fm , f);
 	printf("%-8s", "%0f");
-	printf("|%0f|\t", z);
-	printf("|%0f|\t", fm);
-	printf("|%0f|\n", f);
+	printf("|%0f|\t|%0f|\t|%0f|\n", z, fm , f);
+	ft_printf("\t|%0f|\t|%0f|\t|%0f|\n", z, fm , f);
 	printf("%-8s", "%8f");
-	printf("|%8f|\t", z);
-	printf("|%8f|\t", fm);
-	printf("|%8f|\n", f);
+	printf("|%8f|\t|%8f|\t|%8f|\n", z, fm , f);
+	ft_printf("\t|%8f|\t|%8f|\t|%8f|\n", z, fm , f);
 	printf("%-8s", "%3f");
-	printf("|%3f|\t", z);
-	printf("|%3f|\t", fm);
-	printf("|%3f|\n", f);
+	printf("|%3f|\t|%3f|\t|%3f|\n", z, fm , f);
+	ft_printf("\t|%3f|\t|%3f|\t|%3f|\n", z, fm , f);
 	printf("%-8s", "%.0f");
-	printf("|%.0f|\t\t", z);
-	printf("|%.0f|\t\t", fm);
-	printf("|%.0f|\n", f);
+	printf("|%.0f|\t|%.0f|\t|%.0f|\n", z, fm , f);
+	ft_printf("\t|%.0f|\t|%.0f|\t|%.0f|\n", z, fm , f);
 	printf("%-8s", "%.3f");
-	printf("|%.3f|\t\t", z);
-	printf("|%.3f|\t", fm);
-	printf("|%.3f|\n", f);
+	printf("|%.3f|\t|%.3f|\t|%.3f|\n", z, fm , f);
+	ft_printf("\t|%.3f|\t|%.3f|\t|%.3f|\n", z, fm , f);
+	printf("%-8s", "%.3f");
+	printf("|%.3f|\t|%.3f|\t|%.3f|\n", z, fm , f);
+	ft_printf("\t|%.3f|\t|%.3f|\t|%.3f|\n", z, fm , f);
 	printf("%-8s", "%.9f");
-	printf("|%.9f|\t", z);
-	printf("|%.9f|\t", fm);
-	printf("|%.9f|\n", f);
+	printf("|%.9f|\t|%.9f|\t|%.9f|\n", z, fm , f);
+	ft_printf("\t|%.9f|\t|%.9f|\t|%.9f|\n", z, fm , f);
 	printf("%-8s", "%#f");
-	printf("|%#f|\t", z);
-	printf("|%#f|\t", fm);
-	printf("|%#f|\n", f);
+	printf("|%#f|\t|%#f|\t|%#f|\n", z, fm , f);
+	ft_printf("\t|%#f|\t|%#f|\t|%#f|\n", z, fm , f);
 	printf("%-8s", "% f");
-	printf("|% f|\t", z);
-	printf("|% f|\t", fm);
-	printf("|% f|\n", f);
+	printf("|% f|\t|% f|\t|% f|\n", z, fm , f);
+	ft_printf("\t|% f|\t|% f|\t|% f|\n", z, fm , f);
 
 	// + ' '
-	//
+
 	// all +0
 	printf("%-8s", "%+0f");
-	printf("|%+0f|\t", z);
-	printf("|%+0f|\t", fm);
-	printf("|%+0f|\n", f);
+	printf("|%+0f|\t|%+0f|\t|%+0f|\n", z, fm , f);
+	ft_printf("\t|%+0f|\t|%+0f|\t|%+0f|\n", z, fm , f);
 	printf("%-8s", "%+0.0f");
-	printf("|%+0.0f|\t\t", z);
-	printf("|%+0.0f|\t\t", fm);
-	printf("|%+0.0f|\n", f);
+	printf("|%+0.0f|\t|%+0.0f|\t|%+0.0f|\n", z, fm , f);
+	ft_printf("\t|%+0.0f|\t|%+0.0f|\t|%+0.0f|\n", z, fm , f);
 	printf("%-8s", "%+0.3f");
-	printf("|%+0.3f|\t", z);
-	printf("|%+0.3f|\t", fm);
-	printf("|%+0.3f|\n", f);
-	printf("%-8s", "%+0.8f");
-	printf("|%+0.8f|\t", z);
-	printf("|%+0.8f|\t", fm);
-	printf("|%+0.8f|\n", f);
+	printf("|%+0.3f|\t|%+0.3f|\t|%+0.3f|\n", z, fm , f);
+	ft_printf("\t|%+0.3f|\t|%+0.3f|\t|%+0.3f|\n", z, fm , f);
 	printf("%-8s", "%+03f");
-	printf("|%+03f|\t", z);
-	printf("|%+03f|\t", fm);
-	printf("|%+03f|\n", f);
+	printf("|%+0.8f|\t|%+0.8f|\t|%+0.8f|\n", z, fm , f);
+	ft_printf("\t|%+0.8f|\t|%+0.8f|\t|%+0.8f|\n", z, fm , f);
+	printf("%-8s", "%+03f");
+	printf("|%+03f|\t|%+03f|\t|%+03f|\n", z, fm , f);
+	ft_printf("\t|%+03f|\t|%+03f|\t|%+03f|\n", z, fm , f);
 	printf("%-8s", "%+03.0f");
-	printf("|%+03.0f|\t\t", z);
-	printf("|%+03.0f|\t\t", fm);
-	printf("|%+03.0f|\n", f);
+	printf("|%+03.0f|\t|%+03.0f|\t|%+03.0f|\n", z, fm , f);
+	ft_printf("\t|%+03.0f|\t|%+03.0f|\t|%+03.0f|\n", z, fm , f);
 	printf("%-8s", "%+03.8f");
-	printf("|%+03.8f|\t", z);
-	printf("|%+03.8f|\t", fm);
-	printf("|%+03.8f|\n", f);
-	printf("%-8s", "%+08f");
-	printf("|%+08f|\t", z);
-	printf("|%+08f|\t", fm);
-	printf("|%+08f|\n", f);
-	printf("%-8s", "%+08.0f");
-	printf("|%+08.0f|\t", z);
-	printf("|%+08.0f|\t", fm);
-	printf("|%+08.0f|\n", f);
+	printf("|%+03.8f|\t|%+03.8f|\t|%+03.8f|\n", z, fm , f);
+	ft_printf("\t|%+03.8f|\t|%+03.8f|\t|%+03.8f|\n", z, fm , f);
 	printf("%-8s", "%+08.3f");
-	printf("|%+08.3f|\t", z);
-	printf("|%+08.3f|\t", fm);
-	printf("|%+08.3f|\n", f);
+	printf("|%+08.3f|\t|%+08.3f|\t|%+08.3f|\n", z, fm , f);
+	ft_printf("\t|%+08.3f|\t|%+08.3f|\t|%+08.3f|\n", z, fm , f);
+	printf("%-8s", "%+08f");
+	printf("|%+08f|\t|%+08f|\t|%+08f|\n", z, fm , f);
+	ft_printf("\t|%+08f|\t|%+08f|\t|%+08f|\n", z, fm , f);
+	printf("%-8s", "%+08.0f");
+	printf("|%+08.0f|\t|%+08.0f|\t|%+08.0f|\n", z, fm , f);
+	ft_printf("\t|%+08.0f|\t|%+08.0f|\t|%+08.0f|\n", z, fm , f);
+
 	//  + - 0 ' ' # num prec
 
 	//	all +-
 	printf("%-8s", "%+-f");
-	printf("|%+-f|\t", z);
-	printf("|%+-f|\t", fm);
-	printf("|%+-f|\n", f);
+	printf("|%+-f|\t|%+-f|\t|%+-f|\n", z, fm , f);
+	ft_printf("\t|%+-f|\t|%+-f|\t|%+-f|\n", z, fm , f);
 	printf("%-8s", "%+-.0f");
-	printf("|%+-.0f|\t\t", z);
-	printf("|%+-.0f|\t\t", fm);
-	printf("|%+-.0f|\n", f);
+	printf("|%+-.0f|\t|%+-.0f|\t|%+-.0f|\n", z, fm , f);
+	ft_printf("\t|%+-.0f|\t|%+-.0f|\t|%+-.0f|\n", z, fm , f);
 	printf("%-8s", "%+-.3f");
-	printf("|%+-.3f|\t", z);
-	printf("|%+-.3f|\t", fm);
-	printf("|%+-.3f|\n", f);
+	printf("|%+-.3f|\t|%+-.3f|\t|%+-.3f|\n", z, fm , f);
+	ft_printf("\t|%+-.3f|\t|%+-.3f|\t|%+-.3f|\n", z, fm , f);
 	printf("%-8s", "%+-.8f");
-	printf("|%+-.8f|\t", z);
-	printf("|%+-.8f|\t", fm);
-	printf("|%+-.8f|\n", f);
+	printf("|%+-.8f|\t|%+-.8f|\t|%+-.8f|\n", z, fm , f);
+	ft_printf("\t|%+-.8f|\t|%+-.8f|\t|%+-.8f|\n", z, fm , f);
 	printf("%-8s", "%+-3f");
-	printf("|%+-3f|\t", z);
-	printf("|%+-3f|\t", fm);
-	printf("|%+-3f|\n", f);
+	printf("|%+-3f|\t|%+-3f|\t|%+-3f|\n", z, fm , f);
+	ft_printf("\t|%+-3f|\t|%+-3f|\t|%+-3f|\n", z, fm , f);
 	printf("%-8s", "%+-3.0f");
-	printf("|%+-3.0f|\t\t", z);
-	printf("|%+-3.0f|\t\t", fm);
-	printf("|%+-3.0f|\n", f);
+	printf("|%+-3.0f|\t|%+-3.0f|\t|%+-3.0f|\n", z, fm , f);
+	ft_printf("\t|%+-3.0f|\t|%+-3.0f|\t|%+-3.0f|\n", z, fm , f);
 	printf("%-8s", "%+-3.8f");
-	printf("|%+-3.8f|\t", z);
-	printf("|%+-3.8f|\t", fm);
-	printf("|%+-3.8f|\n", f);
+	printf("|%+-3.8f|\t|%+-3.8f|\t|%+-3.8f|\n", z, fm , f);
+	ft_printf("\t|%+-3.8f|\t|%+-3.8f|\t|%+-3.8f|\n", z, fm , f);
 	printf("%-8s", "%+-8f");
-	printf("|%+-8f|\t", z);
-	printf("|%+-8f|\t", fm);
-	printf("|%+-8f|\n", f);
+	printf("|%+-8f|\t|%+-8f|\t|%+-8f|\n", z, fm , f);
+	ft_printf("\t|%+-8f|\t|%+-8f|\t|%+-8f|\n", z, fm , f);
 	printf("%-8s", "%+-8.0f");
-	printf("|%+-8.0f|\t", z);
-	printf("|%+-8.0f|\t", fm);
-	printf("|%+-8.0f|\n", f);
+	printf("|%+-8.0f|\t|%+-8.0f|\t|%+-8.0f|\n", z, fm , f);
+	ft_printf("\t|%+-8.0f|\t|%+-8.0f|\t|%+-8.0f|\n", z, fm , f);
 	printf("%-8s", "%+-8.3f");
-	printf("|%+-8.3f|\t", z);
-	printf("|%+-8.3f|\t", fm);
-	printf("|%+-8.3f|\n", f);
-	printf("%-8s|%8.1f|\t|%8.1f|\t|%8.1f|\n", "%8.1f", z, fm, f);
-	printf("%-8s|%8.1f|\t|%8.1f|\t|%8.1f|\n", "%8.1f", z, fm, f);
-	printf("%-8s|%+8.1f|\t|%+8.1f|\t|%+8.1f|\n", "%+8.1f", z, fm, f);
-	printf("%-8s", "%+-8.9f");
-	printf("|%+-8.9f|\t", z);
-	printf("|%+-8.9f|\t", fm);
-	printf("|%+-8.9f|\n", f);
-	printf("%-8s", "%+#f");
-	printf("|%+#f|\t", z);
-	printf("|%+#f|\t", fm);
-	printf("|%+#f|\n", f);
-	printf("%-8s", "%#.0f");
-	printf("|%#.0f|\t\t", z);
-	printf("|%#.0f|\t\t", fm);
-	printf("|%#.0f|\n", f);
+	printf("|%+-8.3f|\t|%+-8.3f|\t|%+-8.3f|\n", z, fm , f);
+	ft_printf("\t|%+-8.3f|\t|%+-8.3f|\t|%+-8.3f|\n", z, fm , f);
 
-	printf("%-8s|%#4.0f|\t\t|%#4.0f|\t\t|%#4.0f|\n", "%#4.0f", z, fm, f);
-	printf("%-8s|%#08.0f|\t|%#08.0f|\t|%#08.0f|\n", "%#08.0f", z, fm, f);
 
-	printf("\n");
+	// printf("%-8s", "%8.1f");
+	// printf("|%8.1f|\t|%8.1f|\t|%8.1f|\n", z, fm , f);
+	// printf("%-8s", "%8.1f");
+	// printf("|%8.1f|\t|%8.1f|\t|%8.1f|\n", z, fm , f);
 
-	printf("%-8s|%.1f|\t\t|%.1f|\t\t|%.1f|\n", "%.1f", (double)0, 9.96, 2.95);
-	printf("%-8s|%.2f|\t\t|%.2f|\t\t|%.2f|\n", "%.2f", (double)0, 9.969, 2.959);
-	printf("%-8s|%.1f|\t\t|%.1f|\t\t|%.1f|\n", "%.1f", (double)0, 9.9, 2.9);
-	printf("%-8s|%.0f|\t\t|%.0f|\t\t|%.0f|\t\t|%.0f|\n", "%.0f", 0.5, 1.5, 2.5, 3.5);
+	// printf("%-8s|%8.1f|\t|%8.1f|\t|%8.1f|\n", "%8.1f", z, fm, f);
+	// printf("%-8s|%+8.1f|\t|%+8.1f|\t|%+8.1f|\n", "%+8.1f", z, fm, f);
+	// printf("%-8s", "%+-8.9f");
+	// printf("|%+-8.9f|\t", z);
+	// printf("|%+-8.9f|\t", fm);
+	// printf("|%+-8.9f|\n", f);
+	// printf("%-8s", "%+#f");
+	// printf("|%+#f|\t", z);
+	// printf("|%+#f|\t", fm);
+	// printf("|%+#f|\n", f);
+	// printf("%-8s", "%#.0f");
+	// printf("|%#.0f|\t\t", z);
+	// printf("|%#.0f|\t\t", fm);
+	// printf("|%#.0f|\n", f);
 
-	printf("\n");
-	printf("%.2f\n", 1.15);
-	printf("%.2f\n", 1.55);
-	printf("%.2f\n", 1.59);
-	printf("%.15f\n", 1.15);
-	printf("%.17f\n", 1.15);
+	// printf("%-8s|%#4.0f|\t\t|%#4.0f|\t\t|%#4.0f|\n", "%#4.0f", z, fm, f);
+	// printf("%-8s|%#08.0f|\t|%#08.0f|\t|%#08.0f|\n", "%#08.0f", z, fm, f);
 
-	printf("end of test\n");
-	printf("\n");
+	// printf("\n");
+
+	// printf("%-8s|%.1f|\t\t|%.1f|\t\t|%.1f|\n", "%.1f", (double)0, 9.96, 2.95);
+	// printf("%-8s|%.2f|\t\t|%.2f|\t\t|%.2f|\n", "%.2f", (double)0, 9.969, 2.959);
+	// printf("%-8s|%.1f|\t\t|%.1f|\t\t|%.1f|\n", "%.1f", (double)0, 9.9, 2.9);
+	// printf("%-8s|%.0f|\t\t|%.0f|\t\t|%.0f|\t\t|%.0f|\n", "%.0f", 0.5, 1.5, 2.5, 3.5);
+
+	// printf("\n");
+	// printf("%.2f\n", 1.15);		//	1.15	(1.14 9999999999999911)
+	// printf("%.2f\n", 1.55);		//	1.55	(1.55 0000000000000044)
+	// printf("%.2f\n", 1.59);		// 	1.59	(1.59 000000000000008)
+	// printf("%.15f\n", 1.15);	// 	1.50..	(1.149999999999999 911)
+	// printf("%.16f\n", 1.15);	// 	1.49..	(1.1499999999999999 11)
+	// printf("%.17f\n", 1.15);	// 	1.49..	(1.14999999999999991 1)
+	// printf("%.5f\n", 6985.123459111);	//	6985.12345 9110999647
+	// printf("%.6f\n", 6985.123459111);	//	6985.123459 110999647
+
+	// printf("end of test\n");
+	// printf("\n");
 
 }
 
