@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 13:10:08 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/04/30 12:50:36 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/02 14:37:52 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,8 +215,8 @@ int	dot_ast_flag(const char *str, t_info *info, va_list args)
 	i = 0;
 	if (str[i++] == '.')
 	{
-		if (info->flags & ZERO)		// need zero for %%, also with prec. FIX needed in %d ?
-			info->flags ^= ZERO;
+		// if (info->flags & ZERO)		// need zero for %%, also with prec. FIX needed in %d ?
+		// 	info->flags ^= ZERO;	//	also needed for %f
 		info->flags |= DOT;
 		if (str[i] == '*')
 			info->prec = va_arg(args, int);
@@ -1227,8 +1227,8 @@ void		float_calc_total(t_info *i)
 	i->f_total += i->prec;	// can be 0 if rounded, then prec
 	if (i->flags & HASH || i->prec > 0)
 		i->f_total++;
-	if (i->flags & PLUS || i->flags & NEGATIVE)
-		i->f_total++;
+	// if (i->flags & PLUS || i->flags & NEGATIVE)	//	already in assing
+	// 	i->f_total++;
 }
 
 // float_rounding(i);
@@ -1323,19 +1323,31 @@ int	print_float(t_info *i, va_list args)
 		minus	' '
 	*/
 
-	if (i->width > i->f_total && !(i->flags & NEGATIVE))
+	if (i->flags & SPACE && !(i->flags & NEGATIVE))
 	{
-		if (i->flags & ZERO)
-			i->res += ft_putchar_multi('0', i->width - i->f_total);
-		else
-			i->res += ft_putchar_multi(' ', i->width - i->f_total);
+		i->res += write(1, " ", 1);
+		i->width--;
 	}
+
+	if (i->width > i->f_total && !(i->flags & MINUS) && !(i->flags & ZERO))
+	{
+		i->res += ft_putchar_multi(' ', i->width - i->f_total);
+	}
+
 	if (i->flags & NEGATIVE)
 		i->res += write(1, "-", 1);
 	else if (i->flags & PLUS)
 		i->res += write(1, "+", 1);
+
+	if (i->flags & ZERO && i->width > i->f_total)
+	{
+		i->res += ft_putchar_multi('0', i->width - i->f_total);
+	}
+
 	ft_putnbr_l(i->cur_arg);
 	i->res += i->arg_len;
+
+
 
 	if (i->flags & HASH || i->prec > 0)
 		i->res += write(1, ".", 1);
@@ -1482,6 +1494,10 @@ int main(void)
 	*/
 
 	// double	z = 0, fm = 100.1234, f = -100.1234;
+	// printf("%-8s", "%+08.0f");
+	// printf("|%+08.0f|\t|%+08.0f|\t|%+08.0f|\n", z, fm , f);
+	// ft_printf("\t|%+08.0f|\t|%+08.0f|\t|%+08.0f|\n", z, fm , f);
+
 	// printf("%-8s", "%f");
 	// printf("|%f|\n", (double)0);
 	// ft_printf("\t|%f|\n", (double)0);
