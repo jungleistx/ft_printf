@@ -48,7 +48,118 @@ mess with numbers, where is flags and padding handled ---- TODO ----
 *	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
 *	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
 
+LIBFT_FUNCTIONS
+ft_putchar
 
+ft_putstr
+ft_putnbr	(?) ft_putnbr_l might replace that
+ft_strlen
+ft_isdigit
+
+UNUSED
+	check_octal_flags
+	assign_octal
+	write_percent
+	print_zero_flag
+		assign_number			?
+		neg_number
+	exit_error
+	check_error_input
+---
+---
+---
+flags2.c
+	dot_flag
+	ast_precision_flag
+	dot_ast_flag
+flags.c
+	special_flags
+	check_len_flags
+	digit_minus_flag
+	plus_space_flag
+helpers.c
+	count_digits
+	ft_putchar_multi
+	ft_putnbr_l
+percent.c
+	print_percent
+unsigned.c
+	print_zero_unsig
+	print_unsigned
+	print_unsigned_long
+string.c
+	assign_str
+	print_str
+int_flags.c
+	print_prec_flag
+	print_width
+char.c
+	print_char
+address.c
+	print_address
+ft_printf.c
+	reset_info
+	write_non_percent
+	check_flags
+	check_specifier
+	ft_printf
+int.c
+	print_prefix_flag
+	(print_space_flag)		DELETED
+	print_zero_number
+	print_number
+bonus.c
+	calc_printed			TEST WITH LENGHTS (ll, hh)
+assing.c
+	assign_dic
+	assign_oux				func_name changed !
+	float_rounding
+	assign_float_to_ints
+	assign_float
+hex.c
+	print_zero_hex
+	count_hex
+	print_hex
+	print_hex_flags
+hex_flags.c
+	print_hex_zero_width
+	print_hex_width
+	print_hex_minus
+octal.c
+	print_zero_octal
+	convert_octal
+	print_octal_non_minus
+	print_octal_minus
+	print_octal
+float.c
+	float_calc_total
+	print_float_flags
+	print_float
+---
+
+
+----
+CHANGE DISP_TABLE TO VOID?
+----
+
+
+x	MID
+x   -
+x	-
+-
+x
+-
+-
+x
+-
+-
+-
+
+
+
+1 + 4 + 4
+
+2 + 7
 
 
 
@@ -235,12 +346,6 @@ TODO
 - numbercounter that takes void*, can be used with all numbers. converts to longlong
 - putchar multi instead of write(more than 1)
 
-LIBFT_FUNCTIONS
-putstr
-putnbr
-putchar
-strlen
-isdigit
 
 BONUS
 -%n 	amount written at that moment, saved in (total?)

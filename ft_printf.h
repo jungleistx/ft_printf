@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:18:13 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/02 15:04:13 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/12 12:06:49 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,13 @@
 # include <limits.h>
 # include <float.h>
 
-
 // only used specs
-# define SPECS "%dicoxXuspnf"	// z same as lu (sizeof), e && E same as f ?
+# define SPECS "%dicoxXuUspnf"	// z same as lu (sizeof), e && E same as f ?
+# define RED "\033[0;31m"
+# define NOCO "\033[0m"
+# define GREEN "\033[0;32m"
+# define YELLOW "\033[4;33m"
+# define BLUE "\033[0;34m"
 
 int	ft_printf(const char *str, ...);
 
@@ -75,6 +79,7 @@ typedef enum e_flags
 	// NEG_NUM = 128	// ?
 }t_flags;
 
+
 typedef	int		(*func_pointer) (t_info *, va_list);
 
 int	ft_atoi(const char *str);
@@ -84,26 +89,27 @@ int	ft_putchar_multi(char c, int i);
 void	ft_putchar(char c);
 void	ft_putstr(char const *s);
 void	ft_putnbr(int n);
-int	count_digits(long long num);
+int	count_digits(unsigned long long num);
 int	check_error_input(t_info *info, char specifier);
 void	reset_info(t_info *info, int res);
 void	check_width(const char* str, t_info *info, va_list args);
 void	check_flags(const char *str, t_info *info, va_list args);
 int	ft_printf(const char *str, ...);
-int	print_number(t_info *i, va_list args);
-int	print_char(t_info *info, va_list args);
-int	print_octal(t_info *info, va_list args);
-int	print_percent(t_info *info, va_list args);
+void	print_number(t_info *i, va_list args);
+void	print_char(t_info *info, va_list args);
+void	print_octal(t_info *info, va_list args);
+void	print_percent(t_info *info, va_list args);
 // int	print_hex_lower(t_info *info, va_list args);
 // int	print_hex_upper(t_info *info, va_list args);
-int	print_hex_flags(t_info *i, va_list args);
-int	print_unsigned(t_info *i, va_list args);
-int	print_str(t_info *i, va_list args);
-int	print_address(t_info *i, va_list args);
-int	calc_printed(t_info *i, va_list args);
-int	print_float(t_info *i, va_list args);
+void	print_hex_flags(t_info *i, va_list args);
+void	print_unsigned(t_info *i, va_list args);
+void	print_unsigned_long(t_info *i, va_list args);
+void	print_str(t_info *i, va_list args);
+void	print_address(t_info *i, va_list args);
+void	calc_printed(t_info *i, va_list args);
+void	print_float(t_info *i, va_list args);
 
-// # define SPECS "%dicoxXuspnf"	// zu same as l (sizeof)
+// # define SPECS "%dicoxXuUspnf"	// zu same as l (sizeof)
 
 static const func_pointer g_disp_table[] =
 {
@@ -115,16 +121,12 @@ static const func_pointer g_disp_table[] =
 	print_hex_flags,
 	print_hex_flags,
 	print_unsigned,
+	print_unsigned_long,
 	print_str,
 	print_address,
 	calc_printed,
 	print_float
-
-
-	// print_address
-	// calc_newline
 };
-
 
 // typedef void					(*t_print_conversion)(t_pformat *cur, \
 // va_list ap);
