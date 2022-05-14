@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:33:38 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/12 10:44:01 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/14 14:38:46 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,19 @@ void	assign_float_to_ints(long double frac, t_info *i, int prec)
 	i->arg_len = count_digits(i->cur_arg);
 	if (i->flags & NEGATIVE || i->flags & PLUS)
 		i->arg_len++;
-	frac -= (long double)i->cur_arg;
+	frac -= (long double)i->cur_arg;	//0.567
+
+
 	prec++;
-	while (prec-- > 0)
+	if (prec > 19)
+		prec = 19;
+	while (prec-- > 0)		//4 	-> 10000	* 0.567
 		frac *= 10;
-	i->f_dec_arg = (unsigned long long)frac;
-	float_rounding(i);
+	i->f_dec_arg = (unsigned long long)frac;	// 5670  .0
+	if (i->prec > 19)
+		i->f_dec_arg /= 10;
+	else
+		float_rounding(i);
 	i->f_dec_len = count_digits(i->f_dec_arg);
 	float_calc_total(i);
 }
