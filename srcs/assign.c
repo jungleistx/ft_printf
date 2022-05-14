@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:33:38 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/14 14:38:46 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/14 16:38:45 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,42 +52,70 @@ void	assign_oux(t_info *i, va_list args)
 		i->cur_arg = (unsigned long long) va_arg(args, unsigned int);
 }
 
-void	float_rounding(t_info *i)
+// void	float_rounding(t_info *i)
+// {
+// 	if (i->f_dec_arg % 10 >= 5)
+// 	{
+// 		i->f_dec_arg += 10;
+// 		if (count_digits(i->f_dec_arg) > i->prec + 1)
+// 		{
+// 			i->cur_arg++;
+// 			if (i->cur_arg % 2 == 1 && i->f_dec_arg % 10 == 5)
+// 				i->cur_arg--;
+// 			i->f_dec_arg = 0;
+// 		}
+// 	}
+// 	i->f_dec_arg /= 10;
+// }
+
+int	check_rounding(long double frac, int prec)
 {
-	if (i->f_dec_arg % 10 >= 5)
+	unsigned long long	tmp;
+
+	tmp = (unsigned long long) frac;
+	frac -= (long double)tmp;
+	while (prec-- > 0)
 	{
-		i->f_dec_arg += 10;
-		if (count_digits(i->f_dec_arg) > i->prec + 1)
-		{
-			i->cur_arg++;
-			if (i->cur_arg % 2 == 1 && i->f_dec_arg % 10 == 5)
-				i->cur_arg--;
-			i->f_dec_arg = 0;
-		}
+		frac *= 10;
+		tmp = (unsigned long long)frac;
+		frac -= (long double) tmp;
 	}
-	i->f_dec_arg /= 10;
+	// printf(" >%Lf< ", frac);
+	// int tmp2;
+	// tmp2 = (int)(frac * 100);
+	// if (tmp2 % 10 >= 5)
+	// {
+	// 	frac += 0.1;
+	// }
+	// printf(" >%Lf< ", frac);
+	if (frac == (long double) 0.5)
+	{
+		if (tmp % 2 != 0)
+			return (1);
+	}
+	else if (frac > (long double) 0.5)
+	{
+		return (1);
+	}
+	return (0);
 }
 
 void	assign_float_to_ints(long double frac, t_info *i, int prec)
 {
+	long double	x;
+
+	x = 1.0;
+	while (prec-- > 0)
+		x /= 10;
+	if (check_rounding(frac, i->prec))
+		frac += x;
 	i->cur_arg = (unsigned long long)frac;
 	i->arg_len = count_digits(i->cur_arg);
 	if (i->flags & NEGATIVE || i->flags & PLUS)
 		i->arg_len++;
-	frac -= (long double)i->cur_arg;	//0.567
-
-
-	prec++;
-	if (prec > 19)
-		prec = 19;
-	while (prec-- > 0)		//4 	-> 10000	* 0.567
-		frac *= 10;
-	i->f_dec_arg = (unsigned long long)frac;	// 5670  .0
-	if (i->prec > 19)
-		i->f_dec_arg /= 10;
-	else
-		float_rounding(i);
-	i->f_dec_len = count_digits(i->f_dec_arg);
+	frac -= (long double) i->cur_arg;
+	i->f_arg = frac;
+	i->f_dec_len = i->prec;
 	float_calc_total(i);
 }
 
