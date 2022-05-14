@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:40:10 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/12 12:08:16 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/14 11:13:06 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,7 @@ char	*assign_str(t_info *i, va_list args)
 
 	str = va_arg(args, char *);
 	if (!str)
-	{
-		i->res += write(1, "(null)", 6);
-		return (NULL);
-	}
+		str = "(null)";
 	if (ft_strlen(str) == 0)
 	{
 		i->arg_len = 0;
@@ -39,13 +36,9 @@ char	*assign_str(t_info *i, va_list args)
 
 void	print_str(t_info *i, va_list args)
 {
-	int		len;
 	char	*str;
 
-	len = 0;
 	str = assign_str(i, args);
-	if (!str)
-		return ;
 	if (!(i->flags & MINUS) && i->width > i->arg_len && i->width > i->prec)
 	{
 		if (i->flags & ZERO)

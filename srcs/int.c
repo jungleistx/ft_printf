@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:30:46 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/12 12:02:27 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/12 20:36:37 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@ void	print_prefix_flag(t_info *i)
 
 void	print_zero_number(t_info *i)
 {
+	// if (i->flags & SPACE)
+		// i->res += write(1, " ", 1);
+	// printf(" >>w = %d, len = %d, arg = %llu, pre = %d<< \n", i->width, i->arg_len, i->cur_arg, i->prec);
 	if (i->flags & PLUS)
 	{
 		i->width--;
@@ -50,6 +53,7 @@ void	print_zero_number(t_info *i)
 void	print_number(t_info *i, va_list args)
 {
 	assign_dic(i, args);
+	// printf(" >>w = %d, len = %d, arg = %llu, pre = %d<< ", i->width, i->arg_len, i->cur_arg, i->prec);
 	if ((i->cur_arg == 0) && (i->flags & DOT) && (i->prec == 0))
 		return (print_zero_number(i));
 	if ((i->flags & SPACE) && !(i->flags & NEGATIVE))

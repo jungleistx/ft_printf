@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:41:53 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/12 18:38:16 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/13 12:36:35 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	print_hex_flags(t_info *i, va_list args)
 {
 	assign_oux(i, args);
 	count_hex(i, i->cur_arg);
+	// printf(" >>w = %d, len = %d, pre = %d, arg = %llu<< ", i->width, i->arg_len, i->prec, i->cur_arg);
 	if (i->cur_arg == 0)
 		return (print_zero_hex(i));
 	if (i->flags & HASH)

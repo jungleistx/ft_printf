@@ -6,16 +6,16 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:24:23 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/11 12:26:56 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/12 20:45:27 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
 
-int	dot_flag(t_info *i, char *str, int i)
+int	dot_flag(t_info *info, const char *str, int i, va_list args)
 {
 	info->flags |= DOT;
-	if (str[i] == '*')
+	if (str[++i] == '*')
 	{
 		return (ast_precision_flag(info, args));
 	}
@@ -53,8 +53,8 @@ int	dot_ast_flag(const char *str, t_info *info, va_list args)
 	int	i;
 
 	i = 0;
-	if (str[i++] == '.')
-		return (dot_flag(info, &str[i], i));
+	if (str[i] == '.')
+		return (dot_flag(info, &str[i], i, args));
 	else
 	{
 		info->width = va_arg(args, int);

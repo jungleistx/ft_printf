@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 15:55:48 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/12 18:38:20 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/13 13:30:43 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ void	print_hex_width(t_info *i)
 {
 	if (i->flags & ZERO && !(i->flags & MINUS))
 	{
-		if (!(i->flags & DOT))
-			i->res += ft_putchar_multi(' ', i->width - i->arg_len);
-		else if (i->prec > i->arg_len)
+		if (!(i->flags & DOT) && i->width > i->arg_len)
+			i->res += ft_putchar_multi('0', i->width - i->arg_len);
+		else if (i->prec > i->arg_len && i->width > i->prec)
 			i->res += ft_putchar_multi(' ', i->width - i->prec);
-		else
+		else if (i->arg_len > i->prec && i->width > i->arg_len)
 			i->res += ft_putchar_multi(' ', i->width - i->arg_len);
 		i->width = 0;
 	}

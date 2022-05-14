@@ -49,12 +49,14 @@ mess with numbers, where is flags and padding handled ---- TODO ----
 *	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
 
 LIBFT_FUNCTIONS
+ft_atoi
+ft_isdigit
 ft_putchar
+ft_strlen
 
 ft_putstr
 ft_putnbr	(?) ft_putnbr_l might replace that
-ft_strlen
-ft_isdigit
+
 
 UNUSED
 	check_octal_flags
@@ -110,6 +112,10 @@ int.c
 	print_number
 bonus.c
 	calc_printed			TEST WITH LENGHTS (ll, hh)
+		toadd
+			assign_binary
+			print_binary
+			print_sizeof
 assing.c
 	assign_dic
 	assign_oux				func_name changed !
@@ -125,6 +131,8 @@ hex_flags.c
 	print_hex_zero_width
 	print_hex_width
 	print_hex_minus
+octal_flags.c
+	print_zero_octal_flags
 octal.c
 	print_zero_octal
 	convert_octal
@@ -351,6 +359,7 @@ BONUS
 -%n 	amount written at that moment, saved in (total?)
 -color	output, same as printf and .sh
 -%zu 	same as %l, takes sizeof
+-*		wildcard width/precision
 
 TESTCASES 			(d = 9)
 	all

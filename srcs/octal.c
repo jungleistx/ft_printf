@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:19:16 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/12 15:54:17 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/13 14:52:52 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,14 @@
 
 void	print_zero_octal(t_info *i)
 {
-	if (!(i->flags & HASH) && i->width < 1 && i->prec == 0
-		&& !(i->flags & ZERO))
+	if (!(i->flags & HASH) && i->width < 1 && i->prec == 0)
 		return ;
-	if (i->prec == 0 && !(i->flags & HASH) && !(i->flags & ZERO))
+	if (i->prec == 0 && !(i->flags & HASH))
 		i->arg_len = 0;
-	if (!(i->flags & MINUS && i->width > 0) && i->width > i->prec)
-	{
-		if (i->flags & ZERO)
-			i->res += ft_putchar_multi('0', i->width - i->arg_len);
-		else if (i->flags & DOT && i->width > i->prec && i->prec > 0)
-			i->res += ft_putchar_multi(' ', i->width - i->prec);
-		else
-			i->res += ft_putchar_multi(' ', i->width - i->arg_len);
-	}
+	print_zero_octal_flags(i);
 	if (i->flags & DOT)
 		i->res += ft_putchar_multi('0', i->prec - 1);
-	if (i->flags & HASH || i->flags & ZERO || i->prec > 0)
+	if (i->flags & HASH || i->prec > 0)
 		i->res += write(1, "0", 1);
 	if (i->flags & MINUS && i->width > 1 && i->width > i->prec)
 	{
@@ -56,7 +47,7 @@ void	convert_octal(unsigned long long num, t_info *i)
 
 void	print_octal_non_minus(t_info *i)
 {
-	if (i->width > 0 && i->flags & ZERO)
+	if (i->width > 0 && i->flags & ZERO && !(i->flags & DOT))
 		i->res += ft_putchar_multi('0', i->width - i->arg_len);
 	else if (i->width > 0 && i->flags & DOT && i->prec > i->arg_len)
 		i->res += ft_putchar_multi(' ', i->width - i->prec);
@@ -102,7 +93,7 @@ void	print_octal(t_info *i, va_list args)
 {
 	unsigned long long	tmp;
 
-	assign_ouxX(i, args);
+	assign_oux(i, args);
 	tmp = i->cur_arg;
 	i->cur_arg = 0;
 	convert_octal(tmp, i);
