@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:48:44 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/14 11:16:06 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/14 14:32:45 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,9 @@ void	print_float(t_info *i, va_list args)
 		i->res += ft_putchar_multi('0', i->prec);
 	else
 	{
+		ft_putnbr_l(i->f_dec_arg);
 		if (i->prec > i->f_dec_len)
 			i->res += ft_putchar_multi('0', i->prec - i->f_dec_len);
-		ft_putnbr_l(i->f_dec_arg);
 	}
 	i->res += i->prec;
 	if (i->flags & MINUS && i->width > i->f_total)
