@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:48:44 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/16 09:29:53 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/16 09:31:56 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	print_float_zero_prec(t_info *i)
 
 void	print_float(t_info *i, va_list args)
 {
-	unsigned long long tmp;
+	unsigned long long	tmp;
 
 	assign_float(i, args);
 	if (i->prec == 0)
