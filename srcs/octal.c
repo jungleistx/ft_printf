@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:19:16 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/16 12:32:32 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/16 13:49:41 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,6 @@ void	count_octal(t_info *i, unsigned long long tmp)
 		}
 		tmp /= 8;
 		i->arg_len++;
-	}
-	if (i->flags & HASH)
-	{
-		i->width--;
-		i->prec--;
 	}
 }
 
