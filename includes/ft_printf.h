@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:18:13 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/16 09:30:16 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/16 12:32:10 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	ft_putchar(char c);
 void	print_zero_unsig(t_info *i);
 char	*assign_str(t_info *i, va_list args);
 void	print_zero_octal(t_info *i);
-void	convert_octal(unsigned long long num, t_info *i);
+void	print_octal_numbers(t_info *i, unsigned long long a);
 void	print_zero_octal_flags(t_info *i);
 void	print_octal_non_minus(t_info *i);
 void	print_octal_minus(t_info *i);
@@ -113,7 +113,7 @@ int		digit_minus_flag(const char *str, t_info *info);
 void	plus_space_flag(const char *str, t_info *i);
 void	assign_dic(t_info *i, va_list args);
 void	assign_oux(t_info *i, va_list args);
-int		check_rounding(long double frac, int prec)
+int		check_rounding(long double frac, int prec);
 void	assign_float_to_ints(long double frac, t_info *i, int prec);
 void	assign_float(t_info *i, va_list args);
 void	print_percent(t_info *i, va_list args);
