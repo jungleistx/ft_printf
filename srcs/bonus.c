@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:46:39 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/12 12:09:25 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/16 13:15:32 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@ void	calc_printed(t_info *i, va_list args)
 		lptr = va_arg(args, long long *);
 		*lptr = (long long)i->res;
 	}
-	if (i->flags & SSHORT)
+	else if (i->flags & SSHORT)
 	{
+
 		cptr = va_arg(args, signed char *);
 		*cptr = (signed char)i->res;
 	}
