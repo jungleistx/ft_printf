@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:48:44 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/14 16:13:38 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/16 09:29:53 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,7 @@
 void	float_calc_total(t_info *i)
 {
 	i->f_total = i->arg_len;
-	if (i->prec > i->f_dec_len)
-		i->f_total += i->prec;
-	else
-		i->f_total += i->f_dec_len;
+	i->f_total += i->prec;
 	if (i->flags & HASH || i->prec > 0)
 		i->f_total++;
 }
@@ -63,29 +60,6 @@ void	print_float_zero_prec(t_info *i)
 	if (i->flags & MINUS && i->width > i->arg_len)
 		i->res += ft_putchar_multi(' ', i->width - i->arg_len);
 }
-
-// void	print_float(t_info *i, va_list args)
-// {
-// 	assign_float(i, args);
-// 	if (i->prec == 0)
-// 		return (print_float_zero_prec(i));
-// 	print_float_flags(i);
-// 	ft_putnbr_l(i->cur_arg);
-// 	i->res += i->arg_len;
-// 	if (i->flags & HASH || i->prec > 0)
-// 	i->res += write(1, ".", 1);
-// 	if (i->f_dec_arg == 0)
-// 		i->res += ft_putchar_multi('0', i->prec);
-// 	else
-// 	{
-// 		ft_putnbr_l(i->f_dec_arg);
-// 		if (i->prec > i->f_dec_len)
-// 			i->res += ft_putchar_multi('0', i->prec - i->f_dec_len);
-// 	}
-// 	i->res += i->prec;
-// 	if (i->flags & MINUS && i->width > i->f_total)
-// 		i->res += ft_putchar_multi(' ', i->width - i->f_total);
-// }
 
 void	print_float(t_info *i, va_list args)
 {

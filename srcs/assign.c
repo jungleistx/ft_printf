@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:33:38 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/14 16:38:45 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/16 09:30:06 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,22 +52,6 @@ void	assign_oux(t_info *i, va_list args)
 		i->cur_arg = (unsigned long long) va_arg(args, unsigned int);
 }
 
-// void	float_rounding(t_info *i)
-// {
-// 	if (i->f_dec_arg % 10 >= 5)
-// 	{
-// 		i->f_dec_arg += 10;
-// 		if (count_digits(i->f_dec_arg) > i->prec + 1)
-// 		{
-// 			i->cur_arg++;
-// 			if (i->cur_arg % 2 == 1 && i->f_dec_arg % 10 == 5)
-// 				i->cur_arg--;
-// 			i->f_dec_arg = 0;
-// 		}
-// 	}
-// 	i->f_dec_arg /= 10;
-// }
-
 int	check_rounding(long double frac, int prec)
 {
 	unsigned long long	tmp;
@@ -80,14 +64,6 @@ int	check_rounding(long double frac, int prec)
 		tmp = (unsigned long long)frac;
 		frac -= (long double) tmp;
 	}
-	// printf(" >%Lf< ", frac);
-	// int tmp2;
-	// tmp2 = (int)(frac * 100);
-	// if (tmp2 % 10 >= 5)
-	// {
-	// 	frac += 0.1;
-	// }
-	// printf(" >%Lf< ", frac);
 	if (frac == (long double) 0.5)
 	{
 		if (tmp % 2 != 0)
