@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:18:13 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/16 12:32:10 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/16 14:07:14 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@
 # include <limits.h>
 # include <float.h>
 // add	z, b?, P(what)?, m(what)?
-# define SPECS "%dicoxXuUspnf"
+# define SPECS "%dicoxXuUspnfbBD"
 # define RED "\033[0;31m"
-# define NOCO "\033[0m"
 # define GREEN "\033[0;32m"
-# define YELLOW "\033[4;33m"
+# define YELLOW "\033[0;33m"
 # define BLUE "\033[0;34m"
+# define NOCO "\033[0m"
 //check necessary
 typedef struct s_info
 {
@@ -127,8 +127,11 @@ void	print_str(t_info *i, va_list args);
 void	print_address(t_info *i, va_list args);
 void	calc_printed(t_info *i, va_list args);
 void	print_float(t_info *i, va_list args);
+void	print_uppercase_number(t_info *i, va_list args);
+void	print_binary(t_info *i, va_list args);
+void	print_binary_value(t_info *i, unsigned long long num);
 
-static const t_func_pointer	g_disp_table[13] = {
+static const t_func_pointer	g_disp_table[16] = {
 	print_percent,
 	print_number,
 	print_number,
@@ -141,7 +144,10 @@ static const t_func_pointer	g_disp_table[13] = {
 	print_str,
 	print_address,
 	calc_printed,
-	print_float
+	print_float,
+	print_binary,
+	print_binary,
+	print_uppercase_number
 };
 
 #endif

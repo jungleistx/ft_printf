@@ -1304,23 +1304,71 @@ void	floatt(void)
 
 }
 
+void	bonus(void)
+{
+	// colors
+	ft_printf("test %sred %sgreen %syellow %sblue %stest\n", RED, GREEN, YELLOW, BLUE, NOCO);
+
+	// %n
+	int a = 0, b = 0;
+	printf("random text%n another %n\n", &a, &b);
+	printf("a = %d, b = %d\n", a, b);
+	a = 0, b = 0;
+	ft_printf("random text%n another %n\n", &a, &b);
+	printf("a = %d, b = %d\n", a, b);
+	signed char sc = 0;
+	printf("random text %hhn random\n", &sc);
+	printf("sc = %d\n", sc);
+	sc = 0;
+	ft_printf("random text %hhn random\n", &sc);
+	printf("sc = %d\n", sc);
+	long long lon = 0;
+	printf("random text %lln random\n", &lon);
+	printf("lon = %lld\n", lon);
+	lon = 0;
+	ft_printf("random text %lln random\n", &lon);
+	printf("lon = %lld\n", lon);
+
+	// wildcard
+	printf("|%*.*d|\n", 8, 5, 42);
+	ft_printf("|%*.*d|\n", 8, 5, 42);
+	printf("|%-*.*d|\n", 8, 5, 42);
+	ft_printf("|%-*.*d|\n", 8, 5, 42);
+	printf("|%-*.*d|\n", 2, 4, 42);
+	ft_printf("|%-*.*d|\n", 2, 4, 42);
+
+	// %b
+	long long bina = 424242;
+	ft_printf("ft\t|%b|\n", bina);
+	bina = 42;
+	ft_printf("ft\t|%b|\n", bina);
+	bina = 123123123;
+	ft_printf("ft\t|%b|\n", bina);
+	bina = 123123123;
+	ft_printf("ft\t|%B|\n", bina);
+}
+
 int main(void)
 {
-	floatt();	// ret value???
-	// printf("%-8s", "%.22f");
-	// printf("|%.24f|\n", 1.15);
-	// printf("|%.23f|\n", 1.15);
-	// printf("\t|%.22f|\n", 1.15);
-	// ft_printf("\t|%.22f|\n", 1.15);
-	// printf("\t|%.23f|\n", 1.15);
-	// ft_printf("\t|%.23f|\n", 1.15);
 
-	// printf("|%.100f|\n", 9.99);
-	// ft_printf("|%.100|\nf", 9.99);
+	bonus();
+	// floatt();
+	// printed();
+	// adrt();
+	// strt();
+	// octals();
+	// hext();
+	// unsigt();
+	// chart();
+	// percent();
 
-	// printf("|%#08x|\n", 42);
-	// ft_printf("|%#08x|\n\n", 42);
-
+	// test_d();
+	// spacet();
+	// widt();
+	// plust();
+	// prect();
+	// zerot();
+	// minust();
 	// int a = 0, b = 0;
 	// a = printf("|%#lo|\n",ULONG_MAX);
 	// b = ft_printf("|%#lo|\n",ULONG_MAX);
@@ -1396,23 +1444,11 @@ int main(void)
 	// b = ft_printf("{%.*s}\n", 5, "42");
 	// printf("a = %d b = %d|\n", a, b);
 
-				// OK!
-	// printed();
-	// adrt();
-	// strt();
-	// octals();
-	// hext();
-	// unsigt();
-	// chart();
-	// percent();
-
-	// test_d();
-	// spacet();
-	// widt();
-	// plust();
-	// prect();
-	// zerot();
-	// minust();
-
 
 }
+
+/*
+octal 0 && prec 0		print _
+octal 0 prec 0 			prints width
+
+*/

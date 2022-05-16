@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:46:39 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/16 13:16:10 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/16 14:07:10 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,29 @@ void	calc_printed(t_info *i, va_list args)
 		iptr = va_arg(args, int *);
 		*iptr = i->res;
 	}
+}
+
+void	print_binary_value(t_info *i, unsigned long long num)
+{
+	char	tmp;
+
+	if (num >= 2)
+		print_binary_value(i, num / 2);
+	tmp = num % 2 + '0';
+	i->res += write(1, &tmp, 1);
+}
+
+void	print_binary(t_info *i, va_list args)
+{
+	i->cur_arg = va_arg(args, unsigned long long);
+	print_binary_value(i, i->cur_arg);
+}
+
+void	print_uppercase_number(t_info *i, va_list args)
+{
+	if (i->flags & LONG && !(i->flags & LLONG))
+		i->flags |= LLONG;
+	else if (!(i->flags & LONG) && !(i->flags & LLONG))
+		i->flags |= LONG;
+	print_number(i, args);
 }

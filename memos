@@ -36,18 +36,6 @@ TOCHECK
 	%x undefined + and ' '
 
 
-
-*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
-*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
-*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
-*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
-mess with numbers, where is flags and padding handled ---- TODO ----
-*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
-*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
-*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
-*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
-*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
-
 LIBFT_FUNCTIONS
 ft_atoi
 ft_isdigit
@@ -143,37 +131,7 @@ float.c
 	float_calc_total
 	print_float_flags
 	print_float
----
-
-
-----
-CHANGE DISP_TABLE TO VOID?
-----
-
-
-x	MID
-x   -
-x	-
--
-x
--
--
-x
--
--
--
-
-
-
-1 + 4 + 4
-
-2 + 7
-
-
-
-
-
-
+--
 
 with flags: 				none		hh 				h 			l 			ll				L
 d	signed deci int			int			signed char		short		long		long long
@@ -210,18 +168,9 @@ ORDER
 
 -	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
 -	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
--	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
--	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
--	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
-
 	% [flags][width][.precision][length]specifier
-
 -	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
 -	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
--	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
--	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
--	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-	-
-
 
 SPECIAL CASES
 	. and 0		(nothing after .) doesnt matter because num_len > length (try with 0?)
@@ -324,36 +273,24 @@ if width > prec
 	while prec > arglen
 		write 0
 
-- +
-	if w < prec, + doesnt affect total len
-%+-4.6d         |+000099|       |-000099|
-%+-6.4d         |+0099 |        |-0099 |
-
-cases
-%06.4d          |  0099|        | -0099|
-%04.6d          |000099|        |-000099|
 */
 
-needed ?
-	ftoa
-	itoa
-	buf[10] for flags, precision, field, width (?)
+READY BONUS:
+	%n		value so far written, saved to &int
+	*		wildcard width/prec, given as argument
+	colors	used with %s (no "" around), defined in header
+	%b		binary
+	upper	U, D
 
 BONUS
 -n 	num printed so far		int* 	sig char*			short*			long *		longlong*
 -Uppercase D, I etc
-
+UPPERCASE = lowecase + l
 	from printf manual
 following appear in sequence:
 	optional field:
 		decimal digit string, followed by 'dollarsign'. if no dollar, next arg is read
 	zero or more following flags:
--colors	(same as printf / .sh)
-
-TODO
-- numbercounter that takes void*, can be used with all numbers. converts to longlong
-- putchar multi instead of write(more than 1)
-
 
 BONUS
 -%n 	amount written at that moment, saved in (total?)
@@ -388,7 +325,6 @@ char c = 0;
 	octal
 octal 0 with flags (prec 0 )
 
-
 .ZSHRC
 PROMPT='%F{45}%D, %T%f %F{190}%~%f%F{40} %#%f '
 alias gca="gcc -S -masm=intel"
@@ -410,17 +346,10 @@ r a n d o m _ % d \n \n          // len(6), int 9, total = 6 + (spc 1) + 1 + \n 
 %e scientific format number
 Mantissa (total bits?)
 
-Arena script
-Check unicode for d, esc
-D = U+0064 decimal 100 oct 144
-Esc = decimal 27 hex x1b u+001b?? Oct 33
-
-
-
-
-checked flags 	OK
-check spec 	- 	func_pointer TODO
-
+		Arena script
+		Check unicode for d, esc
+		D = U+0064 decimal 100 oct 144
+		Esc = decimal 27 hex x1b u+001b?? Oct 33
 
 EVAL
 pre
@@ -457,28 +386,3 @@ more stuff
 finally
 	flag .
 BONUS
-
-
-
-ELLA
-^
-titus	B2	^
-
-1		2		3		4		F5
-chen 	a1		kce/I1	h/e
-
-hmar 	E
-ehelm	E
-
-_
-jjun	F
-spuu	B1
-
-1		2		3		4		F5
-max		jun 	kiwi	spuu
-
---
-wins
-scoring diff
-repricocal match
-if tie, highest points
