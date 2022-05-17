@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:54:31 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/12 20:45:38 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/17 15:51:04 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,12 @@ void	reset_info(t_info *info, int reset)
 		info->res = 0;
 	}
 	info->flags = 0;
-	info->tmpres = 0;
 	info->f_dec_len = 0;
-	info->f_dec_arg = 0;
 	info->arg_len = 0;
 	info->width = 0;
 	info->prec = 1;
 	info->hex = 65;
-	info->f_arg = 0;
+	info->f_arg = 0.0;
 	info->cur_arg = 0;
 	info->f_total = 0;
 }
