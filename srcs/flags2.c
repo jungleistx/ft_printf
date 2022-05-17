@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:24:23 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/17 17:03:54 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/17 17:19:16 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	dot_flag(t_info *info, const char *str, int i, va_list args)
 			info->prec = 0;
 			return (0);
 		}
-		else if (str[i] == '0')
+		else if (str[i] == '0' && ft_isdigit(str[i + 1]))
 		{
 			while (ft_isdigit(str[i]))
 				i++;
