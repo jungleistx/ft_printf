@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:40:10 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/14 11:13:06 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/17 10:50:48 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,11 @@ char	*assign_str(t_info *i, va_list args)
 	str = va_arg(args, char *);
 	if (!str)
 		str = "(null)";
-	if (ft_strlen(str) == 0)
-	{
-		i->arg_len = 0;
-		i->prec = 0;
-	}
-	else
-	{
-		if (i->flags & DOT)
-			i->arg_len = i->prec;
-		else
-			i->arg_len = (int)ft_strlen(str);
-	}
+	i->arg_len = (int)ft_strlen(str);
+	if (i->prec > i->arg_len)
+		i->prec = i->arg_len;
+	else if (i->flags & DOT)
+		i->arg_len = i->prec;
 	return (str);
 }
 
