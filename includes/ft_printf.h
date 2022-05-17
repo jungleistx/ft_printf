@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:18:13 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/17 16:31:25 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/17 17:13:40 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ void	plus_space_flag(const char *str, t_info *i);
 void	assign_dic(t_info *i, va_list args);
 void	assign_oux(t_info *i, va_list args);
 int		check_rounding(long double frac, int prec);
+void	print_unsigned_width(t_info *i);
 void	print_zero_address(t_info *i);
 void	assign_float_to_ints(long double frac, t_info *i, int prec);
 void	assign_float(t_info *i, va_list args);
