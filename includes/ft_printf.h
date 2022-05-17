@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:18:13 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/17 12:02:33 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/17 15:51:47 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@
 # include <stdio.h>
 # include <limits.h>
 # include <float.h>
-// add	z, b?, P(what)?, m(what)?
-# define SPECS "%dicoxXuUspnfbBD"
+
+# define SPECS "%dicoxXuUspnfFbBD"
 # define RED "\033[0;31m"
 # define GREEN "\033[0;32m"
 # define YELLOW "\033[0;33m"
 # define BLUE "\033[0;34m"
 # define NOCO "\033[0m"
-//check necessary
+
 typedef struct s_info
 {
 	uint16_t			flags;
@@ -37,14 +37,10 @@ typedef struct s_info
 	int					arg_len;
 	int					f_dec_len;
 	long double			f_arg;
-	unsigned long long	f_dec_arg;
 	char				hex;
 	int					i;
 	int					f_total;
 	unsigned long long	cur_arg;
-	long long			tmp;
-	int					min_len;
-	int					tmpres;
 }t_info;
 
 typedef enum e_spec
@@ -67,7 +63,8 @@ typedef enum e_flags
 	LLONG = 128,
 	SHORT = 256,
 	SSHORT = 512,
-	NEGATIVE = 1024
+	NEGATIVE = 1024,
+	FLONG = 2048
 }t_flags;
 
 typedef void				(*t_func_pointer) (t_info *, va_list);
@@ -133,7 +130,7 @@ void	print_uppercase_number(t_info *i, va_list args);
 void	print_binary(t_info *i, va_list args);
 void	print_binary_value(t_info *i, unsigned long long num);
 
-static const t_func_pointer	g_disp_table[16] = {
+static const t_func_pointer	g_disp_table[17] = {
 	print_percent,
 	print_number,
 	print_number,
@@ -146,6 +143,7 @@ static const t_func_pointer	g_disp_table[16] = {
 	print_str,
 	print_address,
 	calc_printed,
+	print_float,
 	print_float,
 	print_binary,
 	print_binary,

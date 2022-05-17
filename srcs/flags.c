@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:27:23 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/11 12:29:18 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/17 15:46:38 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ void	special_flags(t_info *i)
 
 void	check_len_flags(char c, t_info *info)
 {
-	if (c == 'l' || c == 'L')
+	if (c == 'L' && !(info->flags & FLONG))
+		info->flags |= FLONG;
+	else if (c == 'l')
 	{
 		if (info->flags & LONG && !(info->flags & LLONG))
 			info->flags |= LLONG;

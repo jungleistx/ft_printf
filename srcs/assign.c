@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:33:38 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/16 09:30:06 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/17 15:44:33 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	assign_float_to_ints(long double frac, t_info *i, int prec)
 
 void	assign_float(t_info *i, va_list args)
 {
-	if (i->flags & LONG)
+	if (i->flags & FLONG)
 		i->f_arg = va_arg(args, long double);
 	else
 		i->f_arg = (long double) va_arg(args, double);
