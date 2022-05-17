@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:24:23 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/12 20:45:27 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/17 17:03:54 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,21 @@
 
 int	dot_flag(t_info *info, const char *str, int i, va_list args)
 {
-	info->flags |= DOT;
 	if (str[++i] == '*')
-	{
 		return (ast_precision_flag(info, args));
-	}
 	else
 	{
 		if (!ft_isdigit((int)str[i]) && str[i] != '-')
 		{
 			info->prec = 0;
 			return (0);
+		}
+		else if (str[i] == '0')
+		{
+			while (ft_isdigit(str[i]))
+				i++;
+			info->flags ^= DOT;
+			return (i - 1);
 		}
 		info->prec = ft_atoi(&str[i]);
 	}
@@ -54,7 +58,10 @@ int	dot_ast_flag(const char *str, t_info *info, va_list args)
 
 	i = 0;
 	if (str[i] == '.')
+	{
+		info->flags |= DOT;
 		return (dot_flag(info, &str[i], i, args));
+	}
 	else
 	{
 		info->width = va_arg(args, int);
