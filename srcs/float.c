@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:48:44 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/16 09:31:56 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/17 16:30:58 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	print_float(t_info *i, va_list args)
 	i->res += i->arg_len;
 	if (i->flags & HASH || i->prec > 0)
 	i->res += write(1, ".", 1);
+	i->res += i->prec;
 	while (i->prec-- > 0)
 	{
 		i->f_arg *= 10;
@@ -80,7 +81,8 @@ void	print_float(t_info *i, va_list args)
 		i->f_arg -= (long double) tmp;
 		ft_putnbr_l(tmp);
 	}
-	i->res += i->prec;
+	if (i->flags & NEGATIVE)
+		i->res--;
 	if (i->flags & MINUS && i->width > i->f_total)
 		i->res += ft_putchar_multi(' ', i->width - i->f_total);
 }
