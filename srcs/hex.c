@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:41:53 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/17 17:09:06 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/17 17:24:07 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,10 @@ void	print_hex_width(t_info *i)
 	{
 		if (i->prec > i->arg_len)
 			i->res += ft_putchar_multi(' ', i->width - i->prec);
-		else
+		else if (i->flags & DOT)
 			i->res += ft_putchar_multi(' ', i->width - i->arg_len);
+		else
+			i->res += ft_putchar_multi('0', i->width - i->arg_len);
 		i->width = 0;
 	}
 }
