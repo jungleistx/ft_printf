@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:18:13 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/17 15:51:47 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/17 15:56:19 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,6 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include "../libft/libft.h"
-//delete
-# include <stdio.h>
-# include <limits.h>
-# include <float.h>
 
 # define SPECS "%dicoxXuUspnfFbBD"
 # define RED "\033[0;31m"
