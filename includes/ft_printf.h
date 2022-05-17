@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:18:13 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/16 14:07:14 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/17 11:29:25 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void	print_hex(unsigned long long i, char letter);
 void	print_hex_zero_width(t_info *i);
 void	print_hex_width(t_info *i);
 void	print_hex_minus(t_info *i);
+void	print_hex_hash(t_info *i);
 int		count_digits(unsigned long long num);
 int		ft_putchar_multi(char c, int i);
 void	ft_putnbr_l(unsigned long long n);

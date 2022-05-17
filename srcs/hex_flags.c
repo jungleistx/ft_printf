@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 15:55:48 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/13 13:30:43 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/17 11:29:46 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,38 +25,17 @@ void	print_hex_zero_width(t_info *i)
 	}
 }
 
-void	print_hex_width(t_info *i)
-{
-	if (i->flags & ZERO && !(i->flags & MINUS))
-	{
-		if (!(i->flags & DOT) && i->width > i->arg_len)
-			i->res += ft_putchar_multi('0', i->width - i->arg_len);
-		else if (i->prec > i->arg_len && i->width > i->prec)
-			i->res += ft_putchar_multi(' ', i->width - i->prec);
-		else if (i->arg_len > i->prec && i->width > i->arg_len)
-			i->res += ft_putchar_multi(' ', i->width - i->arg_len);
-		i->width = 0;
-	}
-	if (!(i->flags & ZERO) && i->width > i->prec && i->width > i->prec
-		&& !(i->flags & MINUS))
-	{
-		if (i->prec > i->arg_len)
-		{
-			i->res += ft_putchar_multi(' ', i->width - i->prec);
-			i->width -= i->prec;
-		}
-		else
-		{
-			i->res += ft_putchar_multi(' ', i->width - i->arg_len);
-			i->width -= i->arg_len;
-		}
-	}
-}
-
 void	print_hex_minus(t_info *i)
 {
 	if (i->prec > i->arg_len)
 		i->res += ft_putchar_multi(' ', i->width - i->prec);
 	else
 		i->res += ft_putchar_multi(' ', i->width - i->arg_len);
+}
+
+void	print_hex_hash(t_info *i)
+{
+	i->res += 2;
+	ft_putchar('0');
+	ft_putchar(i->hex);
 }

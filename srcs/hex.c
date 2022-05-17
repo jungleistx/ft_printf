@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:41:53 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/16 12:37:39 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/17 11:30:20 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,22 @@ void	print_hex(unsigned long long i, char letter)
 	}
 }
 
+void	print_hex_width(t_info *i)
+{
+	if (!(i->flags & ZERO) && i->width > i->prec && i->width > i->arg_len)
+	{
+		if (i->prec > i->arg_len)
+			i->res += ft_putchar_multi(' ', i->width - i->prec);
+		else
+			i->res += ft_putchar_multi(' ', i->width - i->arg_len);
+	}
+	if (i->flags & ZERO && i->arg_len > i->prec && i->flags & DOT)
+	{
+		i->res += ft_putchar_multi(' ', i->width - i->arg_len);
+		i->width = 0;
+	}
+}
+
 void	print_hex_flags(t_info *i, va_list args)
 {
 	assign_oux(i, args);
@@ -76,13 +92,10 @@ void	print_hex_flags(t_info *i, va_list args)
 		return (print_zero_hex(i));
 	if (i->flags & HASH)
 		i->width -= 2;
-	print_hex_width(i);
+	if (!(i->flags & MINUS))
+		print_hex_width(i);
 	if (i->flags & HASH)
-	{
-		i->res += 2;
-		ft_putchar('0');
-		ft_putchar(i->hex);
-	}
+		print_hex_hash(i);
 	if (!(i->flags & MINUS) && i->width > i->arg_len && i->width > i->prec)
 	{
 		if (i->flags & ZERO)
