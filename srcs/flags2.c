@@ -6,11 +6,22 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 12:24:23 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/17 17:19:16 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/18 10:30:20 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
+
+int	dot_zero_prec(t_info *info, const char *str, int i)
+{
+	while (str[i] == '0')
+		i++;
+	info->prec = ft_atoi(&str[i]);
+	if (info->prec == 0)
+		return (i - 1);
+	else
+		return (i - 1 + count_digits(info->prec));
+}
 
 int	dot_flag(t_info *info, const char *str, int i, va_list args)
 {
@@ -23,13 +34,8 @@ int	dot_flag(t_info *info, const char *str, int i, va_list args)
 			info->prec = 0;
 			return (0);
 		}
-		else if (str[i] == '0' && ft_isdigit(str[i + 1]))
-		{
-			while (ft_isdigit(str[i]))
-				i++;
-			info->flags ^= DOT;
-			return (i - 1);
-		}
+		else if (str[i] == '0')
+			return (dot_zero_prec(info, str, i));
 		info->prec = ft_atoi(&str[i]);
 	}
 	if (info->prec < 0)

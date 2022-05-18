@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:18:13 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/17 17:13:40 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/18 10:30:08 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void	check_specifier(const char *str, t_info *info, va_list args);
 void	float_calc_total(t_info *i);
 void	print_float_flags(t_info *i);
 void	print_float_zero_prec(t_info *i);
+int		dot_zero_prec(t_info *info, const char *str, int i);
 int		dot_flag(t_info *info, const char *str, int i, va_list args);
 int		ast_precision_flag(t_info *i, va_list args);
 int		dot_ast_flag(const char *str, t_info *info, va_list args);
