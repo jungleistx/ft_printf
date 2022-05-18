@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:17:35 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/12 12:02:56 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/18 15:04:01 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,15 @@ void	print_char(t_info *info, va_list args)
 		cur_arg = (long long)va_arg(args, long);
 	else
 		cur_arg = (long long)va_arg(args, int);
-	while (info->width > 1 && !(info->flags & MINUS))
+	info->width--;
+	if (info->width > 0 && !(info->flags & MINUS))
 	{
 		if (info->flags & ZERO)
-			info->res += write(1, "0", 1);
+			info->res += ft_putchar_multi('0', info->width);
 		else
-			info->res += write(1, " ", 1);
-		info->width--;
+			info->res += ft_putchar_multi(' ', info->width);
 	}
 	info->res += write(1, &cur_arg, 1);
-	if (info->width > 1)
-		info->width--;
-	if (info->flags & MINUS)
-	{
-		while (info->width-- > 0)
-			info->res += write(1, " ", 1);
-	}
+	if (info->flags & MINUS && info->width > 0)
+		info->res += ft_putchar_multi(' ', info->width);
 }
