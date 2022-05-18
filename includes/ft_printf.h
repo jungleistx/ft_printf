@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/10 15:18:13 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/18 10:30:08 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/18 11:35:56 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int		ft_putchar_multi(char c, int i);
 void	ft_putnbr_l(unsigned long long n);
 void	reset_info(t_info *info, int reset);
 int		write_non_percent(const char *str, t_info *info);
-void	check_flags(const char *str, t_info *info, va_list args);
+int		check_flags(const char *str, t_info *info, va_list args, int i);
 void	check_specifier(const char *str, t_info *info, va_list args);
 void	float_calc_total(t_info *i);
 void	print_float_flags(t_info *i);

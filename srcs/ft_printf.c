@@ -6,7 +6,7 @@
 /*   By: rvuorenl <rvuorenl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 13:54:31 by rvuorenl          #+#    #+#             */
-/*   Updated: 2022/05/17 15:51:04 by rvuorenl         ###   ########.fr       */
+/*   Updated: 2022/05/18 11:35:33 by rvuorenl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,8 @@ int	write_non_percent(const char *str, t_info *info)
 	return (i);
 }
 
-void	check_flags(const char *str, t_info *info, va_list args)
+int	check_flags(const char *str, t_info *info, va_list args, int i)
 {
-	int	i;
-
-	i = -1;
 	while (str[++i])
 	{
 		if (str[i] == ' ' || str[i] == '+')
@@ -68,9 +65,11 @@ void	check_flags(const char *str, t_info *info, va_list args)
 		else
 		{
 			info->i += i;
-			return ;
+			return (1);
 		}
 	}
+	info->i += i;
+	return (0);
 }
 
 void	check_specifier(const char *str, t_info *info, va_list args)
@@ -106,8 +105,8 @@ int	ft_printf(const char *str, ...)
 		else
 		{
 			info.i++;
-			check_flags(&str[info.i], &info, args);
-			check_specifier(&str[info.i], &info, args);
+			if (check_flags(&str[info.i], &info, args, -1))
+				check_specifier(&str[info.i], &info, args);
 			reset_info(&info, 1);
 		}
 	}
