@@ -26,9 +26,10 @@ NAME=libftprintf.a
 all : $(NAME)
 
 $(NAME) :
-	@gcc ${FLAGS} -c ${SRC} ${SRCC} -I ./includes/ft_printf.h
-	@ar rc ${NAME} *.o
+	gcc ${FLAGS} -c ${SRC} ${SRCC} -I ./includes/ft_printf.h ./libft/libft.h
+	ar rc ${NAME} *.o
 	gcc testmain.c libftprintf.a -o test
+
 clean:
 	rm -f *.o
 
