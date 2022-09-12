@@ -53,7 +53,7 @@ void	count_octal(t_info *i, unsigned long long tmp)
 
 void	print_octal_numbers(t_info *i, unsigned long long a)
 {
-	if (a > 8)
+	if (a >= 8)
 		print_octal_numbers(i, a / 8);
 	ft_putchar(a % 8 + '0');
 }
