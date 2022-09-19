@@ -31,4 +31,13 @@ int ft_printf(const char *format, ...);
 * %x or %X hexadecimal
 * %p  address
 * %n  save the current return-value to a integer, long long (%ln) or signed char (%hn)
-* %f  float (%lf double) 
+* %f  float (%Lf double) 
+
+## Optional usage
+```
+%[flags][width][.precision][length]specifier
+```
+Flags: +, -, (space), 0, # <br>
+Width: 4 (integer), or if given as an extra argument, use * <br>
+Precision: .4 (.integer), or if given as an extra argument, .* <br>
+Length: h(short), l(long), ll(long long), L(lond double with float)
